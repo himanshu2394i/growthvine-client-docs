@@ -44,8 +44,8 @@ CSS gotchas specific to print:
   instead, so a full-bleed colored panel actually reaches the page edge.
 - `print_background=True` (Playwright) or WeasyPrint's default — without it, every
   background color and the donut/waffle SVG's fills can vanish in the PDF.
-- No `position: sticky` — there's no scroll in a PDF. Each chapter is a full page; the
-  "panel" is just a fixed band at the top or side of that one page.
+- No `position: sticky`. There is no scroll in a PDF. Each chapter is a full page;
+  the panel is a fixed band. C-split cover = full-bleed mint page (see `c-split.md`).
 - Load Poppins via `<link>` to Google Fonts, or inline it as a base64 `@font-face` if
   the render environment has no network access.
 

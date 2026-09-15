@@ -1,119 +1,118 @@
 ---
 name: growthvine-client-docs
-description: Apply Growthvine's brand system — Vine Indigo/Foundation Grey/Mint/Peach/Mustard palette, Poppins type, the fingerprint motif, and the donut/waffle/hairline-table component vocabulary from the fund-detail prototypes — whenever generating a client-facing PDF or PowerPoint for Growthvine, e.g. a fund fact sheet, a portfolio review deck, a one-pager, a proposal, or any document meant to go to a client or prospect. Trigger this even when the user just pastes fund numbers and says "make this a PDF" or "turn this into a deck" without naming colors, fonts, or the brand explicitly — matching the identity consistently is the whole point. Read this before reaching for reportlab/python-pptx defaults; its references/ folder has the exact tokens and print/slide translations needed so the output doesn't look like a generic auto-generated report.
+description: Use when making a Growthvine client-facing PDF, PowerPoint, fact sheet, one-pager, proposal, portfolio review, or any document from dumped fund numbers, a pasted file, or a named scheme. Trigger even if the user only pastes data and says "make this a PDF" or "turn this into a deck," without naming colors, Poppins, C split, Mint Billboard, or the brand. Also use when inventing a new document section that must still look like Growthvine, or when live fund figures should come from the Growthvine connector.
 ---
 
 # Growthvine client documents
 
-Growthvine's brand system — the Growthvine Brand Book plus the fund-detail web
-prototypes in Growthvine's product repo (`frontend/home-app/src/prototypes/`,
-especially the "Split board" / C design) — distilled into something usable for a PDF
-or PPTX. It
-exists so a document asked for today and one asked for three months from now look
-like they came from the same design system, without re-deriving colors, type, or
-layout from scratch each time.
+A complete production skill, not a color cheat sheet. It interviews for the job,
+pulls or accepts data, then designs and writes a file that looks like Growthvine's
+**C split** (Mint Billboard cover + pin brief) and the Brand Book.
 
-## Before you start
+Two documents made months apart should still look like the same house.
 
-- **Work only from numbers given in the conversation** — pasted text, a file, a
-  screenshot. Never invent a return, a rank, an AUM figure, or a benchmark name. If a
-  section's numbers aren't available, drop that section rather than guessing or
-  writing "N/A" into a chart.
-- **Confirm the deliverable** if it's not obvious: PDF or PPTX, one fund or several,
-  and whether there's a fixed page/slide count or the data should decide it.
-- **Carry the "as of" date.** These are point-in-time figures — print the date
-  somewhere on every page/slide that shows returns, NAV, or rank, the same way the
-  live fund pages do.
+## Do this first: briefing
 
-## Brand tokens (quick reference)
+Do not generate the file until the briefing below is answered. If the user already
+answered a slot in the same message, skip that slot. Ask the rest in **one** pass,
+then wait.
 
-| Role | Color |
+Read **`references/briefing.md`** and ask:
+
+1. **What are we making?** Fact sheet, portfolio review, one-pager, proposal, or
+   something else they name.
+2. **What file?** PDF, PPTX, both, or an HTML print preview.
+3. **Where does the data come from?** A dump in this chat (paste, file, screenshot),
+   live figures from the **Growthvine connector**, or dump as the story with the
+   connector filling gaps. Ask this even when they already pasted numbers: confirm
+   that dump is the source of truth.
+4. **Who is it for, and what tone?** Advisor-to-client (default), sales proposal,
+   internal research, or SEBI-cautious facts-only. See the tone menu in briefing.md.
+5. **Which sections?** Show the known chapter menu. Ask what to keep, skip, and
+   **what extra chapters they want that are not on the menu**. New chapters are
+   allowed. New visual languages are not.
+6. **Length?** Let the data decide, or a fixed page/slide count.
+
+If they say "just make it," still confirm **source + file type + tone** in one short
+question. Guessing those three is how generic decks get shipped.
+
+## Then get the numbers
+
+Never invent a return, rank, NAV, AUM, TER, benchmark name, holding, or as-of date.
+
+- **Dump in chat:** that dump is canonical. Do not "improve" a pasted figure with a
+  live pull unless they asked for a refresh.
+- **Named fund, no dump:** use the Growthvine connector. Read
+  **`references/data.md`** first (`get_analysis_guide` before any derived math).
+- **Both:** dump wins on conflict; connector only fills holes they approved.
+
+If a section has no numbers, drop the section or ask. Do not write "N/A" into a
+chart. Print the **as-of date** on every page or slide that shows returns, NAV, or
+rank.
+
+## Then design
+
+Read **`references/c-split.md`** before the first layout. Read
+**`references/design-tokens.md`** before any cover, logo, or color field.
+
+Quick lock (full rules live in those files):
+
+| Role | Value |
 |---|---|
+| Type | Poppins 600 headings, Poppins 400 body. Never Inter, Geist, Calibri, Times. |
 | Primary | Vine Indigo `#9B81F5` |
 | Ink / dark ground | Foundation Grey `#1D1D1B` |
 | Ground | Clarity White `#FFFFFF` |
-| Secondary | Mint `#B1F0DB`, Peach `#FFBB90`, Mustard `#F1F68E` |
+| Secondaries | Mint `#B1F0DB`, Peach `#FFBB90`, Mustard `#F1F68E` |
+| Logo on indigo or ink | Inverse lockup only (`assets/logo-inverse.webp`) |
+| Fingerprint | One cropped graphic. Never a tile. Color fields 10–20% opacity. Texture 5–10%. |
 
-Type is Poppins throughout — **Semibold (600)** for headings, **Regular (400)** for
-body. If the rendering pipeline can't load Poppins, say so explicitly and pick a
-deliberate fallback (see the font notes in each generation guide) — never let it
-silently fall back to Times/Calibri.
+**C split is a mint poster plus a pin brief:**
 
-The white/inverse logo lockup is bundled at `assets/logo-inverse.webp`. Use it on
-Vine Indigo or Foundation Grey grounds — **never place the colored or black logo on
-either of those two backgrounds**, it's the one hard rule in the brand book's "Don'ts."
+1. **Mint outdoor board:** mint field, 18ch name, fingerprint crop, stairs,
+   exit load, one CTA.
+2. **Pin brief:** each chapter is a left pin (mint or ink, fingerprint, `01 / Title`,
+   one huge number) and a white flow. Pins alternate. There is no swiss rail.
 
-Full palette (RGB/CMYK), the type scale, logo minimum sizes and clear-space rule, and
-the brand book's other don'ts are in **`references/design-tokens.md`** — read it
-before laying out a cover or header treatment.
+In PDF/PPTX, **one chapter = one page or slide** with the pin frozen as a left
+column (mint or ink) and the flow on the right.
 
-## The page/slide grammar
+Known chapters, layout families, and how to invent a chapter this skill has never
+seen: **`references/new-sections.md`**. Components (donut, waffle, stairs, pin,
+hairline table, paired bars, quartile tower): **`references/components.md`**.
 
-The web prototypes use a sticky side panel that stays pinned while you scroll — that's
-a browser-only trick with no equivalent on a printed page or a slide. The honest
-translation: **one "chapter" of the web design becomes one PDF page or one PPT
-slide** — same colored panel with an oversized stat, same content well, just static
-instead of scroll-linked.
+Copy for the client: no hype verbs, no fake-precise specs, no em-dash. One CTA
+intent per document (usually "Download the app" or nothing).
 
-A fund document's natural chapter order (skip any chapter the pasted data doesn't
-support):
-
-1. **Cover / at-a-glance** — fund name, category, one headline stat (rank, or the
-   return that matters most), as-of date.
-2. **Performance** — return vs. benchmark by period, rolling-return chart, calendar
-   years.
-3. **Composition** — asset/credit/market-cap/instrument splits.
-4. **Risk** — Sharpe, drawdown, riskometer band.
-5. **Fund info / close** — NAV, expense ratio, AUM, exit load, manager, contact.
-
-A portfolio-review deck for several funds is the same grammar repeated per fund, with
-one summary chapter up front.
-
-## Components → print/slide
-
-| Web component | Print/slide translation |
-|---|---|
-| Oversized-stat colored panel | A full-bleed colored band (PDF) or a full colored slide background (PPT) with the number set huge, label beneath, 1–2 lines of context. |
-| Donut + legend | Donut chart, legend as a plain hairline-divided list beside it, values right-aligned in tabular figures. Center label names the largest/most relevant slice. |
-| Waffle (100-square grid) | Use when a composition has several small slices, or you want a literal "each square = 1%" reading. Always pair with the same legend list as the donut. |
-| Hairline table | 0.5–1pt rules, no cell shading, label left (small caps, letter-spaced), value right, tabular figures. |
-| Paired bar (fund vs. index) | Solid brand-color bar = fund, dashed-outline bar = benchmark, one pair per period. |
-| Quartile tower | One bar split into proportioned blocks by time-in-quartile %, the % labeled directly on each block — not a legend off to the side. |
-| Fingerprint arcs | Low-opacity (10–20%) decorative motif in a panel's corner — never under body text. Reuse `assets/fp-arcs.svg` (bundled here) rather than redrawing it. |
-
-Construction detail (exact donut/waffle math, worked examples) is in
-**`references/components.md`**.
-
-## Generating the file
-
-Read the matching guide before writing code — each covers font handling, the
-donut/waffle fidelity tradeoff, and a working code pattern:
+## Then generate the file
 
 - PDF → **`references/pdf-generation.md`**
 - PPTX → **`references/pptx-generation.md`**
 
-Both point to **`scripts/charts.py`**, a small, dependency-free module with the two
-components that don't already exist as a standard chart type:
+Use **`scripts/charts.py`** for donut and waffle so they match the approved web math:
 
 ```python
 from charts import donut_svg, waffle_cells, COLORS
 
 donut_svg([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
-# -> an <svg> string, viewBox 0 0 42 42, ready to rasterize or embed
-
 waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
-# -> a flat list of exactly 100 hex colors, one per cell, largest-remainder rounded
 ```
 
-It's a direct port of the same math the web prototypes use (`mock-core.js`'s
-`donutSvg`/`hundred`), so a donut drawn this way matches what's already been shown and
-approved, not a fresh reinterpretation.
+## Red flags (stop and restart the briefing)
+
+- Generating before source, file type, and tone are known
+- Painting each NAV/AUM cell a different brand color
+- A leftover swiss tick-rail instead of mint/ink pin columns
+- Flattening the brief to a white letter with no pins
+- Stairs whose length equals the return percentage
+- Pin caption `08 / INDEX` with no real section name
+- Colored or black logo on Vine Indigo or Foundation Grey
+- Fingerprint tiled like wallpaper
+- Invented numbers, or a live pull silently overwriting a dump
+- A new section that also invents a new palette or typeface
 
 ## If something here feels stale
 
-The tokens above were read straight from Growthvine's internal Brand Book and the
-fund-detail app's own prototype code, both of which live in Growthvine's private
-`Funds-Details` repo, not this one. If a number here doesn't match what's actually
-rendered on a Growthvine product or a document someone else produced, trust that over
-this file and flag it internally so this skill gets updated — don't guess a
-replacement value.
+Tokens come from the Brand Book. C-split layout comes from live
+`SplitLayout.jsx` + `fund.css` in the product repo. If those files disagree with
+this skill, trust the live files, flag it, and do not guess a replacement.
