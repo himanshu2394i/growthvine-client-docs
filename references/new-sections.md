@@ -14,8 +14,8 @@ hex, equal feature cards, or painted metric tiles.
 2. **Pick a ground.** Cover-like (mint field) only if this *is* a divider or a
    second poster. Otherwise white brief.
 3. **Pick exactly one layout family** from the table. One family per page/slide.
-4. **One graphic field if needed.** Fingerprint crop, mint orb, or a single
-   mustard mark on the row that matters. Not a fill on every cell.
+4. **One graphic field if needed.** Fingerprint crop on the mint board, or a single
+   mustard table header. Not a sticky orb on the white brief.
 5. **Numbers only from the agreed source.** If the new chapter needs a figure
    you do not have, ask or drop it.
 6. **As-of date** if the page shows returns, NAV, rank, or holdings.
@@ -24,8 +24,9 @@ hex, equal feature cards, or painted metric tiles.
 
 | Family | When | How |
 |---|---|---|
-| **Outdoor stairs** | Three comparable headline stats | Mint or white; grey washes scaled to value; label / figure |
+| **Outdoor stairs** | Three cover stats | Mint board; grey washes at fixed 100 / 78 / 54; label / figure. Not scaled to the return. |
 | **Oversized stat panel** | One number is the point (rank, drawdown, TER) | Full-bleed mint *or* a left third of indigo/ink with inverse type. Huge figure, short label |
+| **Stacked mix** | Asset / cap / credit / instruments | Each mix is donut (~280px) + mustard-header table, stacked 1fr, not a row of equal pies |
 | **Hairline facts** | NAV, dates, TER, AUM, category | 2-col on desktop/page, 1-col on a narrow slide. No cell paint |
 | **Donut + ledger** | A mix that sums toward 100% | One ring, square swatches, values right, tabular figures |
 | **Waffle** | Many small slices, or "each square is 1%" | 100 cells, largest-remainder rounding via `scripts/charts.py` |

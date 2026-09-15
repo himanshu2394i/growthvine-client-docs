@@ -107,10 +107,9 @@ the arcs sit at 10–20%. Under body copy, stay at the low end so type stays rea
   Bundled as `assets/fp-arcs.svg`. Stroke is hardcoded white - find-replace
   `stroke="#ffffff"` to match the panel (Foundation Grey on mint or white). Don't
   redraw the arcs; they must trace the icon's actual curves.
-- **Mint orb** - one large disc of `#B1F0DB` at reduced opacity behind the white
-  brief. A graphic field, not a card background. Optional; do not add a peach orb
-  and a mustard orb on the same document.
-- **Dense fingerprint texture** - optional 5–10% background in Brand Book samples.
-  Prefer the arcs motif for print reliability.
+- **Mint orb** - not part of live C split. Do not put a sticky mint disc on the
+  white brief; that was tried and removed. A disc is only for the FAQ plus control.
+- **Dense fingerprint texture** - optional 5–10% in Brand Book samples. Prefer the
+  arcs motif on the mint board only.
 
 Do not put pills, version stamps, or "Plate 03" captions on top of the fingerprint.

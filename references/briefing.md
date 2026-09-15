@@ -55,11 +55,13 @@ Do not mix registers on one document (mono-tech captions next to manifesto prose
 
 Show this menu. Ask which to keep, skip, and **what to add that is not here**.
 
-**Cover (mint board)**
-- Scheme name, category, as-of
-- Headline stairs: typically 3Y, 5Y, AUM (or the three numbers they care about)
-- Exit load line
-- Optional CTA
+**Cover (mint board)** as in live `SplitLayout.jsx`
+- Optional breadcrumb (category)
+- Scheme short name only (about 18ch). No as-of and no subtext on the board.
+- Stairs: 3 year return, 5 year return, Assets, at fixed widths 100 / 78 / 54
+- Exit load (rate + note)
+- One CTA: Download the app
+- As-of and category belong in the brief (rank card, fund info), not on the poster
 
 **White brief**
 - Rank within category

@@ -50,6 +50,6 @@ Claude Code auto-discovers `.claude/skills/<name>/SKILL.md`.
 
 ## Source of truth
 
-Brand Book and the Split board prototype live in Growthvine's private product
-repo. If this skill disagrees with a live page or an approved document, trust
-that and update this repo. Do not guess a new hex.
+Brand Book for tokens. Live C split for layout: `SplitLayout.jsx` and `fund.css`
+in Growthvine's private product repo. If this skill disagrees with those files,
+trust the live page and update this repo. Do not guess a new hex.

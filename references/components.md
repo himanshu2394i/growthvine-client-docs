@@ -22,8 +22,8 @@ Pair it with a legend as a plain list, not a second chart:
 ● Other                5.4%
 ```
 
-- Swatch is a small filled square (not a circle — circles read as bullet points), same
-  color as its donut slice.
+- Live C split uses a **10px filled circle** swatch in the mix table (`.mix-table .dot`).
+  Match that. A square swatch is fine only if you are not copying the live mix ledger.
 - Label left, value right, tabular-figure alignment (values line up on the decimal /
   percent sign across rows).
 - The donut's center can carry a single number — usually the largest slice's value and
@@ -49,9 +49,8 @@ the grid over- or under-fill.
 - Rule weight: 0.5–1pt, Foundation Grey at reduced opacity (roughly 12–15%) rather
   than full black — this is what makes the tables in the prototypes feel quiet instead
   of like a spreadsheet.
-- No fill on header or body cells. The only thing that should ever get a colored fill
-  in a table is a single highlighted row/cell you're deliberately calling out (e.g. the
-  median row in a rolling-returns summary) — and then use one secondary color, sparingly.
+- Header row: Mustard `#F1F68E` fill, ink type (live `.proto-split table.data th`).
+  Body cells have no fill. Do not mustard-wash the whole table or paint zebra rows.
 - Numbers right-aligned, tabular figures (`font-variant-numeric: tabular-nums` in CSS;
   in reportlab/python-pptx, this means picking a font/table style where digit widths
   are fixed — Poppins numerals are already reasonably tabular).
@@ -71,25 +70,25 @@ in the palette and read as a different brand entirely.
 
 ## Outdoor stairs (mint board)
 
-Three (sometimes two) headline stats on the cover. Each row is a Foundation Grey
-wash at ~16% opacity, width scaled to the value so the largest row is full width.
-Label left, figure right, tabular numbers. This is one graphic field. Do not give
-each stair its own brand fill.
+Three headline stats on the cover, from live `SplitLayout.jsx`: 3 year return,
+5 year return, Assets. Each row is a Foundation Grey wash at 16% opacity
+(`rgba(29, 29, 27, 0.16)`). Label left, tabular figure right. One graphic field.
+Do not give each stair its own brand fill.
 
-Print: draw as rectangles, not a bar chart object with a legend. The scale is
-relative among the three rows on that page, not a true axis from zero unless the
-three stats share a unit (three returns: yes; 3Y + AUM in crore: the AUM row is
-a shorter wash by design in the prototype, not a plotted crore axis).
+Widths are a **fixed staircase**, not a chart of the values:
+
+- 3Y: 100% (`data-scale="1"`)
+- 5Y: 78%
+- Assets: 54%
+
+Print: rectangles at those fractions of the copy column. Do not set the 3Y bar
+to 12% of the column because the return is 12%.
 
 ## Mint disc control (FAQ / expandable)
 
-A 1.75rem circle, fill Mint, ink plus sign. Open state rotates to ×. The answer
-is body type under a hairline, not a mustard or indigo block.
-
-## Background orb
-
-One circle, Mint, ~35–42% opacity, sitting in a corner of the white brief behind
-type. Pair with the fingerprint crop. Do not multiply orbs per section.
+A 1.75rem circle, fill Mint `#B1F0DB`, ink plus sign. Open state rotates 45° to ×.
+The answer is body type under a hairline, not a mustard or indigo block. This is
+the only mint disc in live C split. Do not reuse it as a page background.
 
 ## Quartile tower
 

@@ -72,8 +72,8 @@ Quick lock (full rules live in those files):
 1. **Mint outdoor board** (cover / at-a-glance): mint field, huge scheme name
    (about 18ch), fingerprint at the edge, stair bars for the few stats that earn
    the first page. Do not restyle this into a purple hero or a card grid.
-2. **White brief** (everything after): research letter, hairline tables, one quiet
-   fingerprint or mint orb in the background, not a new fill on every metric cell.
+2. **White brief** (everything after): research letter, hairline tables, mustard
+   table headers, stacked donut+ledger mixes. No second fingerprint, no sticky orb.
 
 Sticky chapter rails are a browser trick. In PDF/PPTX, **one chapter = one page or
 slide**. Same panel + well, just static.
@@ -103,7 +103,9 @@ waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]),
 
 - Generating before source, file type, and tone are known
 - Painting each NAV/AUM cell a different brand color
-- Five equal donuts, traffic-light green/red, Inter/Geist
+- Five equal donuts **in a row**, traffic-light green/red, Inter/Geist
+- A sticky mint orb or second fingerprint on the white brief
+- Stairs whose length equals the return percentage
 - Colored or black logo on Vine Indigo or Foundation Grey
 - Fingerprint tiled like wallpaper
 - Invented numbers, or a live pull silently overwriting a dump
@@ -111,6 +113,6 @@ waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]),
 
 ## If something here feels stale
 
-Tokens and C-split rules were read from Growthvine's Brand Book and the Split board
-prototype in the private product repo. If a live Growthvine page or a document
-someone else produced disagrees, trust that, flag it, and do not guess a replacement.
+Tokens come from the Brand Book. C-split layout comes from live
+`SplitLayout.jsx` + `fund.css` in the product repo. If those files disagree with
+this skill, trust the live files, flag it, and do not guess a replacement.
