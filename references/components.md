@@ -69,6 +69,28 @@ value smaller beside it, and a one-line delta ("▲ 1.6 pts ahead" / "▼ 2.3 pt
 — color the delta chip Mint (ahead) or Peach (behind), never green/red, which aren't
 in the palette and read as a different brand entirely.
 
+## Outdoor stairs (mint board)
+
+Three (sometimes two) headline stats on the cover. Each row is a Foundation Grey
+wash at ~16% opacity, width scaled to the value so the largest row is full width.
+Label left, figure right, tabular numbers. This is one graphic field. Do not give
+each stair its own brand fill.
+
+Print: draw as rectangles, not a bar chart object with a legend. The scale is
+relative among the three rows on that page, not a true axis from zero unless the
+three stats share a unit (three returns: yes; 3Y + AUM in crore: the AUM row is
+a shorter wash by design in the prototype, not a plotted crore axis).
+
+## Mint disc control (FAQ / expandable)
+
+A 1.75rem circle, fill Mint, ink plus sign. Open state rotates to ×. The answer
+is body type under a hairline, not a mustard or indigo block.
+
+## Background orb
+
+One circle, Mint, ~35–42% opacity, sitting in a corner of the white brief behind
+type. Pair with the fingerprint crop. Do not multiply orbs per section.
+
 ## Quartile tower
 
 One bar, four blocks stacked by height/width proportional to time-in-quartile %, each

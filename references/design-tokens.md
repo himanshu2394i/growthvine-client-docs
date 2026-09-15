@@ -16,9 +16,15 @@ of truth for any client document — don't approximate them from a screenshot.
 
 Palette discipline: one primary (Vine Indigo), the neutrals (Foundation Grey /
 Clarity White) carry most of a page, and the three secondaries are used to
-differentiate categories in charts (composition slices, quartiles) — not as random
-decoration. Don't invent a fourth secondary; if a chart needs a 6th color, reuse one
-of the five at reduced opacity rather than picking something new.
+differentiate categories in charts (composition slices, quartiles) - not as random
+decoration, and not as a fill on every metric cell. Don't invent a fourth secondary;
+if a chart needs a 6th color, reuse one of the five at reduced opacity rather than
+picking something new.
+
+C-split grounds: mint is the outdoor-board field; white is the brief. Vine Indigo
+is rationed (links, one mix slice, inverse type on an indigo panel). Mustard is a
+single highlight (table header or one marked row), not a page wash. Do not paint
+NAV / TER / AUM each a different secondary.
 
 ## Typography
 
@@ -92,14 +98,19 @@ line, a page edge, or another logo.
 
 ## Decorative elements
 
-- **Fingerprint arcs** — the icon's concentric ring motif, scaled up hugely and placed
-  bleeding off one corner of a colored panel, at 10–20% opacity. This is what gives
-  the mint/indigo panels their texture in the prototypes. Bundled here as
-  `assets/fp-arcs.svg`, stroke hardcoded white — reuse it, editing the `stroke="#ffffff"`
-  value (a plain text find-replace) to match whatever panel color it sits on; don't
-  redraw the arcs themselves, they need to trace the icon's actual curves exactly.
-- **Dense fingerprint texture** — a different, denser fingerprint line-art used as a
-  near-invisible (5–10% opacity) background texture in the brand book's own sample
-  creative. Optional; the arcs motif above is the one actually used in the built
-  prototypes and is the simpler, safer default for a document that needs to render
-  reliably at various sizes and print resolutions.
+Fingerprint is **one cropped graphic**, never a repeating tile. The Brand Book's
+own sample creative uses a dense print at 5–10% opacity; color fields that carry
+the arcs sit at 10–20%. Under body copy, stay at the low end so type stays readable.
+
+- **Fingerprint arcs** - the icon's concentric ring motif, scaled up and bleeding
+  off one corner of a colored panel (mint board: ~10–20%; white brief: ~5–10%).
+  Bundled as `assets/fp-arcs.svg`. Stroke is hardcoded white - find-replace
+  `stroke="#ffffff"` to match the panel (Foundation Grey on mint or white). Don't
+  redraw the arcs; they must trace the icon's actual curves.
+- **Mint orb** - one large disc of `#B1F0DB` at reduced opacity behind the white
+  brief. A graphic field, not a card background. Optional; do not add a peach orb
+  and a mustard orb on the same document.
+- **Dense fingerprint texture** - optional 5–10% background in Brand Book samples.
+  Prefer the arcs motif for print reliability.
+
+Do not put pills, version stamps, or "Plate 03" captions on top of the fingerprint.

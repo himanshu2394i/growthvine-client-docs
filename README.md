@@ -1,14 +1,13 @@
 # growthvine-client-docs
 
-A [Claude Code skill](https://docs.claude.com/en/docs/claude-code/skills) that teaches
-Claude Growthvine's brand system — palette, type, logo rules, and the
-donut/waffle/hairline-table component vocabulary from the fund-detail product — so
-that every client-facing PDF or PowerPoint it generates looks consistent, without
-re-deriving the design from scratch each time.
+A [Claude Code skill](https://docs.claude.com/en/docs/claude-code/skills) that
+turns dumped fund data (or a live Growthvine connector pull) into a client PDF or
+PowerPoint that looks like Growthvine: Brand Book tokens plus the **C split /
+Mint Billboard** language (mint outdoor cover, white research brief).
 
-Not a design tool by itself. It only does anything once loaded into a Claude Code
-session, where it triggers automatically whenever someone asks for a fund fact sheet,
-a portfolio review deck, a client one-pager, or similar.
+It is a full production skill. On trigger it should **ask** what you are making,
+where the numbers come from, which sections to include (including chapters it has
+not seen), and the tone, then generate the file. It is not a palette dump.
 
 ## Install
 
@@ -31,23 +30,26 @@ git clone https://github.com/himanshu2394i/growthvine-client-docs .claude/skills
 npx degit himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-client-docs
 ```
 
-Either way, no further setup — Claude Code auto-discovers anything at
-`.claude/skills/<name>/SKILL.md` (personal `~/.claude/skills/` or project-level).
+Claude Code auto-discovers `.claude/skills/<name>/SKILL.md`.
 
 ## What's in here
 
 | | |
 |---|---|
-| `SKILL.md` | The skill itself — when to trigger, the brand tokens, the page/slide grammar, pointers to everything else. |
-| `references/design-tokens.md` | Full palette (hex/RGB/CMYK), type rules, logo lockups and minimum sizes, the brand book's "don'ts". |
-| `references/components.md` | How to build the donut+legend, the 100-square waffle grid, hairline tables, paired bars, the quartile tower. |
-| `references/pdf-generation.md` | PDF generation routes — HTML→PDF vs. reportlab, font-embedding gotchas. |
-| `references/pptx-generation.md` | PPTX generation via python-pptx — native charts vs. image drop-in, font caveats. |
-| `scripts/charts.py` | Dependency-free Python port of the donut/waffle drawing math, with a runnable self-check (`python charts.py`). |
-| `assets/` | The white/inverse logo lockup and the fingerprint-arcs decorative motif, ready to embed. |
+| `SKILL.md` | Briefing first, then data, C-split design, generate. |
+| `references/briefing.md` | The six questions: job, file, source, tone, sections, length. |
+| `references/c-split.md` | Mint outdoor board + white brief. Print translation. |
+| `references/new-sections.md` | How to invent a chapter that is not on the menu. |
+| `references/data.md` | Dumped data vs Growthvine connector. Which tool to call. |
+| `references/design-tokens.md` | Palette, Poppins, logo don'ts, fingerprint rules. |
+| `references/components.md` | Donut, waffle, stairs, hairline table, paired bars, quartile tower. |
+| `references/pdf-generation.md` | HTML to PDF vs reportlab. |
+| `references/pptx-generation.md` | python-pptx. Native chart vs image. |
+| `scripts/charts.py` | Donut/waffle math. `python charts.py` self-check. |
+| `assets/` | Inverse logo and fingerprint arcs. |
 
 ## Source of truth
 
-The tokens here were read from Growthvine's internal Brand Book and the fund-detail
-product's own prototype code — both live in Growthvine's private product repo, not
-here. If something here goes stale, update it from there, not by guessing.
+Brand Book and the Split board prototype live in Growthvine's private product
+repo. If this skill disagrees with a live page or an approved document, trust
+that and update this repo. Do not guess a new hex.

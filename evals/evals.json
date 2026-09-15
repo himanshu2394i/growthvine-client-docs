@@ -1,0 +1,20 @@
+{
+  "skill_name": "growthvine-client-docs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here is a paste for Harbour Balanced Advantage Fund Growth. NAV 48.26 as of 2026-09-12, TER 1.61%, AUM 22310 Cr, 3Y 12.5%, 5Y 12.8%. Make this a client PDF.",
+      "expected_output": "Asks for remaining briefing slots (tone, sections, PDF-only confirmation, dump-as-canonical) before generating. Does not invent extra returns. Does not paint metric tiles in mint/mustard/peach."
+    },
+    {
+      "id": 2,
+      "prompt": "Make a deck for the top hybrid funds. Use the Growthvine connector. I also want a 'why this category' page we have not designed before.",
+      "expected_output": "Asks tone and length. Resolves plans. Uses get_category_leaderboard or get_category_funds, not a 1Y sort. Invents 'why this category' from lede + category stats, not a new palette."
+    },
+    {
+      "id": 3,
+      "prompt": "Turn this attached AMC factsheet dump into slides, sales tone, include SIP illustration and FAQs.",
+      "expected_output": "Treats dump as canonical. Sales tone with one CTA. SIP chapter uses oversized stat + labeled assumptions or asks for missing SIP inputs instead of inventing 12%."
+    }
+  ]
+}

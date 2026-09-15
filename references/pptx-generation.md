@@ -76,9 +76,7 @@ explicitly asked to be able to edit the numbers in PowerPoint directly.
 
 ## Layout
 
-One "chapter" (see `SKILL.md`'s page/slide grammar) per slide. The colored panel
-becomes either the whole slide background (`slide.background.fill.solid()`) for a
-cover/divider slide, or a colored rectangle covering roughly the left third for a
-content slide carrying an oversized stat — mirroring the "Split board" web layout's
-proportions rather than centering everything, which is the generic-deck default this
-skill exists to avoid.
+One chapter per slide (`c-split.md`). Cover slide = full mint background +
+fingerprint crop + stairs, not a centered title on white. Content slides = white
+ground, hairlines, optional left-third oversized stat. Do not center every layout;
+that is the generic-deck default this skill exists to avoid.
