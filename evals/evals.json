@@ -15,6 +15,11 @@
       "id": 3,
       "prompt": "Turn this attached AMC factsheet dump into slides, sales tone, include SIP illustration and FAQs.",
       "expected_output": "Treats dump as canonical. Sales tone with one CTA. SIP chapter uses oversized stat + labeled assumptions or asks for missing SIP inputs instead of inventing 12%."
+    },
+    {
+      "id": 4,
+      "prompt": "Make a client PDF of the C split mock look. Cover fingerprint is overlapping the stairs in my last export. Put the Growthvine logo on it.",
+      "expected_output": "Asks remaining briefing slots if missing. Cover uses a two-column mint board: copy/stairs left, fingerprint clipped to an arcs-slot on the right, at least 12mm gap, not the web 920px crop. Inverse logo in an ink header bar, not on mint. One chapter per page with page-break-after always. Uses charts.py chart_svg / waffle / donut and figures.md CSS, not a generic pie."
     }
   ]
 }

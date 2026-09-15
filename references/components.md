@@ -82,7 +82,18 @@ Widths are a **fixed staircase**, not a chart of the values:
 - Assets: 54%
 
 Print: rectangles at those fractions of the copy column. Do not set the 3Y bar
-to 12% of the column because the return is 12%.
+to 12% of the column because the return is 12%. Keep the fingerprint out of this
+column on A4 (`figures.md`).
+
+## Rolling line
+
+`scripts/charts.py` `chart_svg()` — solid indigo fund, dashed ink index, last-point
+circle, optional area. This is the mock "Rolling returns, month by month" chart.
+
+## Calendar-year strip / riskometer / paired bars
+
+CSS in **`figures.md`**, copied from `mock-c-split.html`. Do not restyle them as
+rounded cards or a third chart library.
 
 ## Pin column (brief chapter)
 

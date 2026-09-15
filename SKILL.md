@@ -64,8 +64,17 @@ Quick lock (full rules live in those files):
 | Ink / dark ground | Foundation Grey `#1D1D1B` |
 | Ground | Clarity White `#FFFFFF` |
 | Secondaries | Mint `#B1F0DB`, Peach `#FFBB90`, Mustard `#F1F68E` |
-| Logo on indigo or ink | Inverse lockup only (`assets/logo-inverse.webp`) |
-| Fingerprint | One cropped graphic. Never a tile. Color fields 10–20% opacity. Texture 5–10%. |
+| Logo on indigo or ink | Inverse lockup only (`assets/logo-inverse.png`) |
+| Logo on the mint cover | Ink header bar with the inverse lockup, matching the mock. Not on the mint field. |
+| Fingerprint | One cropped graphic. Never a tile. Color fields 10–20% opacity. Texture 5–10%. On A4, clip to the right column; **12mm** from the stairs. |
+
+**What is actually in the kit** (full map: **`references/figures.md`**):
+
+- Executable: `scripts/charts.py` → `donut_svg`, `waffle_cells`, `chart_svg` (rolling line from the mock)
+- Assets: `fp-arcs.svg`, `gv-mark.svg`, `logo-inverse.png` / `.webp`
+- CSS recipes in `figures.md`: paired bars, calendar strip, quartile tower, waffle 20-col, holdings weight bar, riskometer steps, cover `.arcs-slot`
+
+Do not invent a matplotlib pie or a stock area chart when those exist.
 
 **C split is a mint poster plus a pin brief:**
 
@@ -78,8 +87,8 @@ In PDF/PPTX, **one chapter = one page or slide** with the pin frozen as a left
 column (mint or ink) and the flow on the right.
 
 Known chapters, layout families, and how to invent a chapter this skill has never
-seen: **`references/new-sections.md`**. Components (donut, waffle, stairs, pin,
-hairline table, paired bars, quartile tower): **`references/components.md`**.
+seen: **`references/new-sections.md`**. Components: **`references/components.md`**.
+Every mock figure and the cover gap: **`references/figures.md`**.
 
 Copy for the client: no hype verbs, no fake-precise specs, no em-dash. One CTA
 intent per document (usually "Download the app" or nothing).
@@ -89,13 +98,15 @@ intent per document (usually "Download the app" or nothing).
 - PDF → **`references/pdf-generation.md`**
 - PPTX → **`references/pptx-generation.md`**
 
-Use **`scripts/charts.py`** for donut and waffle so they match the approved web math:
+Use **`scripts/charts.py`** for donut, waffle, and the rolling line so they match
+the mock (`mock-core.js`):
 
 ```python
-from charts import donut_svg, waffle_cells, COLORS
+from charts import donut_svg, waffle_cells, chart_svg, COLORS
 
 donut_svg([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
 waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
+chart_svg(fund_series, bench_series, ["Jan 2023", "Jun 2024", "Dec 2025"])
 ```
 
 ## Red flags (stop and restart the briefing)
@@ -107,12 +118,13 @@ waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]),
 - Stairs whose length equals the return percentage
 - Pin caption `08 / INDEX` with no real section name
 - Colored or black logo on Vine Indigo or Foundation Grey
-- Fingerprint tiled like wallpaper
+- Inverse logo sitting on the mint board
+- Fingerprint tiled like wallpaper, or the web `920px` crop overlapping the stairs on A4
 - Invented numbers, or a live pull silently overwriting a dump
 - A new section that also invents a new palette or typeface
 
 ## If something here feels stale
 
-Tokens come from the Brand Book. C-split layout comes from live
-`SplitLayout.jsx` + `fund.css` in the product repo. If those files disagree with
-this skill, trust the live files, flag it, and do not guess a replacement.
+Tokens come from the Brand Book. C-split layout and figures come from the mock
+`.superdesign/tmp/mock-c-split.html` (and `mock-core.js`). If those files disagree
+with this skill, trust the mock, flag it, and do not guess a replacement.

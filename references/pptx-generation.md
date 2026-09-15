@@ -76,7 +76,8 @@ explicitly asked to be able to edit the numbers in PowerPoint directly.
 
 ## Layout
 
-One chapter per slide (`c-split.md`). Cover slide = full mint background +
-fingerprint crop + stairs, not a centered title on white. Content slides = white
-ground, hairlines, optional left-third oversized stat. Do not center every layout;
+One chapter per slide (`c-split.md`). Cover slide = ink logo bar + mint board
+(fingerprint in the right column only, 12mm from the stairs) + stairs, not a
+centered title on white. Content slides = pin + flow. Rolling line via
+`chart_svg()`, not a default PowerPoint area chart. Do not center every layout;
 that is the generic-deck default this skill exists to avoid.

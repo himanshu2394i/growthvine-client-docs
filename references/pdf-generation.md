@@ -45,9 +45,53 @@ CSS gotchas specific to print:
 - `print_background=True` (Playwright) or WeasyPrint's default — without it, every
   background color and the donut/waffle SVG's fills can vanish in the PDF.
 - No `position: sticky`. There is no scroll in a PDF. Each chapter is a full page;
-  the panel is a fixed band. C-split cover = full-bleed mint page (see `c-split.md`).
+  the pin is a static left column. C-split cover = full-bleed mint page (see
+  `c-split.md` and `figures.md`).
 - Load Poppins via `<link>` to Google Fonts, or inline it as a base64 `@font-face` if
   the render environment has no network access.
+
+## Page breaks
+
+One chapter = one A4 page. Cover is its own page. The mock's pin + flow stay together.
+
+```css
+@page { size: A4; margin: 0; }
+.page { width: 210mm; height: 297mm; overflow: hidden; page-break-after: always; page-break-inside: avoid; }
+.page:last-child { page-break-after: auto; }
+.pairs, .gv-chart, .waffle, .cy-strip, .tower, .steps { page-break-inside: avoid; }
+```
+
+| Sheet | What goes on it |
+|---|---|
+| 1 | Ink logo bar (optional but preferred) + mint board. `page-break-after: always`. |
+| 2…n-1 | One pin + its flow. Do not split them. `page-break-after: always`. |
+| Last pin or FAQ | Same, but `page-break-after: auto` so you do not ship a blank sheet. |
+| FAQ | After the last pin, own page, no pin column. Skip if there are no questions. |
+
+Never:
+
+- Start 01 / Fund performance on the cover sheet
+- Break a pin from its flow
+- Let a waffle, rolling line, paired-bar block, calendar strip, quartile tower, or
+  riskometer split across a fold
+- Copy the web fingerprint at `width: 920px` onto A4 (rings will sit on the stairs).
+  Clip it to the right column; keep a **12mm** gap. CSS is in `figures.md`.
+
+If a flow does not fit: drop the least important block (usually a second table).
+Do not invent a pin-less continuation page.
+
+Cover page order, matching the mock:
+
+1. Inverse logo on a 12–14mm Foundation Grey strip (`assets/logo-inverse.png`)
+2. Mint board: crumbs, 18ch name, fingerprint in the **right** column only,
+   stairs in the left column, exit load, one CTA
+3. As-of line at the foot of that mint page
+
+## Figures
+
+Use `scripts/charts.py` (`donut_svg`, `waffle_cells`, `chart_svg`) and the CSS in
+`references/figures.md`. Those are the mock C-split diagrams. Do not swap them
+for a default matplotlib pie.
 
 ## Route B — reportlab (for a plain, mostly-tabular one-pager where exact CSS fidelity doesn't matter)
 

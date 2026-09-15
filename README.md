@@ -68,18 +68,19 @@ After updating, start a new chat so the agent re-reads `SKILL.md`.
 |---|---|
 | `SKILL.md` | Briefing first, then data, C-split design, generate. |
 | `references/briefing.md` | The six questions: job, file, source, tone, sections, length. |
-| `references/c-split.md` | Mint outdoor board + pin brief. Print translation. |
+| `references/c-split.md` | Mint outdoor board + pin brief. Print translation. Source is the C-split mock. |
+| `references/figures.md` | Every mock figure: what is code vs CSS, cover gap, logo bar. |
 | `references/new-sections.md` | How to invent a chapter that is not on the menu. |
 | `references/data.md` | Dumped data vs Growthvine connector. Which tool to call. |
 | `references/design-tokens.md` | Palette, Poppins, logo don'ts, fingerprint rules. |
 | `references/components.md` | Donut, waffle, stairs, pin, hairline table, paired bars, quartile tower. |
-| `references/pdf-generation.md` | HTML to PDF vs reportlab. |
+| `references/pdf-generation.md` | HTML to PDF vs reportlab. Page breaks. |
 | `references/pptx-generation.md` | python-pptx. Native chart vs image. |
-| `scripts/charts.py` | Donut/waffle math. `python charts.py` self-check. |
-| `assets/` | Inverse logo and fingerprint arcs. |
+| `scripts/charts.py` | Donut, waffle, rolling line. `python charts.py` self-check. |
+| `assets/` | Inverse logo, G mark, fingerprint arcs. |
 
 ## Source of truth
 
-Brand Book for tokens. Live C split for layout: `SplitLayout.jsx` and `fund.css`
-in Growthvine's private product repo. If this skill disagrees with those files,
-trust the live page and update this repo. Do not guess a new hex.
+Brand Book for tokens. The C-split mock for layout and figures:
+`.superdesign/tmp/mock-c-split.html` and `mock-core.js`. If this skill disagrees
+with those files, trust the mock and update this repo. Do not guess a new hex.
