@@ -1,11 +1,14 @@
 # C split (Mint Billboard)
 
-Source of truth is the **live fund page** as of this file:
+Source of truth is the **C · Split mock**, not a generic report:
 
-- `frontend/home-app/src/fund/SplitLayout.jsx` (`mint-board` + `brief brief-c`)
-- `frontend/home-app/src/fund/fund.css` (`.proto-split`, `.mint-board`, `.brief-c`)
-- `frontend/home-app/src/fund/mintMotion.js` (cover lighting only)
-- Tabs in `frontend/home-app/src/fund/tabs/`
+- `.superdesign/tmp/mock-c-split.html` (pin brief + every figure)
+- `.superdesign/tmp/mock-core.js` (board HTML, `chartSvg`, `donutSvg`, `hundred`)
+- `.superdesign/tmp/mock-base.css` (brief tokens)
+- `frontend/home-app/src/prototypes/prototypes.css` (`.mint-board` stairs + fingerprint)
+
+The live fund page (`SplitLayout.jsx`) copied this pin brief. If they disagree,
+trust the mock. Figures, CSS, and print rules: **`figures.md`**.
 
 Print and slides copy this grammar. They do not copy sticky pins, scroll spy,
 anime.js, or hover scale on donuts.
@@ -32,13 +35,14 @@ mid-page theme flip. Do not add a third ground (beige, purple, peach wash).
 
 ## Cover (`.mint-board`)
 
-Live markup in `SplitLayout.jsx`. Breadcrumb `.mint-crumbs` sits in `.mint-tools`
-above the board (Mutual Funds / category / scheme).
+Markup in `mock-core.js` `boardHtml`. Breadcrumb `.mint-crumbs` sits in `.mint-tools`
+above the board. The mock also keeps the **dark site header with the inverse logo**
+above that. Print keeps a thin ink logo bar. Do not put the inverse logo on mint.
 
 Board only:
 
 1. `.mint-wash` white radial
-2. `FingerprintBands.mint-bands` (ink, opacity **0.14**, `right: -8%`, `top: -22%`, up to 920px)
+2. `FingerprintBands.mint-bands` (ink, opacity **0.14**, `right: -8%`, `top: -22%`, up to 920px **on a wide web viewport only**). The crop belongs in the empty right column of the board grid. Copy is `z-index: 1`. **Print: do not use 920px.** Clip to an `.arcs-slot` in column 2, max ~140mm, **12mm** clear of the stairs. See `figures.md`.
 3. `h1` short name, **max-width 18ch**, no category, no as-of, no subtext
 4. Stairs: 3 year return, 5 year return, Assets
 5. Exit load: rate, then icon + "Exit load" + optional note
@@ -131,11 +135,13 @@ FAQ: mint 1.75rem disc on `+`, rotates 45° when open. Not a mustard open block.
 
 | Web | PDF / PPTX |
 |---|---|
+| Dark site header with inverse logo | 12–14mm ink bar + `assets/logo-inverse.png` on page 1 |
 | Sticky pin | Static left column, same mint/ink stripe, same fingerprint crop |
-| Full-viewport mint board | Full-bleed first page |
-| One chapter = pin + flow | One page/slide: left pin, right flow (or pin on top if the page is too narrow) |
+| Full-viewport mint board | Full-bleed first page after the logo bar |
+| Fingerprint `920px` in the right gutter | `.arcs-slot` in the right column, **12mm** from stairs. Never 920px on A4 |
+| One chapter = pin + flow | One page/slide. `page-break-after: always` except the last. See `pdf-generation.md` |
 | anime.js / InView | Static lit |
-| Hover donut | Still donut |
+| Hover donut | Still donut. Rolling line via `chart_svg()` |
 
 Do not flatten C split into a white report with a mint cover. The **alternating
 pin** is the brief.

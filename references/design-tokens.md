@@ -72,9 +72,19 @@ Both have a tagline variant ("Own Your Financial Future" set beneath the wordmar
 a plain variant. Use the tagline variant on a cover or closing page; plain elsewhere.
 
 **Color rule**: the wordmark is Foundation Grey + Vine Indigo (light grounds) or white
-+ Vine Indigo (dark grounds, `assets/logo-inverse.webp` in this skill). Monochrome
-(all-white or all-grey) variants exist for constrained print contexts (single-color
-printing, watermarks) — don't invent an in-between tint.
++ Vine Indigo (dark grounds). Files in this skill:
+
+- `assets/logo-inverse.webp` and `assets/logo-inverse.png` — inverse lockup (same crop
+  the mock puts in the dark header). Use on ink / indigo only.
+- `assets/gv-mark.svg` — fingerprint G, `currentColor`. Light lockup: this mark in
+  ink, Poppins 600 `Growth` in ink + `vine` in Vine Indigo.
+
+Monochrome (all-white or all-grey) variants exist for constrained print contexts
+(single-color printing, watermarks) — don't invent an in-between tint.
+
+The mock C split never puts the logo on the mint field. Print: inverse lockup in a
+thin ink bar **above** the mint board (see `figures.md`). Do not park the inverse
+file on mint. Leave G-stroke clear space; keep it out of the fingerprint crop.
 
 **Minimum sizes** (below these, drop to the icon alone):
 - Horizontal, tagline: 4.8in / 350px wide
