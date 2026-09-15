@@ -21,7 +21,8 @@ decoration, and not as a fill on every metric cell. Don't invent a fourth second
 if a chart needs a 6th color, reuse one of the five at reduced opacity rather than
 picking something new.
 
-C-split grounds: mint is the outdoor-board field; white is the brief. Vine Indigo
+C-split grounds: mint is the outdoor-board field; pins alternate mint and ink;
+white is the flow. Vine Indigo
 is rationed (links, one mix slice, inverse type on an indigo panel). Mustard is a
 single highlight (table header or one marked row), not a page wash. Do not paint
 NAV / TER / AUM each a different secondary.
@@ -103,13 +104,13 @@ own sample creative uses a dense print at 5–10% opacity; color fields that car
 the arcs sit at 10–20%. Under body copy, stay at the low end so type stays readable.
 
 - **Fingerprint arcs** - the icon's concentric ring motif, scaled up and bleeding
-  off one corner of a colored panel (mint board: ~10–20%; white brief: ~5–10%).
+  off one corner of a colored panel (mint board ~14%; mint pins ~14%; ink pins ~10%).
   Bundled as `assets/fp-arcs.svg`. Stroke is hardcoded white - find-replace
   `stroke="#ffffff"` to match the panel (Foundation Grey on mint or white). Don't
   redraw the arcs; they must trace the icon's actual curves.
-- **Mint orb** - not part of live C split. Do not put a sticky mint disc on the
-  white brief; that was tried and removed. A disc is only for the FAQ plus control.
-- **Dense fingerprint texture** - optional 5–10% in Brand Book samples. Prefer the
-  arcs motif on the mint board only.
+- **Fingerprint arcs** on the mint board (14%) and **again on every pin**
+  (14% ink on mint pins, 10% white on ink pins), one crop per panel, never a tile.
+- **Mint orb** as a page background is not live C split. The FAQ plus control is
+  the mint disc.
 
 Do not put pills, version stamps, or "Plate 03" captions on top of the fingerprint.

@@ -84,11 +84,17 @@ Widths are a **fixed staircase**, not a chart of the values:
 Print: rectangles at those fractions of the copy column. Do not set the 3Y bar
 to 12% of the column because the return is 12%.
 
+## Pin column (brief chapter)
+
+Live `.brief-c .pin`. Left column 18–26rem. Even chapters mint + ink fingerprint
+at 14%. Odd chapters ink + white type + mint `01 / Title` + white fingerprint at
+10%. Stack: caption `01 / {section label}`, `hero-n` number, lede (max ~30ch),
+`dl` of 2–3 hairline rows. Sticky on the web; static left column in print.
+
 ## Mint disc control (FAQ / expandable)
 
 A 1.75rem circle, fill Mint `#B1F0DB`, ink plus sign. Open state rotates 45° to ×.
-The answer is body type under a hairline, not a mustard or indigo block. This is
-the only mint disc in live C split. Do not reuse it as a page background.
+The FAQ plus control is a mint disc. Do not reuse that disc as a page background.
 
 ## Quartile tower
 

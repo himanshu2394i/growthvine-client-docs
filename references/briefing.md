@@ -44,9 +44,9 @@ Pick one. Map it to copy and density, not to a new brand.
 
 | Tone | Voice | Design |
 |---|---|---|
-| **Advisor-to-client** (default) | Calm, factual, no product hype. Explain what a number means in one short line. | Full C split: mint board + white brief. |
+| **Advisor-to-client** (default) | Calm, factual, no product hype. Explain what a number means in one short line. | Full C split: mint board + pin brief. |
 | **Sales proposal** | Still factual. One reason to talk to Growthvine. | Same C split. One CTA only. |
-| **Internal research** | Denser tables, fewer sentences. | White brief can run tighter. Cover can skip the outdoor-board stairs if they want a pack, not a poster. |
+| **Internal research** | Denser tables, fewer sentences. | Pins can run tighter. Cover can skip the outdoor-board stairs if they want a pack, not a poster. |
 | **SEBI-cautious** | Facts only. No "you should invest," no implied advice. | Same C split. Drop the app CTA unless they insist. |
 
 Do not mix registers on one document (mono-tech captions next to manifesto prose).
@@ -61,9 +61,15 @@ Show this menu. Ask which to keep, skip, and **what to add that is not here**.
 - Stairs: 3 year return, 5 year return, Assets, at fixed widths 100 / 78 / 54
 - Exit load (rate + note)
 - One CTA: Download the app
-- As-of and category belong in the brief (rank card, fund info), not on the poster
 
-**White brief**
+**Pin brief** (one pin + flow per chapter, pins alternate mint / ink)
+- Live chapters depend on fund kind (see `sectionsFor` in `api.js`): performance,
+  rolling, holdings or composition, risk, drawdown, riskometer, fund information,
+  FAQs after the last pin
+- Each pin: `01 / Title`, one oversized number, short lede, 2–3 facts
+- Flow: the charts and tables for that chapter
+
+**Flow (right column of each pin)**
 - Rank within category
 - Returns vs benchmark (periods)
 - Rolling returns (chart + summary)

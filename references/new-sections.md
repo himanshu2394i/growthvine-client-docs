@@ -11,11 +11,12 @@ hex, equal feature cards, or painted metric tiles.
 
 1. **Name the job in one sentence.** If you cannot, ask them what the page must
    make the reader understand.
-2. **Pick a ground.** Cover-like (mint field) only if this *is* a divider or a
-   second poster. Otherwise white brief.
+2. **Pick a ground.** Cover = mint board. A new chapter in the brief = a **pin +
+   flow** (mint pin on even chapters, ink pin on odd). Do not invent a third
+   field color.
 3. **Pick exactly one layout family** from the table. One family per page/slide.
-4. **One graphic field if needed.** Fingerprint crop on the mint board, or a single
-   mustard table header. Not a sticky orb on the white brief.
+4. **One graphic field if needed.** Fingerprint crop on the mint board and on
+   each pin. Mustard table header in the flow. Not a page-sized mint orb.
 5. **Numbers only from the agreed source.** If the new chapter needs a figure
    you do not have, ask or drop it.
 6. **As-of date** if the page shows returns, NAV, rank, or holdings.
@@ -25,7 +26,7 @@ hex, equal feature cards, or painted metric tiles.
 | Family | When | How |
 |---|---|---|
 | **Outdoor stairs** | Three cover stats | Mint board; grey washes at fixed 100 / 78 / 54; label / figure. Not scaled to the return. |
-| **Oversized stat panel** | One number is the point (rank, drawdown, TER) | Full-bleed mint *or* a left third of indigo/ink with inverse type. Huge figure, short label |
+| **Pin column** | Default for every brief chapter | Left: `01 / Title`, huge number, lede, 2–3 rows. Fingerprint crop. Alternate mint / ink. Right: flow. |
 | **Stacked mix** | Asset / cap / credit / instruments | Each mix is donut (~280px) + mustard-header table, stacked 1fr, not a row of equal pies |
 | **Hairline facts** | NAV, dates, TER, AUM, category | 2-col on desktop/page, 1-col on a narrow slide. No cell paint |
 | **Donut + ledger** | A mix that sums toward 100% | One ring, square swatches, values right, tabular figures |
@@ -46,8 +47,8 @@ progress-bar score tracks).
 
 ## Worked shape (imagined chapter: "Why this category")
 
-- Ground: white brief
-- Family: lede
+- Ground: pin + flow (odd chapter = ink pin)
+- Family: pin column + lede in the flow
 - Title: the category name in plain language
 - Body: ≤25 words on what the category does, then a hairline row for category
   average TER or return **from `get_category_stats`**, with as-of

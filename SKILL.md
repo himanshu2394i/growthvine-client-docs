@@ -7,7 +7,7 @@ description: Use when making a Growthvine client-facing PDF, PowerPoint, fact sh
 
 A complete production skill, not a color cheat sheet. It interviews for the job,
 pulls or accepts data, then designs and writes a file that looks like Growthvine's
-**C split** (Mint Billboard cover + white research brief) and the Brand Book.
+**C split** (Mint Billboard cover + pin brief) and the Brand Book.
 
 Two documents made months apart should still look like the same house.
 
@@ -67,20 +67,19 @@ Quick lock (full rules live in those files):
 | Logo on indigo or ink | Inverse lockup only (`assets/logo-inverse.webp`) |
 | Fingerprint | One cropped graphic. Never a tile. Color fields 10–20% opacity. Texture 5–10%. |
 
-**C split is two worlds, not two themes:**
+**C split is a mint poster plus a pin brief:**
 
-1. **Mint outdoor board** (cover / at-a-glance): mint field, huge scheme name
-   (about 18ch), fingerprint at the edge, stair bars for the few stats that earn
-   the first page. Do not restyle this into a purple hero or a card grid.
-2. **White brief** (everything after): research letter, hairline tables, mustard
-   table headers, stacked donut+ledger mixes. No second fingerprint, no sticky orb.
+1. **Mint outdoor board:** mint field, 18ch name, fingerprint crop, stairs,
+   exit load, one CTA.
+2. **Pin brief:** each chapter is a left pin (mint or ink, fingerprint, `01 / Title`,
+   one huge number) and a white flow. Pins alternate. There is no swiss rail.
 
-Sticky chapter rails are a browser trick. In PDF/PPTX, **one chapter = one page or
-slide**. Same panel + well, just static.
+In PDF/PPTX, **one chapter = one page or slide** with the pin frozen as a left
+column (mint or ink) and the flow on the right.
 
 Known chapters, layout families, and how to invent a chapter this skill has never
-seen: **`references/new-sections.md`**. Components (donut, waffle, stairs, hairline
-table, paired bars, quartile tower): **`references/components.md`**.
+seen: **`references/new-sections.md`**. Components (donut, waffle, stairs, pin,
+hairline table, paired bars, quartile tower): **`references/components.md`**.
 
 Copy for the client: no hype verbs, no fake-precise specs, no em-dash. One CTA
 intent per document (usually "Download the app" or nothing).
@@ -103,9 +102,10 @@ waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]),
 
 - Generating before source, file type, and tone are known
 - Painting each NAV/AUM cell a different brand color
-- Five equal donuts **in a row**, traffic-light green/red, Inter/Geist
-- A sticky mint orb or second fingerprint on the white brief
+- A leftover swiss tick-rail instead of mint/ink pin columns
+- Flattening the brief to a white letter with no pins
 - Stairs whose length equals the return percentage
+- Pin caption `08 / INDEX` with no real section name
 - Colored or black logo on Vine Indigo or Foundation Grey
 - Fingerprint tiled like wallpaper
 - Invented numbers, or a live pull silently overwriting a dump
