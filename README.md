@@ -32,6 +32,36 @@ npx degit himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-clien
 
 Claude Code auto-discovers `.claude/skills/<name>/SKILL.md`.
 
+## Update (already cloned)
+
+The skill is a git clone of this repo. Pull `master` when you want the latest
+C-split / Brand Book notes. Do not copy files by hand.
+
+**If you cloned with git** (user or project folder):
+
+```bash
+cd ~/.claude/skills/growthvine-client-docs   # or .claude/skills/growthvine-client-docs
+git fetch origin
+git checkout master
+git pull origin master
+```
+
+Windows PowerShell: same commands, with `$env:USERPROFILE\.claude\skills\growthvine-client-docs` instead of `~`.
+
+If you were on an old feature branch, switch to `master` first so you are not
+left on a stale pin/rail write-up.
+
+**If you installed with degit** (no `.git` folder):
+
+```bash
+npx degit himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-client-docs --force
+```
+
+`--force` overwrites the existing folder. Degit does not remember a remote, so
+this is a fresh copy of `master`, not a merge.
+
+After updating, start a new chat so the agent re-reads `SKILL.md`.
+
 ## What's in here
 
 | | |
