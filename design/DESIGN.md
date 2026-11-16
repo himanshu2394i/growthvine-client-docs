@@ -27,6 +27,52 @@ Default arc for a proposal (rename everything, freshly, every time):
 | 5. What happens next | From yes to invested, and living with it | Steps, check-ins, what to do in a bad market |
 | Close | Sources and dates, disclaimer, contact | |
 
+**Default arcs for reports** (same rules: rename freshly, content-heavy panel
+pages, comments that interpret the data):
+
+*Portfolio assessment*
+
+| Act | Purpose | Typical panel pages |
+|---|---|---|
+| Cover | Whose portfolio, value, the take-away in one line | |
+| 1. Where you are today | The portfolio in numbers | Strip (value, holdings, blended charge, as-of); asset mix (`stack`), by holding (`donut` or `table`), progress to goals if given |
+| 2. How it has done | Evidence | Returns vs the market (`bars`), growth of ₹1 lakh (`line`), each fund against its category (rank and quartile in a `table`) |
+| 3. What you actually own | Look-through | Companies (`table`), industries (`bars`), company size (`stack`), overlap (heat `table`) |
+| 4. What it costs and how concentrated it is | Cost and risk | Blended charge in ₹ a year (`stats`), largest holding and top three (`stats`), worst falls (`bars`) |
+| 5. What we'd look at | Observations to discuss | `text` panels with observations tied to the client's horizon and risk, plus the advisor's recommendations (D2) if any. Phrased as things worth discussing, never instructions |
+| Close | Sources, disclaimer, contact | |
+
+*Fund report*
+
+| Act | Typical panel pages |
+|---|---|
+| Cover | Fund name, the decision it helps with |
+| 1. The fund at a glance | Strip (returns, size, charge, holdings); what it does; manager and process (`text`) |
+| 2. How it has done | Returns vs market and category (`bars`), growth (`line`), calendar-year returns (`bars`), rolling returns (`line`) |
+| 3. How it behaves | Worst falls and recovery (`stats`), up/down capture (`bars`), swing vs category (`bars`) |
+| 4. What it owns | Holdings (`table`), sectors (`bars`), company size or asset mix (`stack`) |
+| 5. Where it ranks | Category leaders with this fund highlighted (`table`), our view (`text`) |
+
+*Category report*
+
+| Act | Typical panel pages |
+|---|---|
+| Cover | Category, period |
+| 1. What the category does | Plain-words description (`text`), typical mix (`stack`), category averages (`stats`) |
+| 2. How it has done | Average and range of returns by period (`bars`), against the market (`bars`) |
+| 3. Risk and cost | Swing, worst falls, charges across the category (`bars` or `table`) |
+| 4. The leaders | Growthvine's top funds with key figures (`table`), what sets them apart (`text`) |
+
+*Market report*
+
+| Act | Typical panel pages |
+|---|---|
+| Cover | Period, the period in one line |
+| 1. What happened | Index returns over the period (`bars`), index levels over time (`line`) |
+| 2. Under the surface | Large vs mid vs small (`bars`), sectors (`bars`), valuations from NSE factsheets (`table`) |
+| 3. Bonds and gold | Yields and duration (`table`), gold (`stats`) if covered |
+| 4. What it means for you | The advisor's themes (`text`), how fund categories did (`table`) if asked. Describe and explain; never forecast |
+
 Scene jobs to choose from: set the scene, your profile, the plan, compare the
 options, each bucket / holding's role, getting your money out, what to expect
 (only advisor figures), the evidence, what happens next, living with it,
@@ -136,7 +182,7 @@ Good panel pages:
 When several options are compared in one document, show **every option's
 holdings**, not only Option 1's.
 
-Rules: one main idea per scene; every number visible on the page (no
+Rules: every chart must say what it shows: a panel title naming the measure and unit ("Return a year, 3 and 5 years", "₹ crore after"), and a name for every colour (series, slices, segments). Never leave a reader guessing which line is which. One main idea per scene; every number visible on the page (no
 hover-only data); tables for anything the client may check line by line.
 Scene field formats and limits: `design/SCENES.md`.
 

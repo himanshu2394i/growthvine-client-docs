@@ -202,6 +202,26 @@ class Panels(unittest.TestCase):
         for s in ["₹1.70 Cr", "Core Growth", "₹70 L", "Holdings", "₹2.0 L"]:
             self.assertIn(s, pages[1])
 
+    def test_every_chart_names_its_colours(self):
+        """Every series, slice and segment label must be readable on the page,
+        so a reader can tell what each colour means."""
+        import fitz
+        line = {"kind": "line", "title": "Growth", "x": ["2021", "2026"],
+                "series": [{"name": "Invesco L&M", "values": [1, 2], "end": "₹2.0 L"},
+                           {"name": "HDFC Value", "values": [1, 1.8], "end": "₹1.8 L"},
+                           {"name": "Nifty 500 TRI", "values": [1, 1.5], "end": "₹1.5 L", "style": "index"}]}
+        scene = dict(DONUT_PANELS, panels=[DONUT_PANELS["panels"][0], DONUT_PANELS["panels"][1], line])
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "legend.pdf"
+            render.render(self.doc(PANELS, scene), out)
+            with fitz.open(out) as d:
+                pages = [" ".join(pg.get_text().split()) for pg in d]
+        labels = {0: ["Fund", "Nifty 500 TRI", "Large", "Mid", "Small"],
+                  1: ["Core Growth", "Stability", "Invesco L&M", "HDFC Value", "Nifty 500 TRI"]}
+        for page, names in labels.items():
+            for name in names:
+                self.assertIn(name, pages[page], f"'{name}' has no label on page {page + 1}")
+
     def test_pptx_uses_native_charts_and_stays_on_slide(self):
         from pptx import Presentation
         from pptx.enum.chart import XL_CHART_TYPE

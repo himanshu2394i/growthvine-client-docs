@@ -121,6 +121,7 @@ class Formatting(unittest.TestCase):
     def test_rupees_and_percent(self):
         self.assertEqual(analyse.rupees(71234567), "₹7.12 Cr")
         self.assertEqual(analyse.rupees(450000), "₹4.5 L")
+        self.assertEqual(analyse.rupees(83299), "₹83,299")      # under a lakh: in full, not "₹0.8 L"
         self.assertEqual(analyse.pct(4.0), "4.0%")
         self.assertEqual(analyse.pct(-5.123, signed=True), "-5.1%")
         self.assertEqual(analyse.pct(2.3, signed=True), "+2.3%")
@@ -170,6 +171,67 @@ class SizeSplit(unittest.TestCase):
                   "B": {"equity_pct": 60}}
         out = analyse.size_split({"A": 1000000, "B": 2000000}, allocs)
         self.assertAlmostEqual(out["large"], 60)
+
+
+class PortfolioMaths(unittest.TestCase):
+    """For assessments of an existing portfolio."""
+
+    ALLOC = {"A": {"equity_pct": 100, "debt_pct": 0, "gold_pct": 0},
+             "B": {"equity_pct": 50, "debt_pct": 40, "gold_pct": 10}}
+
+    def test_weighted_asset_mix(self):
+        mix = analyse.weighted_mix({"A": 1000000, "B": 1000000}, self.ALLOC, ["equity_pct", "debt_pct", "gold_pct"])
+        self.assertAlmostEqual(mix["equity_pct"], 75)
+        self.assertAlmostEqual(mix["debt_pct"], 20)
+        self.assertAlmostEqual(mix["gold_pct"], 5)
+
+    def test_mix_skips_funds_without_data(self):
+        mix = analyse.weighted_mix({"A": 1000000, "C": 9000000}, self.ALLOC, ["equity_pct"])
+        self.assertAlmostEqual(mix["equity_pct"], 100)
+
+    def test_weighted_cost_in_percent_and_rupees(self):
+        cost = analyse.weighted_cost({"A": 1000000, "B": 3000000}, {"A": 1.5, "B": 0.5})
+        self.assertAlmostEqual(cost["pct"], 0.75)
+        self.assertAlmostEqual(cost["rupees_a_year"], 30000)
+
+    def test_concentration(self):
+        c = analyse.concentration({"A": 500000, "B": 300000, "C": 200000}, top=2)
+        self.assertAlmostEqual(c["top_pct"], 80)
+        self.assertEqual(c["largest"], "A")
+        self.assertAlmostEqual(c["largest_pct"], 50)
+
+
+class MixedInputs(unittest.TestCase):
+    def test_fund_file_and_funds_csv_are_merged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "fund_A.json").write_text(json.dumps({"portfolio": {"holdings": FUND_A}}))
+            (d / "funds.csv").write_text("scheme_id,equity_pct,debt_pct,gold_pct,global_equity_pct,other_pct,expense_ratio\n1,98,2,0,0,0,1.5\n")
+            (d / "request.json").write_text(json.dumps({
+                "total": 1000000, "funds": [{"label": "A", "scheme_id": 1, "amount": 1000000, "file": "fund_A.json"}],
+                "funds_csv": "funds.csv"}))
+            out = analyse.build(d / "request.json")
+        self.assertTrue(out["lookthrough"]["companies"])          # holdings from the file survive
+        self.assertAlmostEqual(out["cost"]["pct"], 1.5)            # cost from the CSV
+        self.assertAlmostEqual(out["mix"]["equity_pct"], 98)
+
+
+class MarketOnly(unittest.TestCase):
+    """Market reports: no funds, several indices."""
+
+    def test_indices_without_funds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            for name, yearly in (("n50.csv", 0.10), ("n500.csv", 0.12)):
+                (d / name).write_text("date,value\n" + "".join(f"{x},{v}\n" for x, v in series(2020, 6, yearly=yearly)))
+            (d / "request.json").write_text(json.dumps({
+                "total": 1, "funds": [],
+                "indices": [{"label": "Nifty 50 TRI", "file": "n50.csv"}, {"label": "Nifty 500 TRI", "file": "n500.csv"}]}))
+            out = analyse.build(d / "request.json")
+        rows = out["returns"]["rows"]
+        self.assertAlmostEqual(rows["Nifty 50 TRI"]["1y"], 10.0, places=1)
+        self.assertAlmostEqual(rows["Nifty 500 TRI"]["3y"], 12.0, places=1)
+        self.assertEqual(out["lookthrough"]["companies"], [])
 
 
 class CsvInputs(unittest.TestCase):

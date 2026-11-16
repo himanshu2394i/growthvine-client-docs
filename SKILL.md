@@ -5,7 +5,7 @@ description: Use whenever someone at Growthvine wants a client document - an inv
 
 # Growthvine
 
-Version: 0.4.0
+Version: 0.5.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -52,7 +52,10 @@ read it and only ask for what's missing."
 | They chose | Read next |
 |---|---|
 | Proposal | `proposal/QUESTIONS.md` |
-| Portfolio assessment, fund, category, market | Not built yet in this version. Say so, and offer to note it as feedback. |
+| Portfolio assessment | `assess/QUESTIONS.md` |
+| Fund report | `fund/QUESTIONS.md` |
+| Category report | `category/QUESTIONS.md` |
+| Market report | `market/QUESTIONS.md` |
 
 After the type's questions are done: design (story, comments, display,
 language, the visible brief, then build) → `design/DESIGN.md`. Scene format for

@@ -40,7 +40,9 @@ rule to make a mismatch disappear.
 5. The script can't tell if a wrong figure happens to equal another valid sum,
    and it doesn't check wording. So also re-read every scene against
    `inputs.json` yourself: right numbers in the right places, headlines that are
-   true ("most of your money" must really be most), as-of dates on data scenes.
+   true ("most of your money" must really be most), as-of dates on data scenes,
+   and every chart readable on its own: a title with the measure and unit, and
+   every colour named (look at the rendered pages, not just the JSON).
 
 ## C. Deliver
 

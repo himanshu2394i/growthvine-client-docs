@@ -42,7 +42,9 @@ STALE_DAYS = 15     # a price older than this before the target date doesn't cou
 def rupees(x):
     if abs(x) >= 1e7:
         return f"₹{x / 1e7:.2f} Cr"
-    return f"₹{x / 1e5:.1f} L"
+    if abs(x) >= 1e5:
+        return f"₹{x / 1e5:.1f} L"
+    return f"₹{round(x):,}"          # under a lakh, in full: ₹83,299
 
 
 def pct(v, signed=False, decimals=1):
@@ -121,6 +123,42 @@ def size_split(amounts, allocations):
             totals[k] += equity_money * v / sum(parts)
     whole = sum(totals.values())
     return {k: v / whole * 100 for k, v in totals.items()} if whole else {}
+
+
+MIX_KEYS = ["equity_pct", "debt_pct", "gold_pct", "global_equity_pct", "other_pct"]
+
+
+def weighted_mix(amounts, allocations, keys=MIX_KEYS):
+    """Asset mix of the whole portfolio, weighted by rupees; funds without the
+    figures are skipped, not counted as zero."""
+    totals, money = {k: 0.0 for k in keys}, 0.0
+    for label, amount in amounts.items():
+        a = allocations.get(label) or {}
+        if any(a.get(k) is None for k in keys):
+            continue
+        money += amount
+        for k in keys:
+            totals[k] += amount * a[k] / 100
+    return {k: v / money * 100 for k, v in totals.items()} if money else {}
+
+
+def weighted_cost(amounts, expense_ratios):
+    """Blended annual charge (% and rupees a year) over funds with a known ratio."""
+    known = {k: v for k, v in amounts.items() if expense_ratios.get(k) is not None}
+    money = sum(known.values())
+    if not money:
+        return {}
+    rupees = sum(a * expense_ratios[k] / 100 for k, a in known.items())
+    return {"pct": rupees / money * 100, "rupees_a_year": rupees, "covered_amount": money}
+
+
+def concentration(amounts, top=3):
+    if not amounts:
+        return {}
+    total = sum(amounts.values()) or 1
+    ranked = sorted(amounts.items(), key=lambda kv: -kv[1])
+    return {"largest": ranked[0][0], "largest_pct": ranked[0][1] / total * 100,
+            "top_n": top, "top_pct": sum(v for _, v in ranked[:top]) / total * 100}
 
 
 def overlap(a, b):
@@ -257,8 +295,10 @@ def _from_csv(folder, req, funds):
             label = by_id.get(int(row["scheme_id"]))
             if label:
                 out[label]["allocation"] = {k: float(row[k]) for k in
-                                            ("equity_pct", "large_cap_pct", "mid_cap_pct", "small_cap_pct")
+                                            ["large_cap_pct", "mid_cap_pct", "small_cap_pct"] + MIX_KEYS
                                             if row.get(k) not in (None, "")}
+                if row.get("expense_ratio") not in (None, ""):
+                    out[label]["factsheet"] = {"expense_ratio": float(row["expense_ratio"])}
     if req.get("holdings_csv"):
         rows = [r for r in _csv_rows(folder / req["holdings_csv"]) if r.get("removed", "false").lower() != "true"]
         latest = {}
@@ -283,7 +323,13 @@ def build(request_path):
     funds = req["funds"]
     data = {f["label"]: json.loads((folder / f["file"]).read_text(encoding="utf-8")) for f in funds if f.get("file")}
     if req.get("funds_csv") or req.get("holdings_csv"):
-        data.update(_from_csv(folder, req, funds))
+        for label, extra in _from_csv(folder, req, funds).items():   # merge, never replace
+            entry = data.setdefault(label, {})
+            for section, value in extra.items():
+                if isinstance(value, dict):
+                    entry[section] = {**(entry.get(section) or {}), **value}
+                elif value:
+                    entry[section] = value
     holdings, hedged = unhedged({label: {"allocation": d.get("allocation"),
                                          "holdings": (d.get("portfolio") or {}).get("holdings") or d.get("holdings")}
                                  for label, d in data.items()})
@@ -291,6 +337,10 @@ def build(request_path):
 
     out = {"lookthrough": lookthrough(amounts, holdings, total), "overlap": overlap_matrix(holdings)}
     out["lookthrough"]["hedged_excluded"] = hedged
+    allocs = {label: d.get("allocation") for label, d in data.items()}
+    out["mix"] = weighted_mix(amounts, allocs)
+    out["cost"] = weighted_cost(amounts, {label: (d.get("factsheet") or {}).get("expense_ratio") for label, d in data.items()})
+    out["concentration"] = concentration(amounts)
     out["size_split"] = size_split({k: v for k, v in amounts.items() if k in holdings},
                                    {label: d.get("allocation") for label, d in data.items()})
 
@@ -308,6 +358,9 @@ def build(request_path):
         for f in funds:
             if f.get("scheme_id") in by_id:
                 series[f["label"]] = _points(by_id[f["scheme_id"]], "nav")
+    for extra in req.get("indices", []):          # several indices (market reports)
+        _, pts = _load_index(folder / extra["file"])
+        series[extra["label"]] = pts
     if req.get("index"):
         name, pts = _load_index(folder / req["index"])
         name = req.get("index_name", name)
@@ -349,6 +402,16 @@ def _figures(out):
         figs[f"company_{i}_pct"] = pct(c["pct_of_total"], decimals=2)
     for i, s in enumerate(lt["sectors"][:10]):
         figs[f"sector_{i}"] = pct(s["pct"])
+    for k, v in out.get("mix", {}).items():
+        figs[f"mix_{k}"] = pct(v, decimals=0)
+        figs[f"mix_{k}_1dp"] = pct(v)
+    if out.get("cost"):
+        figs["cost_pct"] = pct(out["cost"]["pct"], decimals=2)
+        figs["cost_rupees"] = rupees(out["cost"]["rupees_a_year"])
+    c = out.get("concentration") or {}
+    if c:
+        figs["largest_pct"] = pct(c["largest_pct"], decimals=0)
+        figs["top_pct"] = pct(c["top_pct"], decimals=0)
     for k, v in out.get("size_split", {}).items():
         figs[f"size_{k}"] = pct(v, decimals=0)
     ov = out["overlap"]

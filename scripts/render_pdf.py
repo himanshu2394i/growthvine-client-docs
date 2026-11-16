@@ -595,8 +595,8 @@ def pn_table(p, box, pn):
     heat_max = max([to_number(r[j]) or 0 for r in rows for j in range(len(cols)) if numeric[j]] or [1]) or 1
     for size in (9.5, 8.5, 8):
         lead = size * 1.3
-        grid = [[[c] if numeric[j] else wrap(c, SEMI if i == 0 else REG, size, widths[j] - 12) for j, c in enumerate(r)]
-                for i, r in enumerate([cols] + rows)]
+        grid = [[[c] if (numeric[j] and i > 0) else wrap(c, SEMI if i == 0 else REG, size, widths[j] - 12)
+                 for j, c in enumerate(r)] for i, r in enumerate([cols] + rows)]   # headers always wrap
         heights = [max(len(cl) for cl in r) * lead + 7 for r in grid]
         if sum(heights) <= y + h - top:
             break
@@ -666,7 +666,21 @@ def pn_line(p, box, pn):
         else:
             cols.append(SERIES_COLORS[0] if k == 0 else SERIES_COLORS[(k + 1) % 4])
             k += 1
-    x0, x1, y0, y1 = x, x + w - 54, top + 4, y + h - 16
+    # legend: every line is named, so each colour means something
+    lx, ly = x, top
+    for sr, col in zip(series, cols):
+        item_w = 26 + pdfmetrics.stringWidth(sr["name"], REG, 8.5)
+        if lx + item_w > x + w and lx > x:
+            lx, ly = x, ly + 13
+        if sr.get("style") == "index":
+            p.rect(lx, ly + 4, 4, 2, col)
+            p.rect(lx + 6, ly + 4, 4, 2, col)
+        else:
+            p.rect(lx, ly + 3, 10, 3, col)
+        p.text(lx + 14, ly, sr["name"], 8.5, REG, INK)
+        lx += item_w
+    top = ly + 16
+    x0, x1, y0, y1 = x, x + w - 62, top + 4, y + h - 16
     vals = [v for sr in series for v in sr["values"]]
     lo, hi = min(vals), max(vals)
     pad = (hi - lo) * 0.08 or 1
@@ -683,14 +697,15 @@ def pn_line(p, box, pn):
             py = y1 - (y1 - y0) * (v - lo) / (hi - lo)
             (path.moveTo if i == 0 else path.lineTo)(px, _y(py))
         c.drawPath(path, stroke=1, fill=0)
-        ends.append([y1 - (y1 - y0) * (sr["values"][-1] - lo) / (hi - lo), sr.get("end", "")])
+        ends.append([y1 - (y1 - y0) * (sr["values"][-1] - lo) / (hi - lo), sr.get("end", ""), col])
     c.setDash()
     ends.sort()
     for i in range(1, len(ends)):
         ends[i][0] = max(ends[i][0], ends[i - 1][0] + 12)
-    for yv, t in ends:
+    for yv, t, col in ends:
         if t:
-            p.text(x1 + 6, yv - 5, t, 9, SEMI, INK)
+            p.rect(x1 + 5, yv - 2, 6, 6, col)               # ties each value to its line
+            p.text(x1 + 14, yv - 5, t, 9, SEMI, INK)
     p.text(x0, y1 + 4, xs[0], 8, REG, GREY)
     p.text(x1, y1 + 4, xs[-1], 8, REG, GREY, "right")
 
