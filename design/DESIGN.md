@@ -222,8 +222,11 @@ watching is...", not "you must...").
 
 ## 5. The visible brief
 
+This is step 3 of the **Required steps** in `SKILL.md`: it comes after the advisor has
+picked sections and subsections (step 2), never instead of it.
+
 The gate before writing (`shared/wealth-practice.md` §7): with the brief, show
-the assumptions, any conflicts between inputs, the gaps, at most three questions
+the assumptions, any conflicts between inputs, the gaps, at most three clarifying questions
 and the verified key numbers; write only after the advisor confirms.
 
 

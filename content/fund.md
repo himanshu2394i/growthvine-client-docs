@@ -11,15 +11,15 @@ music, no costs.
 |---|---|---|
 | 1 | Should this fund be in my portfolio? (cold open) | Its headline return counting up, and where it stands in its category |
 | 2 | First, what is this fund, in plain words? | Company-size split; size, number of holdings, top-ten share against the category median, % in shares; manager and benchmark |
-| 3 | Has it really done better than similar funds? | Return against the category average, 1 to 10 years; its rank on 3-year return; the gap in points |
-| 4 | Was that just one lucky stretch? | Calendar-year returns with its rank among peers each year; the 3-year return measured every quarter (low and high) |
+| 3 | Has it done better than similar funds? | Return against the category average, 1 to 10 years; its rank on 3-year return; the gap in points |
+| 4 | Was that one lucky stretch? | Calendar-year returns with its rank among peers each year; the 3-year return measured every quarter (low and high) |
 | 5 | How long should I plan to hold it? | Worst, average and best return for every 1, 3, 5, 10-year holding period: the range narrows |
 | 6 | What happens when markets fall? | Share of rises and falls captured against the category; worst falls with dates and recovery time |
 | 7 | Is the extra swing worth it? | Scatter of every peer (swing against return), this fund highlighted, any fund the text mentions named; Sharpe, Sortino, alpha, beta against the median |
-| 8 | What does it actually own? | Largest holdings and industries; overlap with the index |
+| 8 | What does it own? | Largest holdings and industries; overlap with the index |
 | 9 | Has the manager been changing things? | New holdings, biggest moves, full exits, industry shift |
 | 10 | Are the companies it owns expensive? | P/E and P/B against the category median, and the gap in % |
-| 11 | If it's the best performer, why is it ranked Nth? | Growthvine's score part by part; overall rank against return rank |
+| 11 | If it returned the most, why is it ranked Nth? | Growthvine's score part by part; overall rank against return rank |
 
 Costs (charge, regular vs direct, the "Cost" part of the score) only if the
 advisor says yes.
@@ -37,3 +37,23 @@ the market, SIP returns, quartile consistency, its own benchmark.
 - Bar heights: scale so the tallest bar and its label stay below the panel
   heading.
 - Small negatives keep two decimals (-0.03%, not -0.0%).
+
+## Notes from test 2 (HyperFrames, 17 Nov 2026)
+
+Rebuilt fresh after the gate (general brand briefing, new investment, no costs):
+13 scenes, 3:54. Order: cold open, what it is, against similar funds, calendar
+years, holding period, falls, swing against return, holdings, manager's changes,
+the score, what to weigh, end card.
+
+- **Calculate returns from NAVs, all on one date.** The ranking snapshot's
+  1-year return (1.8%) did not match the NAVs (+12.9% to 13 Nov 2026): the fund
+  rose 11% in two weeks, so the end date changed the story. Fetch the fund's,
+  every peer's and the index's NAV on the same dates and compute the returns.
+- **Similar funds** = the active funds in the category with a 5-year record
+  (26 here); leave out index funds and fund-of-funds, and say so on screen.
+- **Check every absolute claim against the data.** The worst 5-year stretch lost
+  0.03% a year, so "never lost money over five years" would have been false;
+  say what ₹1 lakh became instead.
+- A general briefing has no client amounts: show ₹1 lakh as the example.
+- Questions in the client's voice still pass the wording check: no "just",
+  "really" or "actually".

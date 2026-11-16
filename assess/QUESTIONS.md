@@ -4,6 +4,8 @@ A review of a portfolio that already exists: a client's holdings, a prospect's
 statement, or a model portfolio. Work through these in order, 2-3 at a time.
 Confirm what the files already answer; never skip a required item.
 
+**Required steps** (`SKILL.md`): basics, then the full section and subsection menu, then the storyboard, then build; each waits for the advisor.
+
 ## A. Whose portfolio, and why now
 
 | # | Ask | Why | Format | Required |

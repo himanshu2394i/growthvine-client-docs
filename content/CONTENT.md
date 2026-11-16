@@ -53,12 +53,26 @@ are actually cleared:
 
 A film is not an earlier PDF turned into scenes. For every film, run the
 current question set, `shared/wealth-practice.md` and `content/ANALYSES.md`
-from the start: the gate before writing (assumptions, gaps, at most four
-questions, verified numbers), then the question chain those produce.
+from the start, following the **Required steps** in `SKILL.md`, in this order. **Each step waits for the advisor's answer;
+never skip one, and never build scenes before step 3 is answered.**
+
+1. **The basics** (the gate): which fund/client, who it is for, the decision,
+   costs yes/no, plus at most four clarifying questions about gaps or
+   conflicts. The "at most four" limit is for these clarifying questions only;
+   it never limits the menu in step 2.
+2. **Sections and subsections.** Show every section in `<type>/QUESTIONS.md`
+   (Step 2 there) with its subsections, the rich default pre-ticked, your
+   recommendation marked, and the "go deeper" extras offered. The advisor
+   ticks, unticks, reorders, renames. Ask a section at a time if the list is
+   long; do not compress it into a single yes/no.
+3. **The question chain and storyboard**: one line per scene (question, what
+   it shows, the finding), built only from the picked subsections. The advisor
+   approves or edits it.
+4. Then fetch the data, write the voice and build.
 
 ## The advisor's menu (same approach as the reports)
 
-Suggest more; the advisor picks. Offer:
+Suggest more; the advisor picks. Offer (steps 2 and 3 above):
 1. The question chain: an opening question and the follow-ups, built from the
    document's sections, natural reactions to each chart, and anything the
    advisor says this client actually asked. They tick, reorder, reword, and say

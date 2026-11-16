@@ -8,6 +8,8 @@ If the advisor prefers filling a sheet to answering one by one, offer an input
 sheet made for **this** proposal: columns from the items below that are still
 open, and anything already known filled in. Not a fixed template.
 
+**Required steps** (`SKILL.md`): basics, then the full section and subsection menu, then the storyboard, then build; each waits for the advisor.
+
 ## A. Client
 
 | # | Ask | Why | Format | Required |

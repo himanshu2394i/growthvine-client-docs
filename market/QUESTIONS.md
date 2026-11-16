@@ -5,6 +5,8 @@ the market did, what things cost now, and what it means for their plans. It
 describes and explains; it never forecasts. Nothing here is a fixed template:
 offer a deep menu, the advisor picks. **Always suggest more**.
 
+**Required steps** (`SKILL.md`): basics, then the full section and subsection menu, then the storyboard, then build; each waits for the advisor.
+
 ## Step 1: the basics
 
 | # | Ask | Why | Format | Required |

@@ -5,6 +5,8 @@ costs, and which funds lead it. Nothing here is a fixed template: you offer a
 deep menu, the advisor picks what goes in and where to stop. **Always suggest
 more**; never trim on your own.
 
+**Required steps** (`SKILL.md`): basics, then the full section and subsection menu, then the storyboard, then build; each waits for the advisor.
+
 ## Step 1: the basics
 
 | # | Ask | Why | Format | Required |

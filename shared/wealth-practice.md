@@ -96,8 +96,10 @@ available", never estimated.
 ## 7. A gate before any writing
 
 Before drafting a document or film, show the advisor in chat: the assumptions,
-any conflicts between inputs, the gaps, at most three questions, and the
-verified key numbers. Write only after they confirm. (This is the visible brief
+any conflicts between inputs, the gaps, at most three clarifying questions, and the
+verified key numbers. Write only after they confirm. The limit is for clarifying questions only: the section and
+subsection menu in the question set is always shown in full, after the gate
+and before any writing. (This is the visible brief
 in `design/DESIGN.md`, made stricter.)
 
 ## 8. Reporting falls honestly

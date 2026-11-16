@@ -26,7 +26,7 @@ A film folder (outside the repo, e.g. `D:\App\films\<name>`) holds:
   confirmed inputs (one data module, so the numbers agree everywhere);
 - `film.json`: BPM, voice, and the scenes in order (id, bars, voice line, the cut
   sound, hits, which scene is the payoff);
-- `compositions/<id>.html`: one scene each, written with `scene.py` and the kit.
+- `compositions/<id>.html`: one scene each, written with `scene.py` (`write`, plus the shared `Q` question heading, `FIND` finding, `END` exit and `FIND_T` timing) and the kit.
 
 Then:
 
