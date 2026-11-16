@@ -448,3 +448,12 @@ class ActTitle(unittest.TestCase):
         self.assertEqual(size, 40)
         size, leading, lines = render_pdf.fit_title("Bonds", 52, 40)
         self.assertEqual((size, len(lines)), (52, 1))
+
+
+class BarSpacing(unittest.TestCase):
+    def test_few_bars_stay_compact_in_a_tall_panel(self):
+        self.assertLessEqual(render.bar_block(300, 2, 1), 34)   # not 150pt per bar
+        self.assertLessEqual(render.bar_block(300, 2, 2), 48)
+
+    def test_many_bars_share_a_short_panel(self):
+        self.assertAlmostEqual(render.bar_block(120, 8, 1), 15)

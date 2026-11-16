@@ -8,7 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-from render import (ASSETS, MARK, MARK_RATIO, shot_for, BAR, COLORS, CONTENT_BOTTOM, FOOT_Y, GREY, H, LINE, M,
+from render import (bar_block, ASSETS, MARK, MARK_RATIO, shot_for, BAR, COLORS, CONTENT_BOTTOM, FOOT_Y, GREY, H, LINE, M,
                     MINT_TINT, NOTE_H, PEACH_TINT, SOFT, W, blend, boxes, col_widths, is_numeric, palette,
                     to_number)
 
@@ -319,7 +319,7 @@ def bars(p, s):
     label_w, val_w = 230, 90
     x0, x1 = M + label_w, W - M - val_w
     vmax = max(v for c in cats for v in c["values"]) or 1
-    block = (bottom - top) / len(cats)
+    block = min((bottom - top) / len(cats), len(series) * 23 + 30)   # don't let a few bars float apart
     bh = min(20, block * 0.72 / len(series))
     y = top
     for c in cats:
@@ -531,7 +531,7 @@ def pn_bars(p, box, pn):
     vals = [v for c in cats for v in c["values"]]
     lo, hi = min(0, min(vals)), max(0, max(vals)) or 1
     zero = x0 + (x1 - x0) * (-lo) / (hi - lo)
-    block = (y + h - top) / len(cats)
+    block = bar_block(y + h - top, len(cats), len(series))
     bh = min(14, block * 0.7 / len(series))
     for i, c in enumerate(cats):
         by0 = top + i * block + (block - bh * len(series) - 3 * (len(series) - 1)) / 2

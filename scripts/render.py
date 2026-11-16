@@ -130,6 +130,12 @@ PANEL_REQUIRED = {"bars": ["series", "categories"], "donut": ["slices"], "table"
 GAP = 18
 
 
+def bar_block(avail, n_cats, n_series):
+    """Height per category in a bars panel: share the space, but never more than
+    the bars need plus a small gap, so a few bars don't float apart."""
+    return min(avail / n_cats, n_series * 14 + (n_series - 1) * 3 + 14)
+
+
 def boxes(layout, top, bottom, left=M, right=W - M):
     """Panel rectangles (x, y, w, h) for a layout, inside the content area."""
     w, h = right - left, bottom - top

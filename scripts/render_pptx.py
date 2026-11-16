@@ -462,7 +462,10 @@ def pn_bars(sl, box, pn):
     data.categories = [c["label"] for c in pn["categories"]]
     for k, name in enumerate(pn["series"]):
         data.add_series(name, [c["values"][k] for c in pn["categories"]])
-    ch = _plain_chart(sl.s.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, Pt(x), Pt(top), Pt(w), Pt(y + h - top), data).chart)
+    from render import bar_block
+    n_s, n_c = len(pn["series"]), len(pn["categories"])
+    ch_h = min(y + h - top, bar_block(y + h - top, n_c, n_s) * n_c + (22 if n_s > 1 else 0) + 10)
+    ch = _plain_chart(sl.s.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, Pt(x), Pt(top), Pt(w), Pt(ch_h), data).chart)
     ch.has_legend = len(pn["series"]) > 1
     if ch.has_legend:
         ch.legend.position = XL_LEGEND_POSITION.TOP
