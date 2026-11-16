@@ -72,10 +72,12 @@
       return t + (o.dur || 0.5);
     }
     const ws = words(sel), step = o.step || (mode === 'ink' ? 0.08 : 0.07);
+    // ink: hidden until entered, then the whole line appears dim just before the words light up
+    if (mode === 'ink') tl.fromTo(ws, { opacity: 0 }, { opacity: 0.16, duration: 0.2, ease: E('softInOut'), immediateRender: o.ir ?? true }, Math.max(0, t - 0.2));
     ws.forEach((w, i) => {
       const at = t + i * step;
       if (mode === 'blur') tl.fromTo(w, { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.16, ease: E('softInOut'), immediateRender: o.ir ?? true }, at);
-      else if (mode === 'ink') tl.fromTo(w, { opacity: 0.16 }, { opacity: 1, duration: 0.22, ease: E('softInOut'), immediateRender: o.ir ?? true }, at);
+      else if (mode === 'ink') tl.fromTo(w, { opacity: 0.16 }, { opacity: 1, duration: 0.22, ease: E('softInOut'), immediateRender: false }, at);
       else tl.fromTo(w, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: E('softLand'), immediateRender: o.ir ?? true }, at);
     });
     return t + ws.length * step + 0.2;

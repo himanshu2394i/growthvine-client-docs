@@ -91,7 +91,10 @@ films):
   by default) and the next arrives already moving the same way. Use 3 to 5 kinds
   of transition, each with a cause: a carried object (the ₹3 Cr number becomes
   the bar the next scene splits), a push forward, an upward exit for the
-  conclusion. Never a fade through black between scenes.
+  conclusion. Never a fade through black between scenes. A carried object must
+  exist on both sides of the cut: if the next scene has no matching shape, the
+  outgoing scene simply exits (a shape that grows and is left alone on screen
+  reads as a glitch).
 - **No still stretches over 3 seconds:** once a title lands it stays still, and
   the motion moves on: a highlight walks through the rows the voice is
   discussing, a line draws, a counter runs. Mark a deliberate hold (end card,
@@ -101,7 +104,13 @@ films):
   ease both ways. Vary text entrances (blur-in, grey-to-ink, settle from
   oversize); never fade-and-slide-up for every line.
 - **Elements are hidden until they enter:** entrances apply their start state
-  at once (`GV.textIn`, `GV.enter`); later moves wait for their time.
+  at once (`GV.textIn`, `GV.enter`); later moves wait for their time. No ghost
+  text: grey-to-ink starts from nothing, not from a dim copy of the line.
+- **Nothing touches:** before rendering, snapshot each scene's last frame
+  (`hyperframes snapshot --at`) and look: labels clear of shapes and of each
+  other, sub-lines on one line where possible and clear of the source line,
+  no word left alone on a second line. Shorten the words before shrinking the
+  text.
 - **Readable:** text at least 28px; a line holds 0.5 s plus 0.3 s a word (a finding enters just after the voice's last cue and stays at least 6.6 s; mark it `data-hold`); the
   first frame shows the title (it is the thumbnail).
 - **Sound:** the voice is the clock; the score is on a beat grid with scenes in
