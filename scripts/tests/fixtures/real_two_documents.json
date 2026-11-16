@@ -1,0 +1,70 @@
+{
+  "client": "Client A",
+  "total": 30000000,
+  "options": [
+    {
+      "name": "Option 1",
+      "source": "Investment Options PDF",
+      "stated_total": 30000000,
+      "holdings": [
+        {"name": "360 One PIPE 2", "vehicle": "AIF", "asset_class": "Small Cap Equity", "amount": 10000000, "bucket": "High Growth Alternatives"},
+        {"name": "Sundaram Debt PMS", "vehicle": "PMS", "asset_class": "Debt", "amount": 5000000, "bucket": "Stability"},
+        {"name": "Apex Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 1500000, "bucket": "Stability"},
+        {"name": "Altiva Hybrid Long-Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 500000, "bucket": "Stability"},
+        {"name": "Nuvama Structured Product - Nifty AWE", "vehicle": "Alternatives", "asset_class": "Debt", "amount": 3000000, "bucket": "Diversifier"},
+        {"name": "Sundaram ISOP", "vehicle": "PMS", "asset_class": "Flexi Cap Equity", "amount": 1000000, "bucket": "Core Growth"},
+        {"name": "Altiva Equity Long Short SIF", "vehicle": "SIF", "asset_class": "Large Cap Equity", "amount": 3000000, "bucket": "Core Growth"},
+        {"name": "Nippon Multi Asset Allocation Fund", "vehicle": "MF", "asset_class": "Hybrid", "amount": 2000000, "bucket": "Core Growth"},
+        {"name": "ISIF Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 1000000, "bucket": "Core Growth"},
+        {"name": "Invesco India Large & Mid Cap Fund", "vehicle": "MF", "asset_class": "Large & Mid Cap Equity", "amount": 1000000, "bucket": "Core Growth"},
+        {"name": "HDFC Value Fund", "vehicle": "MF", "asset_class": "Flexi Cap Equity", "amount": 1000000, "bucket": "Core Growth"},
+        {"name": "Abakkus Flexi Cap Fund", "vehicle": "MF", "asset_class": "Flexi Cap Equity", "amount": 1000000, "bucket": "Core Growth"}
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "name": "Bucket x Vehicle",
+      "source": "Investment Plan PDF",
+      "option": "Option 1",
+      "unit": "lakh",
+      "rows": {"field": "bucket"},
+      "cols": {"field": "vehicle", "map": [{"match": {"vehicle": "Alternatives"}, "to": "MLD"}]},
+      "cells": {
+        "Core Growth": {"MF": 60, "SIF": 30, "PMS": 10},
+        "Stability": {"SIF": 20, "PMS": 50},
+        "Diversifier": {"MLD": 30},
+        "High Growth Alternatives": {"AIF": 100}
+      },
+      "row_totals": {"Core Growth": 100, "Stability": 70, "Diversifier": 30, "High Growth Alternatives": 100},
+      "col_totals": {"MF": 60, "SIF": 50, "PMS": 60, "AIF": 100, "MLD": 30},
+      "grand_total": 300,
+      "row_percent": {"Core Growth": 33.3, "Stability": 23.3, "Diversifier": 10.0, "High Growth Alternatives": 33.3}
+    },
+    {
+      "name": "Asset Class x Vehicle",
+      "source": "Investment Plan PDF",
+      "option": "Option 1",
+      "unit": "lakh",
+      "rows": {"field": "asset_class", "map": [
+        {"match": {"vehicle": "AIF"}, "to": "Alternatives"},
+        {"match": {"vehicle": "Alternatives"}, "to": "Alternatives"},
+        {"match": {"asset_class": "Small Cap Equity"}, "to": "Equity"},
+        {"match": {"asset_class": "Flexi Cap Equity"}, "to": "Equity"},
+        {"match": {"asset_class": "Large Cap Equity"}, "to": "Equity"},
+        {"match": {"asset_class": "Large & Mid Cap Equity"}, "to": "Equity"}
+      ]},
+      "cols": {"field": "vehicle", "map": [{"match": {"vehicle": "Alternatives"}, "to": "MLD"}]},
+      "cells": {
+        "Equity": {"MF": 30, "SIF": 30, "PMS": 10},
+        "Hybrid": {"MF": 30, "SIF": 20},
+        "Debt": {"PMS": 50},
+        "Alternatives": {"AIF": 100, "MLD": 30}
+      },
+      "row_totals": {"Equity": 70, "Hybrid": 50, "Debt": 50, "Alternatives": 130},
+      "col_totals": {"MF": 60, "SIF": 50, "PMS": 60, "AIF": 100, "MLD": 30},
+      "grand_total": 300,
+      "row_percent": {"Equity": 23.3, "Hybrid": 16.7, "Debt": 16.7, "Alternatives": 43.3}
+    }
+  ]
+}

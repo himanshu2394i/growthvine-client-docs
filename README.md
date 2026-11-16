@@ -1,86 +1,66 @@
-# growthvine-client-docs
+# growthvine
 
-A [Claude Code skill](https://docs.claude.com/en/docs/claude-code/skills) that
-turns dumped fund data (or a live Growthvine connector pull) into a client PDF or
-PowerPoint that looks like Growthvine: Brand Book tokens plus the **C split /
-Mint Billboard** language (mint outdoor cover, pin brief).
+A Claude skill that helps Growthvine advisors turn their allocation views into
+client-ready proposals and reports (PDF or PPT). It leads a structured interview,
+checks the advisor's inputs against each other, and only builds once the advisor
+confirms the brief.
 
-It is a full production skill. On trigger it should **ask** what you are making,
-where the numbers come from, which sections to include (including chapters it has
-not seen), and the tone, then generate the file. It is not a palette dump.
+Version: 0.3.0 (proposals work end to end: interview, input check, cinematic
+design, PDF/PPT output, document number check, feedback. Coming: other report
+types).
 
 ## Install
 
-**Available in every project, for one person:**
+**claude.ai or the Claude desktop app:** download `growthvine.zip` from this
+repo's Releases page, then go to Settings → Capabilities → Skills → upload. Turn on
+code execution.
+
+**Claude Code:**
 
 ```bash
-git clone https://github.com/himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-client-docs
-```
-(Windows PowerShell: replace `~` with `$env:USERPROFILE`.)
-
-**Just this one project:**
-
-```bash
-git clone https://github.com/himanshu2394i/growthvine-client-docs .claude/skills/growthvine-client-docs
+git clone https://github.com/himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine
 ```
 
-**Without a full git clone**, using [`degit`](https://github.com/Rich-Harris/degit):
+(Windows PowerShell: use `$env:USERPROFILE\.claude\skills\growthvine`.)
 
-```bash
-npx degit himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-client-docs
-```
+The Growthvine fund data connector (MCP) should be connected for fund data pages.
 
-Claude Code auto-discovers `.claude/skills/<name>/SKILL.md`.
+## Update
 
-## Update (already cloned)
+- Zip install: download the new zip and upload it again.
+- Claude Code: `cd ~/.claude/skills/growthvine && git pull`
 
-The skill is a git clone of this repo. Pull `master` when you want the latest
-C-split / Brand Book notes. Do not copy files by hand.
+Start a new chat afterwards.
 
-**If you cloned with git** (user or project folder):
+## Use
 
-```bash
-cd ~/.claude/skills/growthvine-client-docs   # or .claude/skills/growthvine-client-docs
-git fetch origin
-git checkout master
-git pull origin master
-```
+Say "use Growthvine" or ask for a proposal or report. To report a problem or
+suggest a change, say "feedback".
 
-Windows PowerShell: same commands, with `$env:USERPROFILE\.claude\skills\growthvine-client-docs` instead of `~`.
+## What's inside
 
-If you were on an old feature branch, switch to `master` first so you are not
-left on a stale pin/rail write-up.
-
-**If you installed with degit** (no `.git` folder):
-
-```bash
-npx degit himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine-client-docs --force
-```
-
-`--force` overwrites the existing folder. Degit does not remember a remote, so
-this is a fresh copy of `master`, not a merge.
-
-After updating, start a new chat so the agent re-reads `SKILL.md`.
-
-## What's in here
-
-| | |
+| Path | Job |
 |---|---|
-| `SKILL.md` | Briefing first, then data, C-split design, generate. |
-| `references/briefing.md` | The six questions: job, file, source, tone, sections, length. |
-| `references/c-split.md` | Mint outdoor board + pin brief. Print translation. Source is the C-split mock. |
-| `references/figures.md` | Every mock figure: what is code vs CSS, cover gap, logo bar. |
-| `references/new-sections.md` | How to invent a chapter that is not on the menu. |
-| `references/data.md` | Dumped data vs Growthvine connector. Which tool to call. |
-| `references/design-tokens.md` | Palette, Poppins, logo don'ts, fingerprint rules. |
-| `references/components.md` | Donut, waffle, stairs, pin, hairline table, paired bars, quartile tower. |
-| `references/pdf-generation.md` | HTML to PDF vs reportlab. Page breaks. |
-| `references/pptx-generation.md` | python-pptx. Native chart vs image. |
-| `scripts/charts.py` | Donut, waffle, rolling line. `python charts.py` self-check. |
-| `assets/` | Inverse logo, G mark, fingerprint arcs. |
+| `SKILL.md` | Entry: hard rules, first questions, routing |
+| `proposal/QUESTIONS.md` | Proposal question set |
+| `shared/data.md` | Data rules + fund data tool map |
+| `shared/inputs.md` | Reading advisor files, writing `inputs.json` |
+| `design/DESIGN.md` | Story, comments, display, language, brief, build |
+| `design/SCENES.md` | `scenes.json` format for the renderer |
+| `check/CHECK.md` | Input reconcile, verification, delivery |
+| `feedback/FEEDBACK.md` | Feedback note, anonymising, form link |
+| `scripts/reconcile.py` | Cross-checks advisor inputs |
+| `scripts/render.py` | Renders `scenes.json` to PDF or PPT (`render_pdf.py`, `render_pptx.py`) |
+| `scripts/verify.py` | Checks every figure in the finished document against the inputs |
+| `assets/` | Official logos and Poppins (SIL Open Font License) |
 
-## Source of truth
+Rendering needs `reportlab` (PDF), `python-pptx` (PPT) and `pymupdf` (previews).
+Not yet verified inside claude.ai's code environment; if one is missing there,
+install it with pip. Locally: `pip install reportlab python-pptx pymupdf`.
+| `docs/specs/` | Design spec |
 
-Brand Book for tokens. The C-split mock for layout and figures:
-`.superdesign/tmp/mock-c-split.html` and `mock-core.js`. If this skill disagrees
-with those files, trust the mock and update this repo. Do not guess a new hex.
+## Tests
+
+```bash
+python -m unittest discover -s scripts/tests
+```

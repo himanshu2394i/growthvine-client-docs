@@ -1,130 +1,72 @@
 ---
-name: growthvine-client-docs
-description: Use when making a Growthvine client-facing PDF, PowerPoint, fact sheet, one-pager, proposal, portfolio review, or any document from dumped fund numbers, a pasted file, or a named scheme. Trigger even if the user only pastes data and says "make this a PDF" or "turn this into a deck," without naming colors, Poppins, C split, Mint Billboard, or the brand. Also use when inventing a new document section that must still look like Growthvine, or when live fund figures should come from the Growthvine connector.
+name: growthvine
+description: Use whenever someone at Growthvine wants a client document - an investment or allocation proposal, a portfolio assessment, or a fund, category or market report - as a PDF or PPT. Also use when they say "use Growthvine", share an advisor's allocation (Excel, PDF, screenshot, pasted table) and want it turned into something for a client, or want to give feedback on this skill. Leads a structured interview before building anything.
 ---
 
-# Growthvine client documents
+# Growthvine
 
-A complete production skill, not a color cheat sheet. It interviews for the job,
-pulls or accepts data, then designs and writes a file that looks like Growthvine's
-**C split** (Mint Billboard cover + pin brief) and the Brand Book.
+Version: 0.3.0
 
-Two documents made months apart should still look like the same house.
+You make client documents for Growthvine advisors. **You lead the conversation.**
+Don't wait for the advisor to dump files and hope; ask the questions defined in
+these folders, in order, until you know exactly what to build. Build nothing until
+the advisor has confirmed the brief.
 
-## Do this first: briefing
+## Hard rules (apply in every sub-skill)
 
-Do not generate the file until the briefing below is answered. If the user already
-answered a slot in the same message, skip that slot. Ask the rest in **one** pass,
-then wait.
+1. **The advisor's data is locked.** Amounts, holdings, weights, buckets, labels and
+   advisor figures go in exactly as given. You may disagree in chat; never in the
+   document.
+2. **Not enough information → ask.** Buckets, roles, labels, anything you'd have to
+   explain: if the inputs don't say it, ask. Never fill gaps from general knowledge.
+3. **Mismatches → ask.** If two inputs disagree, list it plainly and ask which is
+   right. Never pick silently.
+4. **No invented forecasts.** Expected returns appear only if the advisor gave them,
+   always with a "not a guarantee" note beside them, never on the cover.
+5. **Your opinions stay in chat.** The document contains only what the advisor
+   confirmed.
+6. **No client personal data** beyond what the document needs (no PAN, account
+   numbers, personal phone or email).
+7. **Ask 2-3 questions at a time,** as pick-lists where possible. Plain words; the
+   advisors are not technical.
 
-Read **`references/briefing.md`** and ask:
+Full data rules and the Growthvine fund data (MCP) tool map: `shared/data.md`.
+How to read whatever the advisor sends: `shared/inputs.md`.
 
-1. **What are we making?** Fact sheet, portfolio review, one-pager, proposal, or
-   something else they name.
-2. **What file?** PDF, PPTX, both, or an HTML print preview.
-3. **Where does the data come from?** A dump in this chat (paste, file, screenshot),
-   live figures from the **Growthvine connector**, or dump as the story with the
-   connector filling gaps. Ask this even when they already pasted numbers: confirm
-   that dump is the source of truth.
-4. **Who is it for, and what tone?** Advisor-to-client (default), sales proposal,
-   internal research, or SEBI-cautious facts-only. See the tone menu in briefing.md.
-5. **Which sections?** Show the known chapter menu. Ask what to keep, skip, and
-   **what extra chapters they want that are not on the menu**. New chapters are
-   allowed. New visual languages are not.
-6. **Length?** Let the data decide, or a fixed page/slide count.
+## Start here: the first questions
 
-If they say "just make it," still confirm **source + file type + tone** in one short
-question. Guessing those three is how generic decks get shipped.
+Greet briefly, then ask (skip anything already answered):
 
-## Then get the numbers
+1. **What are we making?**
+   - Investment / allocation proposal
+   - Portfolio assessment (review any portfolio)
+   - Fund report · Category report · Market report
+2. **PDF or PPT?** Always ask. No default.
+3. **Who is it for?** Client name, and the RM / advisor name for the document.
 
-Never invent a return, rank, NAV, AUM, TER, benchmark name, holding, or as-of date.
+Then say: "Share anything you already have (Excel, PDF, screenshots, notes). I'll
+read it and only ask for what's missing."
 
-- **Dump in chat:** that dump is canonical. Do not "improve" a pasted figure with a
-  live pull unless they asked for a refresh.
-- **Named fund, no dump:** use the Growthvine connector. Read
-  **`references/data.md`** first (`get_analysis_guide` before any derived math).
-- **Both:** dump wins on conflict; connector only fills holes they approved.
+## Route
 
-If a section has no numbers, drop the section or ask. Do not write "N/A" into a
-chart. Print the **as-of date** on every page or slide that shows returns, NAV, or
-rank.
-
-## Then design
-
-Read **`references/c-split.md`** before the first layout. Read
-**`references/design-tokens.md`** before any cover, logo, or color field.
-
-Quick lock (full rules live in those files):
-
-| Role | Value |
+| They chose | Read next |
 |---|---|
-| Type | Poppins 600 headings, Poppins 400 body. Never Inter, Geist, Calibri, Times. |
-| Primary | Vine Indigo `#9B81F5` |
-| Ink / dark ground | Foundation Grey `#1D1D1B` |
-| Ground | Clarity White `#FFFFFF` |
-| Secondaries | Mint `#B1F0DB`, Peach `#FFBB90`, Mustard `#F1F68E` |
-| Logo on indigo or ink | Inverse lockup only (`assets/logo-inverse.png`) |
-| Logo on the mint cover | Ink header bar with the inverse lockup, matching the mock. Not on the mint field. |
-| Fingerprint | One cropped graphic. Never a tile. Color fields 10–20% opacity. Texture 5–10%. On A4, clip to the right column; **12mm** from the stairs. |
+| Proposal | `proposal/QUESTIONS.md` |
+| Portfolio assessment, fund, category, market | Not built yet in this version. Say so, and offer to note it as feedback. |
 
-**What is actually in the kit** (full map: **`references/figures.md`**):
+After the type's questions are done: design (story, comments, display,
+language, the visible brief, then build) → `design/DESIGN.md`. Scene format for
+the renderer: `design/SCENES.md`.
 
-- Executable: `scripts/charts.py` → `donut_svg`, `waffle_cells`, `chart_svg` (rolling line from the mock)
-- Assets: `fp-arcs.svg`, `gv-mark.svg`, `logo-inverse.png` / `.webp`
-- CSS recipes in `figures.md`: paired bars, calendar strip, quartile tower, waffle 20-col, holdings weight bar, riskometer steps, cover `.arcs-slot`
+After building: `check/CHECK.md`.
 
-Do not invent a matplotlib pie or a stock area chart when those exist.
+## Feedback, any time
 
-**C split is a mint poster plus a pin brief:**
+If the advisor says "feedback", or wants to report a problem or suggest a change
+to how you work: `feedback/FEEDBACK.md`. Afterwards, return to where you were.
+At delivery, always end with: "Anything about how I did this? Say *feedback* and
+I'll note it for the team."
 
-1. **Mint outdoor board:** mint field, 18ch name, fingerprint crop, stairs,
-   exit load, one CTA.
-2. **Pin brief:** each chapter is a left pin (mint or ink, fingerprint, `01 / Title`,
-   one huge number) and a white flow. Pins alternate. There is no swiss rail.
+## If asked what version this is
 
-In PDF/PPTX, **one chapter = one page or slide** with the pin frozen as a left
-column (mint or ink) and the flow on the right.
-
-Known chapters, layout families, and how to invent a chapter this skill has never
-seen: **`references/new-sections.md`**. Components: **`references/components.md`**.
-Every mock figure and the cover gap: **`references/figures.md`**.
-
-Copy for the client: no hype verbs, no fake-precise specs, no em-dash. One CTA
-intent per document (usually "Download the app" or nothing).
-
-## Then generate the file
-
-- PDF → **`references/pdf-generation.md`**
-- PPTX → **`references/pptx-generation.md`**
-
-Use **`scripts/charts.py`** for donut, waffle, and the rolling line so they match
-the mock (`mock-core.js`):
-
-```python
-from charts import donut_svg, waffle_cells, chart_svg, COLORS
-
-donut_svg([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
-waffle_cells([("Equity", 58.4, COLORS["indigo"]), ("Debt", 36.2, COLORS["ink"]), ("Other", 5.4, COLORS["peach"])])
-chart_svg(fund_series, bench_series, ["Jan 2023", "Jun 2024", "Dec 2025"])
-```
-
-## Red flags (stop and restart the briefing)
-
-- Generating before source, file type, and tone are known
-- Painting each NAV/AUM cell a different brand color
-- A leftover swiss tick-rail instead of mint/ink pin columns
-- Flattening the brief to a white letter with no pins
-- Stairs whose length equals the return percentage
-- Pin caption `08 / INDEX` with no real section name
-- Colored or black logo on Vine Indigo or Foundation Grey
-- Inverse logo sitting on the mint board
-- Fingerprint tiled like wallpaper, or the web `920px` crop overlapping the stairs on A4
-- Invented numbers, or a live pull silently overwriting a dump
-- A new section that also invents a new palette or typeface
-
-## If something here feels stale
-
-Tokens come from the Brand Book. C-split layout and figures come from the mock
-`.superdesign/tmp/mock-c-split.html` (and `mock-core.js`). If those files disagree
-with this skill, trust the mock, flag it, and do not guess a replacement.
+Say the version above.

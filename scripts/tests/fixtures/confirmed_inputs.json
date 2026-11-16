@@ -1,0 +1,41 @@
+{
+  "client": "Client A",
+  "total": 30000000,
+  "advisor_figures": ["13.5%", "14.8%"],
+  "options": [
+    {
+      "name": "Option 1",
+      "source": "Investment Options PDF",
+      "stated_total": 30000000,
+      "holdings": [
+        {"name": "360 One PIPE 2", "vehicle": "AIF", "asset_class": "Alternatives", "amount": 10000000, "bucket": "High Growth Alternatives", "liquidity": "3+ years"},
+        {"name": "Sundaram Debt PMS", "vehicle": "PMS", "asset_class": "Debt", "amount": 5000000, "bucket": "Stability", "liquidity": "1 week to 1 year"},
+        {"name": "Apex Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 1500000, "bucket": "Stability", "liquidity": "Within 1 week"},
+        {"name": "Altiva Hybrid Long-Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 500000, "bucket": "Stability", "liquidity": "Within 1 week"},
+        {"name": "Nuvama Structured Product - Nifty AWE", "vehicle": "MLD", "asset_class": "Alternatives", "amount": 3000000, "bucket": "Diversifier", "liquidity": "3.5 year lock-in"},
+        {"name": "Sundaram ISOP", "vehicle": "PMS", "asset_class": "Equity", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Altiva Equity Long Short SIF", "vehicle": "SIF", "asset_class": "Equity", "amount": 3000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Nippon Multi Asset Allocation Fund", "vehicle": "MF", "asset_class": "Hybrid", "amount": 2000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "ISIF Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Invesco India Large & Mid Cap Fund", "vehicle": "MF", "asset_class": "Equity", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "HDFC Value Fund", "vehicle": "MF", "asset_class": "Equity", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Abakkus Flexi Cap Fund", "vehicle": "MF", "asset_class": "Equity", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"}
+      ]
+    },
+    {
+      "name": "Option 2",
+      "source": "Investment Options PDF",
+      "stated_total": 30000000,
+      "holdings": [
+        {"name": "360 One EOF 4", "vehicle": "AIF", "asset_class": "Alternatives", "amount": 10000000, "bucket": "High Growth Alternatives", "liquidity": "3+ years"},
+        {"name": "Sundaram Emerging Corporate Credit Fund", "vehicle": "AIF", "asset_class": "Debt", "amount": 10000000, "bucket": "Diversifier", "liquidity": "3+ years"},
+        {"name": "Apex Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 2000000, "bucket": "Stability", "liquidity": "Within 1 week"},
+        {"name": "Altiva Hybrid Long-Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 2000000, "bucket": "Stability", "liquidity": "Within 1 week"},
+        {"name": "Altiva Equity Long Short SIF", "vehicle": "SIF", "asset_class": "Equity", "amount": 2000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Nippon Multi Asset Allocation Fund", "vehicle": "MF", "asset_class": "Hybrid", "amount": 2000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "Invesco India Large & Mid Cap Fund", "vehicle": "MF", "asset_class": "Equity", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"},
+        {"name": "ISIF Hybrid Long Short SIF", "vehicle": "SIF", "asset_class": "Hybrid", "amount": 1000000, "bucket": "Core Growth", "liquidity": "Within 1 week"}
+      ]
+    }
+  ]
+}
