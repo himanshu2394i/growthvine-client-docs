@@ -222,6 +222,11 @@ watching is...", not "you must...").
 
 ## 5. The visible brief
 
+The gate before writing (`shared/wealth-practice.md` §7): with the brief, show
+the assumptions, any conflicts between inputs, the gaps, at most three questions
+and the verified key numbers; write only after the advisor confirms.
+
+
 Show one summary and wait for a clear yes:
 
 ```

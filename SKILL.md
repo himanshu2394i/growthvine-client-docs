@@ -5,7 +5,7 @@ description: Use whenever someone at Growthvine wants a client document - an inv
 
 # Growthvine
 
-Version: 0.8.0
+Version: 0.9.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -31,6 +31,8 @@ the advisor has confirmed the brief.
    advisors are not technical.
 
 Full data rules and the Growthvine fund data (MCP) tool map: `shared/data.md`.
+How a careful advisor interviews, analyses and reviews (interview order, risk asked two ways, fund analysis by type,
+review routine, the gate before writing): `shared/wealth-practice.md`. Apply it in every sub-skill.
 How to read whatever the advisor sends: `shared/inputs.md`.
 
 ## Start here: the first questions

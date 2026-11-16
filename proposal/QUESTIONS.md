@@ -16,6 +16,7 @@ open, and anything already known filled in. Not a fixed template.
 | A2 | Investment horizon | Frames what to expect | Pick: short (<3y) / medium (3-5y) / long-term (5y+) / their words | Yes |
 | A3 | Liquidity needs | Decides how much lock-in is acceptable | Pick: low / medium / high / their words | Yes |
 | A4 | Risk appetite or profile label | Shown on cover; checked against the plan | Their label (e.g. "Moderate to High", "Growth Oriented") | Yes |
+| A4b | If not already on file: willingness (what paper loss in rupees would make the client want to sell?) and capacity (horizon, income steadiness, emergency money, share of total wealth) | When they conflict the lower one governs, and the document says which (`shared/wealth-practice.md` §2) | Their words | No |
 | A5 | Anything else about the client worth saying (goal, existing holdings, constraints) | Only if it should shape the document | Free text | No |
 | A6 | How experienced is the client with investing? | Sets how simple the language is | Pick: first-time / some experience / experienced | Yes |
 

@@ -76,6 +76,11 @@ two small ones onto a page.
 - What to watch from here (holdings changes, manager change, size)
 - The advisor's view
 
+Analyse by fund type (`shared/wealth-practice.md` §6): index funds by tracking
+difference and cost; active funds by manager, holdings, return over benchmark and
+style drift; hybrids by mix and falls; debt funds by yield, credit and duration.
+Flag a fast-shrinking fund, a manager change or a change in holdings.
+
 ## Fund data to fetch (v3, CSV where possible)
 
 - `get_fund(scheme_id, include=["profile", "returns", "risk", "factsheet", "allocation", "ranking", "portfolio", "calendar_returns", "rolling_summary"])`

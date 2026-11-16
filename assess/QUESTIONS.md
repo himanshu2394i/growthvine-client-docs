@@ -51,6 +51,11 @@ a share), and the **company-size split**.
 
 ## E. Second opinion (in chat only)
 
+Use `shared/wealth-practice.md` §3 and §5: label each point fact, inference,
+assumption or unknown; structural risks first; check for too much and too
+little risk; follow up the last review's action items, drift against target,
+concentration above the advisor's threshold, proactive flags, life-event triggers.
+
 Before designing, give the advisor your read of the portfolio: overlap or
 concentration, cost drag, mismatch between the mix and the client's risk or
 horizon, funds lagging their category for long stretches, liquidity. Mark it as
@@ -64,7 +69,8 @@ your view. Nothing from it goes in the document unless the advisor adopts it.
 - **Do the funds diversify each other?** Overlap per ₹100, return correlation,
   the portfolio's volatility against the weighted average of its funds'.
 - **Concentration in rupees:** largest company and sector.
-- **What changed since the last review**, if a previous review exists.
+- **What changed since the last review**, if a previous review exists, starting with the last review's action items.
+- **Proactive flags** (`shared/wealth-practice.md` §5): cash beyond needs, risk profile or KYC due, nominations after a life event, money needed within 12 months still in equity.
 
 ## Done when
 
