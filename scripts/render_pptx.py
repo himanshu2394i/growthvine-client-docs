@@ -114,9 +114,12 @@ def cover(sl, sc):
     sl.dark()
     sl.image("logo-dark.png", M, 44, 30)
     sl.text(M, 150, 600, 16, sc["eyebrow"].upper(), 11, SEMI, INDIGO)
-    sl.text(M, 168, 700, 72, sc["title"], 60, SEMI, WHITE)
-    sl.text(M, 262, 560, 60, sc["logline"], 17, REG, SOFT)
-    sl.rect(M, 340, 64, 3, INDIGO)
+    from render_pdf import cover_title, COVER_TITLE_W
+    size, leading, lines = cover_title(sc["title"])
+    sl.text(M, 168, COVER_TITLE_W + 20, leading * len(lines), sc["title"], size, SEMI, WHITE)
+    top = max(262, 172 + leading * len(lines) + 16)
+    sl.text(M, top, 560, 60, sc["logline"], 17, REG, SOFT)
+    sl.rect(M, min(top + 78, 400), 64, 3, INDIGO)
     col = (W - 2 * M) / len(sc["facts"])
     for i, f in enumerate(sc["facts"]):
         x = M + i * col
@@ -132,8 +135,10 @@ def act(sl, sc):
     sl.dark()
     sl.text(M, 194, 40, 18, sc["number"], 13, SEMI, INDIGO)
     sl.rect(M + 30, 203, 48, 2, INDIGO)
-    sl.text(M, 218, 700, 64, sc["title"], 52, SEMI, WHITE)
-    sl.text(M, 296, 600, 56, sc["logline"], 18, REG, SOFT)
+    from render_pdf import fit_title, COVER_TITLE_W
+    size, leading, lines = fit_title(sc["title"], 52, 40)
+    sl.text(M, 218, COVER_TITLE_W + 20, leading * len(lines), sc["title"], size, SEMI, WHITE)
+    sl.text(M, max(296, 222 + leading * len(lines) + 16), 600, 56, sc["logline"], 18, REG, SOFT)
     sl.counter(SOFT)
 
 

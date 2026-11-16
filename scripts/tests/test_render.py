@@ -425,3 +425,26 @@ class Cli(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CoverTitle(unittest.TestCase):
+    def test_short_title_stays_big_on_one_line(self):
+        import render_pdf
+        size, leading, lines = render_pdf.cover_title("Client A")
+        self.assertEqual((size, len(lines)), (60, 1))
+
+    def test_long_title_shrinks_and_leaves_room_for_the_logline(self):
+        import render_pdf
+        size, leading, lines = render_pdf.cover_title("Invesco India Large & Mid Cap Fund")
+        self.assertLess(size, 60)
+        self.assertLessEqual(len(lines), 2)
+        self.assertLessEqual(172 + leading * len(lines), 270)   # logline starts below the title
+
+
+class ActTitle(unittest.TestCase):
+    def test_long_act_title_shrinks_to_fit(self):
+        import render_pdf
+        size, leading, lines = render_pdf.fit_title("What the category delivers", 52, 40)
+        self.assertEqual(size, 40)
+        size, leading, lines = render_pdf.fit_title("Bonds", 52, 40)
+        self.assertEqual((size, len(lines)), (52, 1))

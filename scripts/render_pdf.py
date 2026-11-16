@@ -139,13 +139,29 @@ class Page:
 
 # ---------- scenes ----------
 
+COVER_TITLE_W = 640
+
+
+def fit_title(title, big, small, width=COVER_TITLE_W):
+    """(size, leading, lines): `big` if it fits on one line, else `small` (wrapping)."""
+    _fonts()
+    size = big if len(wrap(title, SEMI, big, width)) == 1 else small
+    return size, round(size * 1.1), wrap(title, SEMI, size, width)
+
+
+def cover_title(title):
+    return fit_title(title, 60, 44)
+
+
 def cover(p, s):
     p.dark()
     p.image("logo-dark.png", M, 44, 30)
     p.text(M, 150, s["eyebrow"].upper(), 11, SEMI, INDIGO, spacing=2)
-    p.para(M, 172, s["title"], 640, 60, SEMI, WHITE, leading=66)
-    h = p.para(M, 262, s["logline"], 560, 17, REG, SOFT, leading=26)
-    p.rect(M, 262 + h + 18, 64, 3, INDIGO)
+    size, leading, lines = cover_title(s["title"])
+    p.para(M, 172, s["title"], COVER_TITLE_W, size, SEMI, WHITE, leading=leading)
+    top = max(262, 172 + leading * len(lines) + 16)
+    h = p.para(M, top, s["logline"], 560, 17, REG, SOFT, leading=26)
+    p.rect(M, top + h + 18, 64, 3, INDIGO)
     facts = s["facts"]
     col = (W - 2 * M) / len(facts)
     for i, f in enumerate(facts):
@@ -162,12 +178,14 @@ def act(p, s):
     p.dark()
     p.text(M, 196, s["number"], 13, SEMI, INDIGO)
     p.rect(M + 30, 203, 48, 2, INDIGO)
-    p.para(M, 222, s["title"], 640, 52, SEMI, WHITE, leading=58)
+    size, leading, tl = fit_title(s["title"], 52, 40)
+    p.para(M, 222, s["title"], COVER_TITLE_W, size, SEMI, WHITE, leading=leading)
+    top = max(296, 222 + leading * len(tl) + 16)
     width = 600
     lines = wrap(s["logline"], REG, 18, width)
     if len(lines) == 2 and len(lines[1].split()) <= 2:   # avoid a lonely last word
         width = pdfmetrics.stringWidth(s["logline"], REG, 18) / 2 + 40
-    p.para(M, 296, s["logline"], width, 18, REG, SOFT, leading=27)
+    p.para(M, top, s["logline"], width, 18, REG, SOFT, leading=27)
     p.counter(SOFT)
 
 
