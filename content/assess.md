@@ -1,33 +1,54 @@
 # Portfolio review film (client report)
 
-A private briefing that walks one client through a review of what they already
-hold. Private to that client. First test: a five-fund, ₹61.6 L portfolio
-(16 Nov 2026), 2:09, 11 scenes, MP4 with music.
+A private briefing that walks one client through a review of what they hold.
+Private to that client. Build it from the review routine in
+`shared/wealth-practice.md` §5 and the analyses in `content/ANALYSES.md`, not by
+turning an earlier PDF into scenes: run the gate before writing (§7) and ask the
+answers that change the review first.
+
+## Ask before building (the gate)
+
+The advisor making the film may not know the client's goals or plan. Never
+block on them. Ask once, as an optional section:
+
+**Section: the client's plan (tick only what you know)**
+- First review, or action items from the last one?
+- What the money is for, and whether any is needed in the next 1 to 5 years.
+- A target allocation, benchmark and band agreed with the client.
+- The advisor's threshold for flagging concentration in one fund.
+
+- **Known:** use the full chain below (plan and drift, falls tied to the
+  horizon, concentration against the threshold).
+- **Not known:** make a **general review** from the portfolio alone: drop
+  "Is it still invested the way we planned?", state falls in rupees without
+  tying them to a horizon, show concentration as each fund's share without a
+  threshold line, and in "What happens next?" offer (do not insist) to agree a
+  target and goals at the meeting.
 
 ## Default question chain (offer it, the advisor edits)
 
 | # | Question in the client's voice | Answered with |
 |---|---|---|
-| 1 | How is my money really doing? (cold open) | The current value counting up |
-| 2 | First, what do I actually have? | Each fund's value and share as a split bar, plus what the money is invested in (shares, bonds, gold, global); does the mix fit their horizon and risk |
-| 3 | Has it actually done well? | Growth of ₹1 lakh in each fund against the market, a 3- and 5-year return table, each fund's rank in its category; which funds are too new to judge |
-| 4 | And when markets fall, what happens to it? | Worst fall in 3 years and yearly swing per fund; what the steadiest holding does for the whole portfolio |
-| 5 | What do I really own underneath? | Number of companies (look-through) and the money covered, the largest companies in rupees and %, the biggest industries, the large / mid / small split |
-| 6 | Are my funds all buying the same shares? | Overlap web: the highest pair and the average |
-| 7 | How much am I paying for all this? (only if the advisor says to include costs) | Charge per fund, the blended charge, and the rupees a year at today's value |
-| 8 | So, is anything worth changing? | The review's discussion points as cards, each with its number (concentration, new funds; costs only if the advisor said yes) |
-| 9 | (no question) Note from the advisor | The advisor's own words: take-away and any recommendation |
+| 1 | How does the portfolio stand against its plan? (cold open) | The value counting up; first review or not |
+| 2 | Is it still invested the way we planned? (only if a target is known) | Shares (Indian and global) against the target, the band drawn on a track, the drift in points, the mix by part |
+| 3 | How did it do over the year, and what drove it? | Each fund's 1-year return as a bar from zero, its rupee gain (stating the no-flows assumption), the benchmark; 3-year record in the sub-line; funds under a year old say so |
+| 4 | Is each fund doing its own job? | One row per fund: its type, the measure that fits the type, the result (active equity against the benchmark and its rank; multi-asset by mix and falls; a long-short SIF by yield and duration; new funds "too new to judge") |
+| 5 | How far could it fall, and does that matter? | The funds with a record, together and the benchmark, on one monthly series, in % and rupees; tied to the client's horizon when it is known ("none needed for five years, so a fall of that size would not force a sale"); otherwise in rupees only |
+| 6 | Do the funds hold the same stocks, and move together? | Overlap web, return correlation, the combined swing against the weighted average |
+| 7 | Is too much in one place? | Each fund's share (against the advisor's threshold line, if given); the largest company in rupees; the largest sector |
+| 8 | What happens next? | Cards: earlier action items (or "first review"), the main point to discuss, when new funds can be reviewed, what to confirm (risk profile, KYC, nominations) |
+| 9 | (no question) Note from the advisor | The advisor's own order of action: now, not yet, what would prompt the next change, next review date |
 
-Go deeper (offer): progress against a goal amount or date (only if the advisor
-gave one), regular against direct cost in rupees (only if costs are in), each fund against its own
-category over time, tax on gains (only with the client's invested amounts).
+Costs (charges, regular vs direct) only if the advisor says yes.
 
-## Notes from the test
+## Notes from the tests
 
-- Only funds that can be looked through appear in the overlap web; word the
-  question so it doesn't promise more ("Are my funds all buying the same
-  shares?", not "five funds").
-- Discussion points are the review's own; don't add editorial reassurance
-  ("Nothing urgent") the advisor didn't say.
-- Comparisons in words must match the numbers: a 10.9% fall against 19.0% is
-  "a little over half as far", not "half".
+- Test 1 (Pillow, 16 Nov) followed the PDF's sections. Test 2 (HyperFrames, 17 Nov)
+  was rebuilt from the review routine after the gate: plan and drift, the year by
+  holding, each fund by its type, concentration against a threshold, and next steps.
+- Only funds that can be looked through appear in the overlap web; say which
+  are not (a long-short fund's short positions).
+- Rupee gains over a year assume no money moved in or out; say so on screen.
+- A finding enters just after the voice's last cue and stays at least 6.6 seconds;
+  entering only after the voice ends left 3.2 seconds, too short to read.
+- Discussion points are the review's own; no reassurance the advisor did not give.

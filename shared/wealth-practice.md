@@ -21,6 +21,11 @@ Ask in this order, and do not discuss products until the money's role is clear:
 6. **The role of each holding:** emergency, short-term, long-term, income.
 7. **Products**, only after the above.
 
+**The advisor may not know these.** Offer goals, commitments, income and
+emergency money as an optional section of the question menu; when they are
+unknown, build a general review or report from the portfolio and the data
+alone, and never invent them.
+
 **Ask only questions that could change the plan.** Stop when the answer would
 not move the direction, size or timing. Record a refusal or gap as *unknown*;
 never fill it in.

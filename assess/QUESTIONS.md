@@ -10,9 +10,14 @@ Confirm what the files already answer; never skip a required item.
 |---|---|---|---|---|
 | A1 | Whose portfolio is it: an existing client, a prospect, or a model? | Sets the tone and what "next steps" means | Pick | Yes |
 | A2 | What prompted the review? (annual review, market fall, new money, life change, switching advisor) | The story starts here | Pick or their words | Yes |
-| A3 | Horizon, liquidity needs, risk appetite | The yardstick every observation is measured against | As in the proposal set | Yes |
+| A3 | Horizon, liquidity needs, risk appetite, if the advisor knows them | The yardstick every observation is measured against; without it, make a general review | As in the proposal set, or "not known" | No |
 | A4 | How experienced is the client with investing? | Sets how simple the language is | Pick | Yes |
 | A5 | Any goal amounts or dates (retirement in 2035, ₹50 L for a house in 2028)? | Lets the review talk about progress, not just returns | Their words | No |
+
+Section A is optional beyond A1 and A2: many advisors will not know the
+client's goals, target or horizon. If A3 and A5 are unknown, make a general
+review (see `content/assess.md`): no drift page, falls in rupees without a
+horizon, concentration without a threshold.
 
 ## B. The holdings
 

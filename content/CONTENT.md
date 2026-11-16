@@ -49,6 +49,13 @@ are actually cleared:
   terms, no AI tells. A client should believe a CFA wrote each line by hand.
 - Pace for reading: a dense scene needs 12 to 17 seconds.
 
+## Build each film fresh from the latest skill
+
+A film is not an earlier PDF turned into scenes. For every film, run the
+current question set, `shared/wealth-practice.md` and `content/ANALYSES.md`
+from the start: the gate before writing (assumptions, gaps, at most four
+questions, verified numbers), then the question chain those produce.
+
 ## The advisor's menu (same approach as the reports)
 
 Suggest more; the advisor picks. Offer:
@@ -95,7 +102,7 @@ films):
   oversize); never fade-and-slide-up for every line.
 - **Elements are hidden until they enter:** entrances apply their start state
   at once (`GV.textIn`, `GV.enter`); later moves wait for their time.
-- **Readable:** text at least 28px; a line holds 0.5 s plus 0.3 s a word; the
+- **Readable:** text at least 28px; a line holds 0.5 s plus 0.3 s a word (a finding enters just after the voice's last cue and stays at least 6.6 s; mark it `data-hold`); the
   first frame shows the title (it is the thumbnail).
 - **Sound:** the voice is the clock; the score is on a beat grid with scenes in
   whole bars; effects peak one frame after their picture; the music drops out
