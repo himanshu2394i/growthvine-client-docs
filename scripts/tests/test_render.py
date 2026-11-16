@@ -457,3 +457,92 @@ class BarSpacing(unittest.TestCase):
 
     def test_many_bars_share_a_short_panel(self):
         self.assertAlmostEqual(render.bar_block(120, 8, 1), 15)
+
+
+SCATTER = {"kind": "scatter", "title": "Return against swing, 3 years", "x_label": "Typical yearly swing, %",
+           "y_label": "Return a year, %", "highlight_name": "Top five", "others_name": "Other funds",
+           "points": [{"label": "Invesco", "x": 18.9, "y": 22.0, "highlight": True},
+                      {"label": "SBI", "x": 13.9, "y": 12.5, "highlight": True},
+                      {"label": "Tata", "x": 16.4, "y": 6.2}, {"label": "Kotak", "x": 15.7, "y": 13.3}]}
+
+
+class Scatter(unittest.TestCase):
+    def doc(self, panel):
+        d = sample()
+        d["scenes"] = [{"type": "panels", "title": "Risk and return", "layout": "2",
+                        "panels": [panel, {"kind": "text", "title": "What this tells us", "bullets": ["One point."]}]}]
+        return d
+
+    def test_scatter_needs_points_and_axis_labels(self):
+        self.assertEqual(render.validate(self.doc(SCATTER)), [])
+        bad = {k: v for k, v in SCATTER.items() if k != "y_label"}
+        self.assertTrue(any("y_label" in e for e in render.validate(self.doc(bad))))
+
+    def test_pdf_scatter_names_axes_colours_and_highlights(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "s.pdf"
+            render.render(self.doc(SCATTER), out)
+            with fitz.open(out) as d:
+                text = " ".join(d[0].get_text().split())
+        for s in ["Typical yearly swing, %", "Return a year, %", "Top five", "Other funds", "Invesco", "SBI"]:
+            self.assertIn(s, text)
+        self.assertNotIn("Tata", text)        # only highlighted points get a name
+
+    def test_pptx_scatter_is_a_native_xy_chart(self):
+        from pptx import Presentation
+        from pptx.enum.chart import XL_CHART_TYPE
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "s.pptx"
+            render.render(self.doc(SCATTER), out)
+            types = [s.chart.chart_type for sl in Presentation(out).slides for s in sl.shapes if s.has_chart]
+        self.assertIn(XL_CHART_TYPE.XY_SCATTER, types)
+
+
+class TableOverflowMessage(unittest.TestCase):
+    def test_overflow_error_says_how_many_rows_fit(self):
+        d = sample()
+        big = {"kind": "table", "title": "Too long", "columns": ["Company", "Weight"],
+               "rows": [[f"Company {i}", f"{i}.0%"] for i in range(11)]}
+        txt = {"kind": "text", "title": "Note", "bullets": ["One point."]}
+        d["scenes"] = [{"type": "panels", "title": "Overflow", "layout": "2x2", "panels": [big, txt, txt, txt]}]
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError) as cm:
+            render.render(d, Path(tmp) / "o.pdf")
+        self.assertRegex(str(cm.exception), r"fits (\d+) rows")
+
+
+class ScatterLabels(unittest.TestCase):
+    def render_words(self, points):
+        import fitz
+        panel = dict(SCATTER, points=points)
+        d = Scatter().doc(panel)
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "s.pdf"
+            render.render(d, out)
+            with fitz.open(out) as doc:
+                return doc[0].get_text("words"), " ".join(doc[0].get_text().split())
+
+    def test_named_points_get_a_label_without_highlight(self):
+        _, text = self.render_words([{"label": "Invesco", "x": 18.9, "y": 22.0, "highlight": True},
+                                     {"label": "Motilal", "x": 21.9, "y": 20.0, "named": True},
+                                     {"label": "Tata", "x": 16.4, "y": 6.2}])
+        self.assertIn("Motilal", text)
+        self.assertNotIn("Tata", text)
+
+    def test_close_labels_do_not_overlap(self):
+        words, _ = self.render_words([{"label": "DSP", "x": 16.0, "y": 13.2, "highlight": True},
+                                      {"label": "Edelweiss", "x": 16.1, "y": 13.3, "highlight": True},
+                                      {"label": "Kotak", "x": 15.7, "y": 13.3, "highlight": True},
+                                      {"label": "Far", "x": 22.0, "y": 6.0}])
+        boxes = [w[:4] for w in words if w[4] in ("DSP", "Edelweiss", "Kotak")]
+        self.assertEqual(len(boxes), 3)
+        for i in range(3):
+            for j in range(i + 1, 3):
+                a, b = boxes[i], boxes[j]
+                overlap = a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
+                self.assertFalse(overlap, f"labels overlap: {a} {b}")
+
+    def test_axes_show_more_than_two_ticks(self):
+        words, _ = self.render_words(SCATTER["points"])
+        nums = {w[4] for w in words if w[4].isdigit()}
+        self.assertGreaterEqual(len(nums), 6)

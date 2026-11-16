@@ -640,8 +640,46 @@ def pn_line(sl, box, pn):
             dl.font.size = Pt(9)
 
 
+def pn_scatter(sl, box, pn):
+    from pptx.chart.data import XyChartData
+    x, y, w, h = box
+    top = _head(sl, box, pn.get("title"))
+    data = XyChartData()
+    groups = [(pn.get("highlight_name", "Highlighted"), INDIGO, [q for q in pn["points"] if q.get("highlight")]),
+              (pn.get("others_name", "Others"), GREY, [q for q in pn["points"] if not q.get("highlight")])]
+    groups = [g for g in groups if g[2]]
+    for name, _, pts in groups:
+        sr = data.add_series(name)
+        for q in pts:
+            sr.add_data_point(q["x"], q["y"])
+    ch = _plain_chart(sl.s.shapes.add_chart(XL_CHART_TYPE.XY_SCATTER, Pt(x), Pt(top), Pt(w), Pt(y + h - top), data).chart)
+    ch.has_legend = True
+    ch.legend.position = XL_LEGEND_POSITION.TOP
+    ch.legend.include_in_layout = False
+    for axis, label in ((ch.category_axis, pn["x_label"]), (ch.value_axis, pn["y_label"])):
+        axis.has_title = True
+        axis.axis_title.text_frame.text = label
+        axis.axis_title.text_frame.paragraphs[0].runs[0].font.size = Pt(9)
+        axis.has_major_gridlines = False
+        axis.tick_labels.font.size = Pt(8)
+    for (name, col, pts), s in zip(groups, ch.plots[0].series):
+        s.format.line.fill.background()
+        s.marker.style = XL_MARKER_STYLE.CIRCLE
+        s.marker.size = 7 if col == INDIGO else 5
+        s.marker.format.fill.solid()
+        s.marker.format.fill.fore_color.rgb = rgb(col)
+        s.marker.format.line.fill.background()
+        for i, q in enumerate(pts):
+            if q.get("highlight") or q.get("named"):
+                dl = s.points[i].data_label
+                dl.has_text_frame = True
+                dl.text_frame.text = q["label"]
+                dl.position = XL_LABEL_POSITION.RIGHT
+                dl.font.size = Pt(8)
+
+
 PANEL = {"bars": pn_bars, "donut": pn_donut, "stack": pn_stack, "table": pn_table,
-         "text": pn_text, "stats": pn_stats, "line": pn_line}
+         "text": pn_text, "stats": pn_stats, "line": pn_line, "scatter": pn_scatter}
 
 
 def panels(sl, sc):

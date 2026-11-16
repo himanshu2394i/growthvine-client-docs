@@ -72,5 +72,6 @@ Each panel has a `kind`, an optional small `title`, and:
 | `text` | `bullets: [...]`: two or three insight sentences |
 | `stats` | `stats: [{value, label}]` |
 | `line` | `x`, `series: [{name, values, end, style}]` |
+| `scatter` | `points: [{label, x, y, highlight}]`, `x_label`, `y_label` (each with its unit), optional `highlight_name` / `others_name` for the legend. Highlighted points are coloured and named; the rest are grey dots. Highlight at most about 8 |
 
 No text anywhere may contain `·`; validation rejects it.

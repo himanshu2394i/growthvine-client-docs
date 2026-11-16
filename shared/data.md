@@ -64,6 +64,19 @@ dates, days to recover, up/down capture, Sharpe, holdings count, top-10 share),
 `allocation` (equity/debt/cash and large/mid/small split), `portfolio`
 (every holding with ISIN, sector and weight; sector weights).
 
+**Reading the data correctly** (learned from test runs):
+- NSE index factsheets are dated the 1st of the month after the data: the
+  factsheet dated 1 Oct 2026 holds **September** figures. Label the month the
+  figures cover, not the factsheet date.
+- `summarize_funds` averages for alpha, beta, Sortino, P/E and similar can count
+  new funds as 0 (their `count` equals the number of funds). Use the median for
+  those, and check `count` before quoting any average.
+- `get_fund_history(type="rolling")` gives monthly points already; only `nav`
+  takes `interval="month"`.
+- Holdings history lists only dates when something changed; `removed: true`
+  marks a full exit. An ISIN change for the same company is not a sale.
+- `find_funds(format="csv")` ignores `limit` and returns the whole match.
+
 ## Calculations: `scripts/analyse.py`
 
 Scripts can't call the MCP, so save each response as a file in a `data/`

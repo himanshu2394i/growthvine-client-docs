@@ -8,7 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-from render import (bar_block, ASSETS, MARK, MARK_RATIO, shot_for, BAR, COLORS, CONTENT_BOTTOM, FOOT_Y, GREY, H, LINE, M,
+from render import (bar_block, nice_ticks, ASSETS, MARK, MARK_RATIO, shot_for, BAR, COLORS, CONTENT_BOTTOM, FOOT_Y, GREY, H, LINE, M,
                     MINT_TINT, NOTE_H, PEACH_TINT, SOFT, W, blend, boxes, col_widths, is_numeric, palette,
                     to_number)
 
@@ -619,7 +619,13 @@ def pn_table(p, box, pn):
         if sum(heights) <= y + h - top:
             break
     else:
-        raise ValueError(f"Scene {p.n}: the '{pn.get('title', 'table')}' panel has too much text. Trim rows or shorten cells.")
+        room, fit = y + h - top - heights[0], 0          # at the smallest size: how many body rows fit
+        for rh in heights[1:]:
+            if room < rh:
+                break
+            room, fit = room - rh, fit + 1
+        raise ValueError(f"Scene {p.n}: the '{pn.get('title', 'table')}' panel has too much text: "
+                         f"it fits {fit} rows here. Trim to {fit} rows or shorten cells.")
     ty = top
     for i, (r, cells, rh) in enumerate(zip([cols] + rows, grid, heights)):
         cx = x
@@ -728,8 +734,69 @@ def pn_line(p, box, pn):
     p.text(x1, y1 + 4, xs[-1], 8, REG, GREY, "right")
 
 
+def pn_scatter(p, box, pn):
+    """One dot per item. Highlighted dots are coloured and named; the rest are grey."""
+    x, y, w, h = box
+    top = _panel_head(p, box, pn.get("title"))
+    pts = pn["points"]
+    lx = x                                                # legend: both colours named
+    for name, col in ((pn.get("highlight_name", "Highlighted"), INDIGO), (pn.get("others_name", "Others"), GREY)):
+        p.c.setFillColor(HexColor(col))
+        p.c.circle(lx + 4, _y(top + 5), 3.5, stroke=0, fill=1)
+        p.text(lx + 12, top, name, 8.5, REG, INK)
+        lx += 30 + pdfmetrics.stringWidth(name, REG, 8.5)
+    top += 18
+    x0, x1, y0, y1 = x + 34, x + w - 8, top + 4, y + h - 30
+    xs, ys = [q["x"] for q in pts], [q["y"] for q in pts]
+    def span(v):
+        lo, hi = min(v), max(v)
+        pad = (hi - lo) * 0.08 or 1
+        return lo - pad, hi + pad
+    (xl, xh), (yl, yh) = span(xs), span(ys)
+    px = lambda v: x0 + (x1 - x0) * (v - xl) / (xh - xl)
+    py = lambda v: y1 - (y1 - y0) * (v - yl) / (yh - yl)
+    for t in nice_ticks(xl, xh):                          # light grid with round ticks
+        p.rect(px(t), y0, 0.5, y1 - y0, "#EEEDF5")
+        p.text(px(t), y1 + 4, f"{t:g}", 8, REG, GREY, "center")
+    for t in nice_ticks(yl, yh):
+        p.rect(x0, py(t), x1 - x0, 0.5, "#EEEDF5")
+        p.text(x0 - 4, py(t) - 4, f"{t:g}", 8, REG, GREY, "right")
+    p.rect(x0, y1, x1 - x0, 0.8, LINE)                    # axes
+    p.rect(x0, y0, 0.8, y1 - y0, LINE)
+    p.text((x0 + x1) / 2, y1 + 15, pn["x_label"], 8.5, REG, INK, "center")
+    p.c.saveState()
+    p.c.translate(x + 8, _y((y0 + y1) / 2))
+    p.c.rotate(90)
+    p.c.setFont(REG, 8.5)
+    p.c.setFillColor(HexColor(INK))
+    p.c.drawCentredString(0, 0, pn["y_label"])
+    p.c.restoreState()
+    for q in sorted(pts, key=lambda q: bool(q.get("highlight"))):     # highlights on top
+        col = INDIGO if q.get("highlight") else GREY
+        p.c.setFillColor(HexColor(col))
+        p.c.circle(px(q["x"]), _y(py(q["y"])), 3.6 if q.get("highlight") else 2.8, stroke=0, fill=1)
+    named = [q for q in pts if q.get("highlight") or q.get("named")]
+    dots = [(px(q["x"]) - 3, py(q["y"]) - 3, px(q["x"]) + 3, py(q["y"]) + 3) for q in pts]
+    placed = []                                           # labels avoid other labels and dots
+    for q in named:
+        qx, qy = px(q["x"]), py(q["y"])
+        lw = pdfmetrics.stringWidth(q["label"], SEMI, 8)
+        tries = [(dx, dy) for dy in (0, -12, 12, -24, 24, -36, 36) for dx in (6, -6 - lw)]
+        best = None
+        for dx, dy in tries:
+            bx = (qx + dx, qy - 5 + dy, qx + dx + lw, qy + 7 + dy)   # text box is ~12pt tall
+            inside = bx[0] >= x0 and bx[2] <= x1 + 6 and bx[1] >= y0 - 6 and bx[3] <= y1
+            clash = any(bx[0] < b[2] and b[0] < bx[2] and bx[1] < b[3] and b[1] < bx[3] for b in placed + dots)
+            if inside and not clash:
+                best = bx
+                break
+        best = best or (qx + 6, qy - 5, qx + 6 + lw, qy + 7)
+        placed.append(best)
+        p.text(best[0], best[1] + 1, q["label"], 8, SEMI, INK)
+
+
 PANEL = {"bars": pn_bars, "donut": pn_donut, "stack": pn_stack, "table": pn_table,
-         "text": pn_text, "stats": pn_stats, "line": pn_line}
+         "text": pn_text, "stats": pn_stats, "line": pn_line, "scatter": pn_scatter}
 
 
 def panels(p, s):

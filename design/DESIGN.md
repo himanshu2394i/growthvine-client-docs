@@ -42,36 +42,12 @@ pages, comments that interpret the data):
 | 5. What we'd look at | Observations to discuss | `text` panels with observations tied to the client's horizon and risk, plus the advisor's recommendations (D2) if any. Phrased as things worth discussing, never instructions |
 | Close | Sources, disclaimer, contact | |
 
-*Fund report*
-
-| Act | Typical panel pages |
-|---|---|
-| Cover | Fund name, the decision it helps with |
-| 1. The fund at a glance | Strip (returns, size, charge, holdings); what it does; manager and process (`text`) |
-| 2. How it has done | Returns vs market and category (`bars`), growth (`line`), calendar-year returns (`bars`), rolling returns (`line`) |
-| 3. How it behaves | Worst falls and recovery (`stats`), up/down capture (`bars`), swing vs category (`bars`) |
-| 4. What it owns | Holdings (`table`), sectors (`bars`), company size or asset mix (`stack`) |
-| 5. Where it ranks | Category leaders with this fund highlighted (`table`), our view (`text`) |
-
-*Category report*
-
-| Act | Typical panel pages |
-|---|---|
-| Cover | Category, period |
-| 1. What the category does | Plain-words description (`text`), typical mix (`stack`), category averages (`stats`) |
-| 2. How it has done | Average and range of returns by period (`bars`), against the market (`bars`) |
-| 3. Risk and cost | Swing, worst falls, charges across the category (`bars` or `table`) |
-| 4. The leaders | Growthvine's top funds with key figures (`table`), what sets them apart (`text`) |
-
-*Market report*
-
-| Act | Typical panel pages |
-|---|---|
-| Cover | Period, the period in one line |
-| 1. What happened | Index returns over the period (`bars`), index levels over time (`line`) |
-| 2. Under the surface | Large vs mid vs small (`bars`), sectors (`bars`), valuations from NSE factsheets (`table`) |
-| 3. Bonds and gold | Yields and duration (`table`), gold (`stats`) if covered |
-| 4. What it means for you | The advisor's themes (`text`), how fund categories did (`table`) if asked. Describe and explain; never forecast |
+*Fund, category and market reports*: no default arc. The section and
+subsection menus live in `fund/QUESTIONS.md`, `category/QUESTIONS.md` and
+`market/QUESTIONS.md`. Each section the advisor keeps is an act; each
+subsection is a page or a panel. Pre-tick most subsections (rich by default),
+offer the "go deeper" extras after each section, and let the advisor decide
+where to stop.
 
 Scene jobs to choose from: set the scene, your profile, the plan, compare the
 options, each bucket / holding's role, getting your money out, what to expect
@@ -158,6 +134,9 @@ Propose a display per scene from this menu; the advisor confirms or swaps.
 | Overlap between funds | `table` with `heat: true` (fund x fund, %) | short `text` naming the highest pair |
 | Projection from the advisor's rate | `stats` (range, value after N years, typical swing) | `table` |
 | Several views of one subject (a fund, the plan, the market) | `panels` | separate scenes |
+| Many items on two measures (every fund's risk and return) | `scatter` panel, the items that matter highlighted and named | `table` |
+| A measure over time (rolling return, P/E, bond yield) | `line` panel | `table` of a few dates |
+| What changed (bought, sold, increased, cut) | `table` with a change column | `text` |
 
 **Content-heavy by default.** Think of a CFA preparing the proposal. Most content
 scenes should be `panels` scenes: 2-4 panels on one page (a chart, a compact
@@ -181,6 +160,29 @@ Good panel pages:
 
 When several options are compared in one document, show **every option's
 holdings**, not only Option 1's.
+
+**Presentation rules learned from test runs** (keep adding to this list):
+- A number alone means little: put a reference next to it (category average,
+  the market, its own history). A capture chart shows the category average; a
+  fund's swing shows the category's.
+- Bars stay compact by themselves (the renderer caps the gap). A bars panel with
+  only one or two bars and nothing to compare with is still thin: add a
+  reference series, or use `stats` instead.
+- A page of only `text` panels gets a `strip` of the key numbers on top.
+- Never fill a gap with a "not available" or "not compared" row; drop the row.
+- Explain with words, not made-up numbers: "it rose about a third more than the
+  market", not "₹100 became ₹134" (an invented example fails the check).
+- Long titles shrink to fit on the cover and act pages; still prefer short ones.
+- Short names must stay distinct: drop the category words ("Large & Mid Cap")
+  but keep what tells funds apart ("Mirae Asset" vs "Mirae Asset ... FOF").
+  Don't shorten index names to bare numbers ("50", "500").
+- If the text mentions a point on a chart, that point is named on the chart
+  (`named: true` on a scatter point names it without highlighting it).
+- A table in a quarter-page panel (`2x2`) fits about 6 rows; half-page about 11.
+  If the renderer says a panel is too long, it says how many rows fit: trim to
+  that and move the rest to another panel.
+- Keep reference figures (category, market) on the same as-of date as the
+  figures they sit next to, or say both dates.
 
 Rules: every chart must say what it shows: a panel title naming the measure and unit ("Return a year, 3 and 5 years", "₹ crore after"), and a name for every colour (series, slices, segments). Never leave a reader guessing which line is which. One main idea per scene; every number visible on the page (no
 hover-only data); tables for anything the client may check line by line.

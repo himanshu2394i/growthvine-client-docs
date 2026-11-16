@@ -126,7 +126,8 @@ REQUIRED = {
 }
 LAYOUTS = {"2": 2, "3": 3, "2x2": 4, "1+2": 3, "2+1": 3}
 PANEL_REQUIRED = {"bars": ["series", "categories"], "donut": ["slices"], "table": ["columns", "rows"],
-                  "text": ["bullets"], "stack": ["segments"], "line": ["x", "series"], "stats": ["stats"]}
+                  "text": ["bullets"], "stack": ["segments"], "line": ["x", "series"], "stats": ["stats"],
+                  "scatter": ["points", "x_label", "y_label"]}
 GAP = 18
 
 
@@ -134,6 +135,20 @@ def bar_block(avail, n_cats, n_series):
     """Height per category in a bars panel: share the space, but never more than
     the bars need plus a small gap, so a few bars don't float apart."""
     return min(avail / n_cats, n_series * 14 + (n_series - 1) * 3 + 14)
+
+
+def nice_ticks(lo, hi, target=4):
+    """Round tick values (steps of 1, 2 or 5 x 10^k) covering lo..hi."""
+    import math
+    raw = (hi - lo) / target or 1
+    mag = 10 ** math.floor(math.log10(raw))
+    step = next(m * mag for m in (1, 2, 5, 10) if m * mag >= raw)
+    t = math.ceil(lo / step) * step
+    out = []
+    while t <= hi + 1e-9:
+        out.append(round(t, 10))
+        t += step
+    return out
 
 
 def boxes(layout, top, bottom, left=M, right=W - M):
