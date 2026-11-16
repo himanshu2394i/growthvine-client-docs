@@ -1,9 +1,10 @@
-# Content films (in design: storyboards only for now)
+# Content films
 
 Turn any document this skill makes into a film: a proposal, a portfolio
-assessment, a fund, category or market report. The rendering pipeline isn't
-built yet, so for now produce a **storyboard** (key frames plus what moves) for
-the advisor to review. Each document type has its own notes, added as we test
+assessment, a fund, category or market report. **The deliverable is always an MP4 video with music** (16:9, 1920x1080, 30 fps,
+2 to 3 minutes, an original ambient score with low hits on key numbers and
+whooshes on scene changes). A contact sheet of key frames is only the preview
+step before the full render, never the deliverable. Each document type has its own notes, added as we test
 them: `content/proposal.md` so far.
 
 ## What these films are
@@ -26,6 +27,22 @@ them: `content/proposal.md` so far.
   assessment) is for that client only. Fund, category and market films can
   also have a general brand version.
 
+## Detailed, useful, in our voice
+
+A film exists because it explains something useful, not to look nice. Each
+question gets a full answer with real supporting data, so the client's doubts
+are actually cleared:
+- Answer with two or three linked pieces of data, not one number: e.g. "Are
+  these funds any good?" = growth of ₹1 lakh against the market **plus** 3- and
+  5-year returns **plus** what has no comparable record.
+- Add the questions a client would ask next (what's inside each part, how bad a
+  fall can get and what cushions it, which industries they'd own).
+- Every question scene ends with **Growthvine's voice**: one bold line with a
+  mint tick saying what we do and why ("Every rupee gets a job before it gets a
+  fund"; "We don't try to time the start"), plus one supporting line. The
+  reasons must come from the document and the data, never invented claims.
+- Pace for reading: a dense scene needs 12 to 17 seconds.
+
 ## The advisor's menu (same approach as the reports)
 
 Suggest more; the advisor picks. Offer:
@@ -41,8 +58,13 @@ Suggest more; the advisor picks. Offer:
 ## Storyboard
 
 For each scene: the question (if any), what the viewer sees and how it moves,
-the answer line on screen, the data and its source, and the timing. Draw one
-key frame per scene at 1920x1080 and look at every frame before sending.
+the answer line on screen, the data and its source, and the timing. Render a
+still of each scene's final state at 1920x1080, look at every one (overlaps,
+long source lines hitting the logo), fix, then render the film.
+
+How it's made: `scripts/film.py` (Pillow draws each frame from the data,
+ffmpeg encodes one clip per scene in parallel, joins them and lays the
+ffmpeg-made score under it). No other installs needed.
 
 Screen grammar used so far:
 - Private title card (letterboxed) → cold open with the main amount counting
@@ -71,6 +93,10 @@ Someone with compliance responsibility signs off before anything is sent.
 
 - Labels under a split bar go in even columns, not under each segment: a narrow
   segment (₹30 L of ₹3 Cr) otherwise squeezes its label into the next one.
+- A source line stays one short line; long caveats go in the supporting line
+  above it, or they run into the corner logo.
+- Table columns on screen: leave room for the longest name before the first
+  number column.
 - In a network of funds (overlap), put a crossing line's label off-centre (about
   a third along) with a dark backing, or the two middle labels collide. Circles
   must fit the longest name.
