@@ -61,4 +61,4 @@ offer a deep menu, the advisor picks. **Always suggest more**.
 - `summarize_funds(group_by=["category"], filters={"plan": "regular"}, stats=["return_1m", "return_3m", "return_1y"])` if fund categories are in
 
 Compute index growth with `scripts/analyse.py`. No forecasts, no "markets
-will". Then `design/DESIGN.md`.
+will". Offer the analyses for this type in `content/ANALYSES.md` (rupee translations, same-basis comparisons, what the data does not show). Then `design/DESIGN.md`.

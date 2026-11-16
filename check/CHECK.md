@@ -22,6 +22,11 @@ rule to make a mismatch disappear.
 
 ## B. After building: verify the document
 
+0. **Wording first:** `python film/gates/wording.py scenes.json`. Rewrite every
+   HARD finding (AI tells, fragments, slogans, promises, loose financial
+   language); keep a REVIEW finding only with a reason. Then read every title
+   and bullet yourself against `content/WRITING.md`: the checker finds patterns,
+   not false reasons ("X, which is why Y" must be true in the data).
 1. Make sure `inputs.json` holds the **confirmed** inputs (after part A), with:
    - any field the document groups by (e.g. `liquidity` on each holding, if the
      document shows "₹1.20 Cr within a week"),

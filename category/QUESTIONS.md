@@ -65,4 +65,4 @@ Same flow as the fund report: sections first, then subsections pre-ticked,
 - Nifty 500 TRI month-ends for the market comparison
 
 Use the fund data's own ranking; never re-rank by a single return. Print the
-ranking date. Then `design/DESIGN.md`.
+ranking date. Offer the analyses for this type in `content/ANALYSES.md` (rupee translations, same-basis comparisons, what the data does not show). Then `design/DESIGN.md`.

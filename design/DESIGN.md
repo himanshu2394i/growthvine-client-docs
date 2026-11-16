@@ -205,6 +205,15 @@ Scene field formats and limits: `design/SCENES.md`.
 Ask: tone (warm / formal), simplicity (from the client's experience answer;
 confirm), length (short / standard / detailed). English only for now.
 
+**Every word in a PDF or PPT follows `content/WRITING.md`** (an analyst's
+specific, measured wording; no AI tells; no fragments, slogans or "not X, but
+Y"; explain why, not what; no fake precision), **and every data page uses the
+analyses in `content/ANALYSES.md`** (each important percentage translated into
+rupees on the client's money; the same data and period for anything compared on
+one page; unflattering findings shown; limits stated). Titles, loglines,
+bullets and notes are all checked by `film/gates/wording.py <scenes.json>`
+before rendering (see `check/CHECK.md`).
+
 Copy rules: no `·` separators anywhere (use commas or new lines; the renderer
 rejects them); plain words; explain any unavoidable term in the same sentence; no
 em-dashes; no hype ("best", "guaranteed", "superb"); numbers exactly as the

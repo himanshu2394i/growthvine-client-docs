@@ -97,6 +97,23 @@ liquidity vs A3, fit with A4, cost, anything that looks off. Mark it clearly as
 your view. The advisor decides; their data in the document doesn't change unless
 they change it.
 
+## Analyses to offer (from `content/ANALYSES.md`)
+
+Suggest these as extra pages or film scenes; the advisor ticks what goes in.
+Compute each from the confirmed inputs and fund data, on one basis and period:
+
+- **Falls in rupees:** each fund's worst fall, the proposed mix's and the
+  benchmark's, with the rupee drop at the low on the client's amounts.
+- **Do the funds diversify each other?** Holdings overlap (shown as "₹X of every
+  ₹100"), monthly return correlation, and the mix's volatility against the
+  weighted average of the funds'. Show the result even when the benefit is small.
+- **Concentration in rupees:** the largest company and sector in % and ₹.
+- **Access:** the liquidity ladder and the share redeemable within a week;
+  money locked, by product and for how long.
+- **Two options side by side:** amounts, holdings, access, lock-in, the advisor's
+  expected return (labelled an estimate).
+- **What the data does not show:** which products publish no comparable record.
+
 ## Done when
 
 All required items are answered, the reconcile check is clean or every issue is

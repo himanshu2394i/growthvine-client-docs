@@ -1,6 +1,7 @@
 """Wording check: flags AI tells and loose financial language in film or document text.
 
     python film/gates/wording.py <film_dir>          # voice lines (film.json) + on-screen text (compositions/*.html)
+    python film/gates/wording.py <scenes.json>       # a PDF/PPT document
     python film/gates/wording.py --text "a line"     # one line
 
 Our own rules, written for Growthvine; the categories draw on stop-slop (Hardik Pandya, MIT), FeedHive's
@@ -60,7 +61,9 @@ VERBS = set("""is are was were be been being has have had do does did can could 
 returns fell fall falls rose rise rises grew grow grows holds hold held takes take took adds add added gives give gave sits sit shows show
 showed make makes made invest invested redeem redeemed explains explain answers answer covers cover share shares beat beats compounds
 compounded locked lowers lower moves move expect expects account accounts overlap overlaps raise raises divided split propose buys buy
-pays pay""".split())
+pays pay mean means earn earns carry carries describe describes predict predicts look looks become becomes
+stay stays keep keeps cost costs run runs rank ranks lead leads trail trails differ differs suit suits need needs fit fits
+own owns trade trades""".split())
 
 
 def visible_text(path):
@@ -81,7 +84,7 @@ def visible_text(path):
 def fragments(text):
     """Sentences (ending in a full stop) of up to eight words with no verb: drama, not information."""
     out = []
-    for sent in re.findall(r"(?:[^.!?]|(?<=\d)\.(?=\d))+\.", text):          # a decimal point is not a full stop
+    for sent in re.findall(r"(?:[^.!?]|(?<=\d)\.(?=\d))+\.(?!\d)", text):          # a decimal point is not a full stop
         ws = re.findall(r"[A-Za-z']+", sent)
         if 0 < len(ws) <= 8 and not any(w.lower() in VERBS or w.lower().endswith("ed") for w in ws):
             out.append(sent.strip())
@@ -118,8 +121,38 @@ def collect(film_dir):
     return items
 
 
+SKIP_KEYS = {"type", "layout", "kind", "tone", "style", "palette", "as_of", "sources", "disclaimer", "contact", "rm", "date",
+             "footer", "client", "eyebrow", "label", "columns", "center", "number"}
+
+
+def collect_document(path):
+    """Every prose string in a document's scenes.json (PDF/PPT), skipping layout fields, legal text and tables."""
+    doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    items = []
+
+    def walk(o, where, key=None):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k not in SKIP_KEYS and k != "rows":
+                    walk(v, where, k)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v, where, key)
+        elif isinstance(o, str) and " " in o and re.search("[a-z]{3}", o):
+            items.append((f"{where} {key}", o, False))
+
+    for i, s in enumerate(doc.get("scenes", []), 1):
+        walk(s, f"scene {i}")
+    return items
+
+
 def main(argv):
-    items = [("text", " ".join(argv[1:]), True)] if argv[:1] == ["--text"] else collect(argv[0])
+    if argv[:1] == ["--text"]:
+        items = [("text", " ".join(argv[1:]), True)]
+    elif argv[0].endswith(".json") and Path(argv[0]).is_file():
+        items = collect_document(argv[0])                     # a document's scenes.json
+    else:
+        items = collect(argv[0])                              # a film folder
     hard = review = 0
     for where, text, voice in items:
         for level, rid, frag, fix in check(text, voice):

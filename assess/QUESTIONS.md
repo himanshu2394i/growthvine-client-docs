@@ -56,6 +56,16 @@ concentration, cost drag, mismatch between the mix and the client's risk or
 horizon, funds lagging their category for long stretches, liquidity. Mark it as
 your view. Nothing from it goes in the document unless the advisor adopts it.
 
+## Analyses to offer (from `content/ANALYSES.md`)
+
+- **What drove the result:** each holding's contribution to the portfolio's return.
+- **Against the plan:** current allocation against the client's target, with drift.
+- **The whole portfolio's worst fall in rupees**, beside the benchmark's, on one basis.
+- **Do the funds diversify each other?** Overlap per ₹100, return correlation,
+  the portfolio's volatility against the weighted average of its funds'.
+- **Concentration in rupees:** largest company and sector.
+- **What changed since the last review**, if a previous review exists.
+
 ## Done when
 
 Required items are answered, inputs reconciled, fund matches confirmed, the

@@ -88,4 +88,4 @@ two small ones onto a page.
   for category averages
 
 Run `scripts/analyse.py` for returns vs the market on one common date and the
-growth chart. Then `design/DESIGN.md`.
+growth chart. Offer the analyses for this type in `content/ANALYSES.md` (rupee translations, same-basis comparisons, what the data does not show). Then `design/DESIGN.md`.
