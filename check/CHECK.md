@@ -43,6 +43,10 @@ rule to make a mismatch disappear.
    true ("most of your money" must really be most), as-of dates on data scenes,
    and every chart readable on its own: a title with the measure and unit, and
    every colour named (look at the rendered pages, not just the JSON).
+6. When you render the PDF, `render.py` lists any page with too much empty
+   space. Fill each one (see "No page may be half empty" in
+   `design/DESIGN.md`), render again, and verify again. Don't send a document
+   that still has empty-space lines.
 
 ## C. Deliver
 

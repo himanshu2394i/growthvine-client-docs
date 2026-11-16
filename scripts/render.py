@@ -283,6 +283,28 @@ def preview(pdf_path, out_dir, dpi=60):
     return paths
 
 
+SPARSE_BY_DESIGN = {"cover", "act", "statement", "close"}
+
+
+def empty_space(pdf_path, doc, limit=0.3):
+    """Content pages whose lower part is mostly blank, as messages to fix."""
+    import fitz
+    msgs = []
+    with fitz.open(pdf_path) as pdf:
+        for n, (page, s) in enumerate(zip(pdf, doc["scenes"]), 1):
+            if s["type"] in SPARSE_BY_DESIGN:
+                continue
+            ys = [b[3] for b in page.get_text("blocks") if b[3] < CONTENT_BOTTOM]
+            ys += [d["rect"].y1 for d in page.get_drawings()
+                   if d["rect"].y1 < CONTENT_BOTTOM and d["rect"].height < H * 0.9]
+            gap = (CONTENT_BOTTOM - max(ys, default=0)) / (CONTENT_BOTTOM - 110)
+            if gap > limit:
+                msgs.append(f"Scene {n} ('{s['title'][:50]}'): about {gap:.0%} of the page is empty at the bottom. "
+                            "Add a strip of key numbers, a note, or another panel (e.g. a chart for the "
+                            "same figures), merge it with the next page, or use a layout with more panels.")
+    return msgs
+
+
 def main(argv):
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -309,6 +331,12 @@ def main(argv):
             out.unlink()
         return 1
     print(f"Rendered {len(doc['scenes'])} scenes to {out}")
+    if out.suffix.lower() == ".pdf":
+        gaps = empty_space(out, doc)
+        if gaps:
+            print(f"{len(gaps)} page(s) with too much empty space (fill them before sending):")
+            for g in gaps:
+                print(f"- {g}")
     if len(argv) == 4:
         if out.suffix.lower() != ".pdf":
             print("Previews are made from PDFs; render a .pdf to preview.")

@@ -546,3 +546,60 @@ class ScatterLabels(unittest.TestCase):
         words, _ = self.render_words(SCATTER["points"])
         nums = {w[4] for w in words if w[4].isdigit()}
         self.assertGreaterEqual(len(nums), 6)
+
+
+class BlankHeaderTable(unittest.TestCase):
+    """A table whose column headers are all blank draws no header row (no thin
+    coloured strip for the first row to overlap)."""
+    PANEL = {"kind": "table", "title": "Key facts", "columns": ["", ""],
+             "rows": [["Fund manager", "Aditya Khemani"], ["Fund house", "Invesco Mutual Fund"]]}
+
+    def doc(self):
+        d = sample()
+        txt = {"kind": "text", "title": "Note", "bullets": ["One point."]}
+        d["scenes"] = [{"type": "panels", "title": "Facts", "layout": "2", "panels": [self.PANEL, txt]}]
+        return d
+
+    def test_pdf_draws_no_header_band(self):
+        import fitz
+        import render_pdf
+        band = render_pdf.blend(render_pdf.WHITE, render_pdf.INDIGO, 0.12).lstrip("#").lower()
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "t.pdf"
+            render.render(self.doc(), out)
+            with fitz.open(out) as doc:
+                fills = ["".join(f"{round(c * 255):02x}" for c in d["fill"])
+                         for d in doc[0].get_drawings() if d.get("fill")]
+        self.assertNotIn(band, fills)
+
+    def test_pptx_table_has_only_body_rows(self):
+        from pptx import Presentation
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "t.pptx"
+            render.render(self.doc(), out)
+            tables = [s.table for s in Presentation(out).slides[0].shapes if s.has_table]
+        self.assertEqual(len(tables[0].rows), 2)
+
+
+class EmptySpace(unittest.TestCase):
+    """render.empty_space names content pages whose lower part is mostly blank."""
+    def pages(self, scenes):
+        d = sample()
+        d["scenes"] = scenes
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "e.pdf"
+            render.render(d, out)
+            return render.empty_space(out, d)
+
+    def test_short_panels_page_is_flagged(self):
+        short = {"kind": "text", "title": "Note", "bullets": ["One point."]}
+        msgs = self.pages([{"type": "panels", "title": "Half empty", "layout": "2", "panels": [short, short]}])
+        self.assertEqual(len(msgs), 1)
+        self.assertRegex(msgs[0], r"Scene 1 .*\d+% of the page is empty")
+
+    def test_act_pages_are_not_flagged(self):
+        self.assertEqual(self.pages([{"type": "act", "number": "01", "title": "Part one", "logline": "Short."}]), [])
+
+    def test_full_page_is_not_flagged(self):
+        line = copy.deepcopy(LINE)
+        self.assertEqual(self.pages([line]), [])

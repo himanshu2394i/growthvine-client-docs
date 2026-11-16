@@ -183,6 +183,18 @@ holdings**, not only Option 1's.
   that and move the rest to another panel.
 - Keep reference figures (category, market) on the same as-of date as the
   figures they sit next to, or say both dates.
+- No page may be half empty. Short panels (a 3-row table, two bullets, a
+  two-bar chart) in a `2` or `3` layout leave the bottom of the page blank.
+  When the renderer reports "N% of the page is empty", fill it with real data,
+  never by stretching:
+  - switch to `2x2` and add a panel that deepens the same point: a chart of the
+    table's figures, the reference it lacks (category, market), the path behind
+    it (a line), or a stats panel of the extremes (best, worst, how many);
+  - add a `strip` of key numbers, or a `note`;
+  - merge it with the next small subsection;
+  - turn a long `text` panel's figures into a table or chart.
+  A key-facts table with blank column headers draws no header row.
+  Cover, act, statement and close pages are sparse by design.
 
 Rules: every chart must say what it shows: a panel title naming the measure and unit ("Return a year, 3 and 5 years", "₹ crore after"), and a name for every colour (series, slices, segments). Never leave a reader guessing which line is which. One main idea per scene; every number visible on the page (no
 hover-only data); tables for anything the client may check line by line.

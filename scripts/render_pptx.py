@@ -544,20 +544,22 @@ def pn_table(sl, box, pn):
     cols, rows = pn["columns"], [[str(v) for v in r] for r in pn["rows"]]
     widths = col_widths(cols, rows, w)
     numeric = [j > 0 and all(is_numeric(r[j]) for r in rows) for j in range(len(cols))]
-    row_h = min(22, (y + h - top) / (len(rows) + 1))
+    head = [cols] if any(c.strip() for c in cols) else []     # blank headers: no header row
+    body = head + rows
+    row_h = min(22, (y + h - top) / len(body))
     heat_max = max([to_number(r[j]) or 0 for r in rows for j in range(len(cols)) if numeric[j]] or [1]) or 1
-    gf = sl.s.shapes.add_table(len(rows) + 1, len(cols), Pt(x), Pt(top), Pt(w), Pt(row_h * (len(rows) + 1)))
+    gf = sl.s.shapes.add_table(len(body), len(cols), Pt(x), Pt(top), Pt(w), Pt(row_h * len(body)))
     tbl = gf.table
     tbl.first_row = tbl.horz_banding = False
     for j in range(len(cols)):
         tbl.columns[j].width = Pt(widths[j])
-    for i, r in enumerate([cols] + rows):
+    for i, r in enumerate(body):
         tbl.rows[i].height = Pt(row_h)
         for j, v in enumerate(r):
             cell = tbl.cell(i, j)
             cell.fill.solid()
             shade = WHITE
-            if i == 0:
+            if i == 0 and head:
                 shade = blend(WHITE, INDIGO, 0.12)
             elif pn.get("heat") and numeric[j] and to_number(v):
                 shade = blend(WHITE, INDIGO, 0.08 + 0.5 * to_number(v) / heat_max)
@@ -570,7 +572,7 @@ def pn_table(sl, box, pn):
             para.alignment = PP_ALIGN.RIGHT if numeric[j] else PP_ALIGN.LEFT
             run = para.add_run()
             run.text = v
-            run.font.size, run.font.name = Pt(9), SEMI if (i == 0 or j == 0) else REG
+            run.font.size, run.font.name = Pt(9), SEMI if ((i == 0 and head) or j == 0) else REG
             run.font.color.rgb = rgb(INK)
 
 

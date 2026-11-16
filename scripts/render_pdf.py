@@ -616,6 +616,8 @@ def pn_table(p, box, pn):
         grid = [[[c] if (numeric[j] and i > 0) else wrap(c, SEMI if i == 0 else REG, size, widths[j] - 12)
                  for j, c in enumerate(r)] for i, r in enumerate([cols] + rows)]   # headers always wrap
         heights = [max(len(cl) for cl in r) * lead + 7 for r in grid]
+        if not any(c.strip() for c in cols):     # blank headers: no header row at all
+            heights[0] = 0
         if sum(heights) <= y + h - top:
             break
     else:
@@ -629,7 +631,7 @@ def pn_table(p, box, pn):
     ty = top
     for i, (r, cells, rh) in enumerate(zip([cols] + rows, grid, heights)):
         cx = x
-        if i == 0:
+        if i == 0 and rh:
             p.rect(x, ty, w, rh, blend(WHITE, INDIGO, 0.12))
         elif pn.get("heat"):
             hx = x
