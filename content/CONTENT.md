@@ -5,7 +5,7 @@ assessment, a fund, category or market report. **The deliverable is always an MP
 2 to 3 minutes, an original score (soft keys arpeggio over a warm pad, C, Am, F, G) with low hits on key numbers and
 whooshes on scene changes). A contact sheet of key frames is only the preview
 step before the full render, never the deliverable. Each document type has its own notes, added as we test
-them: `content/proposal.md` so far.
+them: `content/proposal.md`, `content/assess.md`.
 
 ## What these films are
 

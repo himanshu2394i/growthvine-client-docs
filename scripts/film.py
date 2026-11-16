@@ -119,6 +119,80 @@ def dashed(d, pts, fill, width, dash=20, gapl=16):
                 on, left = not on, (gapl if on else dash)
 
 
+# ---- shared screen pieces -------------------------------------------------------------
+_logos = {}
+
+
+def logo(name, width):
+    if (name, width) not in _logos:
+        im = Image.open(SKILL / "assets/logos" / name).convert("RGBA")
+        _logos[(name, width)] = im.resize((width, int(width * im.height / im.width)), Image.LANCZOS)
+    return _logos[(name, width)]
+
+
+def corner(img, t):
+    lg = logo("logo-mono-white.png", 96)
+    paste(img, lg, 1824 - lg.width, 1010, a=0.5 * p(t, 0.5, 1))
+
+
+def bar(d, x, y, w, h, col, k=1.0, r=6):
+    if w * k > 2:
+        d.rounded_rectangle((x, y, x + w * k, y + h), r, fill=col)
+
+
+def voice(d, t, t0, s, y=930, size=36):
+    """Growthvine's voice: a bold line with a mint tick."""
+    k = p(t, t0, 0.8)
+    if k > 0:
+        d.rectangle((96, y - size + 4, 96 + 6 * k, y + 6), fill=mix(BG, MINT, k))
+        text(d, 122, y, s, size, WHITE, 600, a=k)
+
+
+def end_card(img, d, t, client, data_line):
+    lg = logo("logo-dark-tagline.png", 420)
+    paste(img, lg, 960 - lg.width / 2, 300, a=p(t, 0.3, 1.2))
+    text(d, 960, 640, f"Private and confidential. Prepared only for {client}.", 24, GREY, anchor="ms", a=p(t, 1.6, 1))
+    for i, ln in enumerate(["Growthvine Capital. AMFI-registered Mutual Fund Distributor, ARN-176753.",
+                            "Investments in mutual funds, SIFs, PMS, AIFs and structured products are subject to market risks.",
+                            "Past performance does not indicate future results. Expected figures are estimates, not guarantees. Not a recommendation.",
+                            data_line]):
+        text(d, 960, 760 + i * 36, ln, 20, GREY, anchor="ms", a=p(t, 2.2 + i * 0.2, 1))
+
+
+def private_title(d, t, client, line):
+    spaced(d, 960, 470, "A PRIVATE BRIEFING", 22, INDIGO, gap=8, a=p(t, 0.4, 0.8), center=True)
+    w = 120 * p(t, 0.9, 1.0)
+    d.rectangle((960 - w / 2, 500, 960 + w / 2, 502), fill=INDIGO)
+    words_up(d, 960, 590, f"For {client}", 76, WHITE, t, 1.5, anchor_center=True)
+    text(d, 960, 660, line, 26, GREY, anchor="ms", a=p(t, 2.6, 1))
+
+
+def network(img, d, t, pos, pairs, t0, hi=None):
+    """Funds as circles, shared money as threads; crossing lines get off-centre labels."""
+    if "circle" not in _logos:
+        _logos["circle"] = sprite(lambda dr, sc: dr.ellipse((3 * sc, 3 * sc, 167 * sc, 167 * sc), fill=PANEL, outline=INDIGO, width=3 * sc), 170, 170)
+    hi = hi if hi is not None else max(v for *_, v in pairs)
+    names = list(pos)
+    crossing = [{names[0], names[3]}, {names[1], names[2]}] if len(names) == 4 else []
+    for i, (a, b, v) in enumerate(pairs):
+        (x1, y1), (x2, y2) = pos[a], pos[b]
+        k = p(t, t0 + 1.4 + i * 0.35, 0.9, inout)
+        if k > 0:
+            d.line((x1, y1, x1 + (x2 - x1) * k, y1 + (y2 - y1) * k), fill=PEACH if v == hi else DIM, width=int(2 + v / 6))
+    for i, (a, b, v) in enumerate(pairs):
+        (x1, y1), (x2, y2) = pos[a], pos[b]
+        f = 0.3 if {a, b} in crossing else 0.5
+        lx, ly = x1 + (x2 - x1) * f, y1 + (y2 - y1) * f
+        al = p(t, t0 + 2.2 + i * 0.35, 0.6)
+        if al > 0:
+            d.rounded_rectangle((lx - 34, ly - 22, lx + 34, ly + 14), 6, fill=BG)
+            text(d, lx, ly + 6, f"{v:.0f}%", 24, PEACH if v == hi else GREY, 600, anchor="ms", a=al)
+    for i, (name, (x, y)) in enumerate(pos.items()):
+        a = p(t, t0 + i * 0.25, 0.6)
+        paste(img, _logos["circle"], x - 85, y - 85, a=a)
+        text(d, x, y + 8, name, 21, WHITE, 600, anchor="ms", a=a, bg=PANEL)
+
+
 # ---- finishing: vignette, grain, fades -----------------------------------------
 _vig = None
 _grain = []
@@ -219,7 +293,7 @@ def build(module, out_mp4, workdir, workers=12, reuse=False):
     import importlib
     from multiprocessing import Pool
     mod = importlib.import_module(module)
-    workdir = Path(workdir).resolve()           # concat reads paths relative to the list file: use absolute ones
+    workdir = Path(workdir).absolute()          # concat reads paths relative to the list file (resolve() stays relative on py3.9 Windows for new dirs)
     workdir.mkdir(exist_ok=True)
     jobs = [(i, module, workdir / f"scene_{i:02d}.mp4") for i in range(len(mod.SCENES))]
     todo = [j for j in jobs if not (reuse and j[2].exists())]
