@@ -2,7 +2,7 @@
 
 Turn any document this skill makes into a film: a proposal, a portfolio
 assessment, a fund, category or market report. **The deliverable is always an MP4 video with music** (16:9, 1920x1080, 30 fps,
-2 to 3 minutes, an original ambient score with low hits on key numbers and
+2 to 3 minutes, an original score (soft keys arpeggio over a warm pad, C, Am, F, G) with low hits on key numbers and
 whooshes on scene changes). A contact sheet of key frames is only the preview
 step before the full render, never the deliverable. Each document type has its own notes, added as we test
 them: `content/proposal.md` so far.

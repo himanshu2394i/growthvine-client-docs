@@ -174,20 +174,33 @@ def still(module, idx, t):
 
 # ---- music ---------------------------------------------------------------------------
 def score(total, booms, whooshes, out):
-    """Original ambient score: two slow alternating chords with swells, a soft high shimmer,
-    low booms on key numbers and filtered-noise whooshes on scene changes."""
-    chord_a = [73.42, 110.0, 146.83, 185.0, 220.0]          # D, A, D, F#, A
-    chord_b = [65.41, 98.0, 130.81, 164.81, 246.94]         # C, G, C, E, B
-    va = "+".join(f"sin(2*PI*{f}*t)*(0.6+0.4*sin(2*PI*0.05*t+{i}))" for i, f in enumerate(chord_a))
-    vb = "+".join(f"sin(2*PI*{f}*t)*(0.6+0.4*sin(2*PI*0.04*t+{i}))" for i, f in enumerate(chord_b))
-    pad = (f"0.05*(({va})*(0.5+0.5*cos(2*PI*t/32))+({vb})*(0.5-0.5*cos(2*PI*t/32)))"
-           f"+0.012*sin(2*PI*880*t)*(0.5+0.5*sin(2*PI*0.07*t))")
-    inputs = ["-f", "lavfi", "-i", f"aevalsrc='{pad}|{pad}':s=44100:d={total}"]
-    filt = ["[0]lowpass=f=1400,aecho=0.8:0.7:120|260:0.35|0.25,afade=t=in:d=4,afade=t=out:st={:.2f}:d=5,volume=1.0[pad]".format(total - 5)]
+    """Original score: a soft piano-like arpeggio over a slow C - Am - F - G progression (12 s a chord),
+    a breathing pad and a low pulse on each chord change, with echo for space. Low booms on key
+    numbers and filtered-noise whooshes on scene changes."""
+    def sel(var, vals):                       # nested if: vals[var]
+        e = str(vals[-1])
+        for i in range(len(vals) - 2, -1, -1):
+            e = f"if(eq({var},{i}),{vals[i]},{e})"
+        return e
+    tones = [[0, 4, 7, 11, 12], [0, 3, 7, 10, 12], [0, 4, 7, 11, 12], [0, 4, 7, 9, 12]]      # Cmaj7 Am7 Fmaj7 G6
+    pattern = [0, 2, 1, 3, 2, 4, 3, 2]
+    note = sel("ld(0)", [sel("ld(1)", tn) for tn in tones])
+    expr = (f"st(0,mod(floor(t/12),4));st(1,{sel('mod(floor(t/0.75),8)', pattern)});"
+            f"st(2,{sel('ld(0)', [0, -3, -7, -5])});"                                   # chord root, semitones from C
+            f"st(3,261.63*pow(2,(ld(2)+{note})/12));st(4,mod(t,0.75));st(5,mod(t,12));"
+            f"st(6,65.41*pow(2,ld(2)/12));st(7,{sel('ld(0)', [4, 3, 4, 4])});"
+            # soft keys: two slightly detuned voices, gentle 25 ms attack, long decay that ends at zero
+            "0.06*(sin(2*PI*ld(3)*t)+sin(2*PI*ld(3)*1.003*t)+0.18*sin(4*PI*ld(3)*t))*exp(-2.6*ld(4))*min(1,ld(4)*40)*(1-ld(4)/0.75)"
+            # warm pad: root, third, fifth and octave, breathing over each 12 s chord
+            "+0.06*(sin(2*PI*ld(6)*t)+0.7*sin(2*PI*ld(6)*pow(2,ld(7)/12)*t)+0.7*sin(2*PI*ld(6)*1.4983*t)+0.4*sin(4*PI*ld(6)*t))*pow(sin(PI*ld(5)/12),0.8)"
+            # low pulse on each chord change, faded in so it never clicks
+            "+0.06*sin(PI*ld(6)*t)*exp(-0.9*ld(5))*min(1,ld(5)*8)")
+    inputs = ["-f", "lavfi", "-i", f"aevalsrc='{expr}|{expr}':s=44100:d={total}"]
+    filt = ["[0]lowpass=f=2600,aecho=0.8:0.7:350|620|900:0.32|0.22|0.12,afade=t=in:d=3,afade=t=out:st={:.2f}:d=5,volume=1.6[pad]".format(total - 5)]
     mixes = ["[pad]"]
     k = 1
     for at in booms:
-        inputs += ["-f", "lavfi", "-i", "aevalsrc='0.8*sin(2*PI*(38+70*exp(-9*t))*t)*exp(-2.2*t)|0.8*sin(2*PI*(38+70*exp(-9*t))*t)*exp(-2.2*t)':s=44100:d=3.5"]
+        inputs += ["-f", "lavfi", "-i", "aevalsrc='0.5*sin(2*PI*(38+70*exp(-9*t))*t)*exp(-2.2*t)|0.5*sin(2*PI*(38+70*exp(-9*t))*t)*exp(-2.2*t)':s=44100:d=3.5"]
         ms = int(at * 1000)
         filt.append(f"[{k}]lowpass=f=300,adelay={ms}|{ms}[b{k}]")
         mixes.append(f"[b{k}]")
