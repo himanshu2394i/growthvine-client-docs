@@ -14,11 +14,14 @@ inputs.json (write tables exactly as the documents state them; fix nothing):
                   "amount": 2000000, "bucket": "Core Growth",
                   "percent": 6.7}]          # percent optional
   }],
+  "profiles": [{"source": "Plan PDF",          # client profile as each document states it
+                "fields": {"risk": "Growth Oriented", "horizon": "Long-term"}}],
   "tables": [{                               # summary tables the advisor gave
     "name": "Bucket x Vehicle", "source": "Plan PDF", "option": "Option 1",
     "unit": "lakh",                          # rupees | lakh | crore
     "rows": {"field": "bucket", "map": [...]},
     "cols": {"field": "vehicle", "map": [...]},   # or omit for a 1-D table
+    # a field may be a list, e.g. ["bucket", "vehicle"]: labels are "Core Growth | MF"
     "cells": {"Core Growth": {"MF": 60}},         # 1-D: {"Core Growth": 100}
     "row_totals": {...}, "col_totals": {...}, "grand_total": 300,
     "row_percent": {...}                     # % of grand total, optional
@@ -34,7 +37,6 @@ import json
 import sys
 
 UNITS = {"rupees": 1, "lakh": 100000, "crore": 10000000}
-PCT_TOL = 0.06      # percentages are usually shown to 1 decimal
 TABLE_TOL = 0.051   # in the table's own unit, for 1-decimal tables
 RUPEE_TOL = 1
 
@@ -49,11 +51,44 @@ def _issue(kind, message):
     return {"kind": kind, "message": message}
 
 
+def _pct_tol(stated):
+    """Half of the last printed decimal: 33 -> 0.5, 33.3 -> 0.05."""
+    text = str(stated)
+    decimals = len(text.split(".")[1]) if "." in text else 0
+    return 0.5 * 10 ** -decimals + 1e-9
+
+
+def _raw(holding, axis):
+    """The holding's own value for an axis; several fields join as 'A | B'."""
+    field = axis["field"]
+    if isinstance(field, list):
+        return " | ".join(str(holding.get(f)) for f in field)
+    return holding.get(field)
+
+
+def _field_name(axis):
+    f = axis["field"]
+    return " | ".join(f) if isinstance(f, list) else f
+
+
 def _label(holding, axis):
     for rule in axis.get("map", []):
         if all(holding.get(k) == v for k, v in rule["match"].items()):
             return rule["to"]
-    return holding.get(axis["field"])
+    return _raw(holding, axis)
+
+
+def _check_profiles(profiles):
+    issues, seen = [], {}
+    for p in profiles:
+        for key, value in p.get("fields", {}).items():
+            if key in seen and str(seen[key][1]).strip().lower() != str(value).strip().lower():
+                first_source, first_value = seen[key]
+                issues.append(_issue("profile_conflict",
+                    f"Client {key} is '{first_value}' in {first_source} but '{value}' in {p['source']}. "
+                    f"Which should the document use?"))
+            seen.setdefault(key, (p["source"], value))
+    return issues
 
 
 def _check_option(opt, corpus):
@@ -70,7 +105,7 @@ def _check_option(opt, corpus):
     for h in opt["holdings"]:
         if "percent" in h and total:
             actual = h["amount"] / total * 100
-            if abs(actual - h["percent"]) > PCT_TOL:
+            if abs(actual - h["percent"]) > _pct_tol(h["percent"]):
                 issues.append(_issue("holding_percent",
                     f"{h['name']} in {opt['name']} is shown as {h['percent']}%, "
                     f"but {fmt(h['amount'])} of {fmt(total)} is {actual:.1f}%."))
@@ -98,7 +133,7 @@ def _check_table_internal(t):
             f"{where}: the grand total is {t['grand_total']}, but the cells add up to {grand:g}."))
     for r, pct in t.get("row_percent", {}).items():
         actual = row_sums.get(r, 0) / grand * 100 if grand else 0
-        if abs(actual - pct) > PCT_TOL:
+        if abs(actual - pct) > _pct_tol(pct):
             issues.append(_issue("table_percent",
                 f"{where}: {r} is shown as {pct}%, but it is {actual:.1f}% of the total."))
     return issues
@@ -122,14 +157,14 @@ def _check_table_vs_holdings(t, opt):
         for axis, got, labels in ((t["rows"], r, row_labels), ((t["cols"] if two_d else None), c, col_labels)):
             if axis is None:
                 continue
-            raw = h.get(axis["field"])
+            raw = _raw(h, axis)
             if got not in labels:
                 issues.append(_issue("label_not_in_table",
-                    f"{h['name']} is '{got}' ({axis['field']}) in {opt['name']}, "
+                    f"{h['name']} is '{got}' ({_field_name(axis)}) in {opt['name']}, "
                     f"but {where} has no '{got}'. Where does it belong?"))
             elif raw != got and raw in labels:
                 issues.append(_issue("label_conflict",
-                    f"{h['name']} is '{raw}' ({axis['field']}) in {opt['name']} ({opt['source']}), "
+                    f"{h['name']} is '{raw}' ({_field_name(axis)}) in {opt['name']} ({opt['source']}), "
                     f"but {where} counts it under '{got}'. Which is right?"))
         key = (r, c)
         computed[key] = computed.get(key, 0) + h["amount"]
@@ -154,7 +189,7 @@ def _check_table_vs_holdings(t, opt):
 
 
 def check(data):
-    issues = []
+    issues = _check_profiles(data.get("profiles", []))
     options = {o["name"]: o for o in data.get("options", [])}
     for opt in options.values():
         issues += _check_option(opt, data.get("total"))

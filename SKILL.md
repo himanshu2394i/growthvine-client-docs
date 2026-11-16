@@ -5,7 +5,7 @@ description: Use whenever someone at Growthvine wants a client document - an inv
 
 # Growthvine
 
-Version: 0.3.0
+Version: 0.4.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -40,7 +40,7 @@ Greet briefly, then ask (skip anything already answered):
 1. **What are we making?**
    - Investment / allocation proposal
    - Portfolio assessment (review any portfolio)
-   - Fund report · Category report · Market report
+   - Fund report, Category report, Market report
 2. **PDF or PPT?** Always ask. No default.
 3. **Who is it for?** Client name, and the RM / advisor name for the document.
 

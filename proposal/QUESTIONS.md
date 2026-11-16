@@ -29,6 +29,10 @@ open, and anything already known filled in. Not a fixed template.
 | B4 | If 2+ options: one document comparing them, or separate documents? | Advisor picks each time | Pick: compare in one (default) / separate | If B3 ≥ 2 |
 | B5 | What depth: buckets only, generic strategies, or named funds? | Decides which pages are possible | Pick: bucket / sleeve / fund level | Yes |
 
+Inputs often mix levels: options name funds while a master table names generic
+strategies ("Flexi Cap PMS"). Then the named funds are the detail and the
+strategy table is the summary. Say so and confirm.
+
 ## C. Holdings (per option)
 
 | # | Ask | Why | Format | Required |
@@ -36,14 +40,43 @@ open, and anything already known filled in. Not a fixed template.
 | C1 | Each holding: name (or strategy), type (MF / SIF / PMS / AIF / MLD / other), asset class, amount, bucket | The core table | Table / file | Yes |
 | C2 | Liquidity and lock-in / exit notes per holding or sleeve | Feeds "getting your money out" | Table / file | No, but ask |
 | C3 | Role of each holding in the plan, in a few words | Only if the advisor wants per-holding explanation | Short text | No |
+| C4 | Regular or direct plans? | Costs and returns differ a lot between the two; files rarely say | Pick: regular / direct / per holding | Yes, if any fund data is shown |
+
+**C2 when liquidity sits in a strategy table:** match each holding to its
+strategy row (bucket + asset class + vehicle) and take that row's liquidity and
+lock-in/exit notes. Show the matches in one short list. Holdings with no matching
+row (often in a second option) must be asked about; never guess their liquidity.
 
 After C1: write `inputs.json` and run the reconcile check (`check/CHECK.md`,
-part A). Resolve every issue with the advisor before going on.
+part A). Resolve every issue with the advisor before going on. Summary tables
+(bucket views, master tables) usually describe **one** option: work out which by
+matching their totals to each option's holdings, and ask if it isn't clear.
 
-Then, for fund-level proposals, look up each holding in the MCP
-(`shared/data.md`) and list which ones have **no data**. For each, ask the
-advisor to pick: provide figures / empty "to be added" table / leave out of data
-pages with a one-line note.
+Then, for fund-level proposals, look up each holding in the fund data (MCP,
+`shared/data.md`):
+
+1. Search by the distinctive words, including the fund house's full name
+   (advisors write "Nippon Multi Asset"; the fund is "Nippon India Multi Asset
+   Allocation Fund").
+2. Show every match as *advisor's name → official name, plan* and ask the
+   advisor to confirm. Point out near-twins (e.g. a fund-of-funds with a
+   similar name) and anything that contradicts the advisor's labels (e.g. the
+   advisor says "Large Cap" but the fund is "Ex-Top 100"). That last kind also
+   belongs in the second opinion (E).
+3. List holdings with **no data** (usually AIF, PMS, MLD, and SIFs too new for a
+   track record). For each, the advisor picks: provide figures / empty "to be
+   added" table / leave out of data pages with a one-line note.
+4. **Fetch the full fund data and run the calculations** (`shared/data.md`,
+   "Calculations"): `get_fund` for every matched fund, monthly NAV for all of them
+   in one call, Nifty 500 TRI, then `scripts/analyse.py`. This gives the fund
+   pages, look-through, overlap, returns vs the market, growth charts and
+   projections.
+5. Record every figure you will show in `inputs.json` under `fund_data` (the
+   `fund_data` block from `analyse.py`, plus any figure taken straight from
+   `get_fund`), with source and as-of date (see `shared/inputs.md`).
+6. If look-through covers less than about half the money because PMS/AIF
+   portfolios aren't published, ask whether the advisor has those portfolios
+   (often in their Excel) to include.
 
 ## D. Advisor views
 

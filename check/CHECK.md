@@ -11,9 +11,10 @@
    come from one cause. Explain the likely cause in plain words when it's clear
    (e.g. "₹10 L of ISIF looks counted as MF in the plan tables but as SIF in
    Option 1"). Ask which version is right. Never choose yourself.
-5. Update `inputs.json` with the advisor's answers and run it again. Repeat until
-   clean, or until the advisor explicitly says to go ahead with a known difference.
-   In that case, note it in the brief.
+5. Update `inputs.json` with the advisor's answers (how: `shared/inputs.md`,
+   "Recording the advisor's answers") and run it again. Repeat until clean, or
+   until the advisor explicitly says to go ahead with a known difference. In that
+   case, note it in the brief.
 
 `map` rules in `inputs.json` are only for translating labels when a table groups
 differently (e.g. the plan puts every AIF under "Alternatives"). Never write a map
@@ -31,7 +32,10 @@ rule to make a mismatch disappear.
 4. **Figures to check:** each line names the figure and page. Find where it came
    from. A typo or a wrong sum → fix `scenes.json`, render again, verify again.
    A real advisor figure missing from `advisor_figures` → add it only if the
-   advisor actually gave it. Never add a figure just to make the check pass.
+   advisor actually gave it. A real fund-data figure missing from `fund_data` →
+   add the source value from the saved fund file. A number you made up to
+   explain something (a "rule of thumb" threshold) → reword without it. Never add
+   a figure just to make the check pass.
    Stop after 3 rounds and tell the advisor what's still unresolved.
 5. The script can't tell if a wrong figure happens to equal another valid sum,
    and it doesn't check wording. So also re-read every scene against

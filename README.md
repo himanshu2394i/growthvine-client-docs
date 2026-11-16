@@ -5,9 +5,10 @@ client-ready proposals and reports (PDF or PPT). It leads a structured interview
 checks the advisor's inputs against each other, and only builds once the advisor
 confirms the brief.
 
-Version: 0.3.0 (proposals work end to end: interview, input check, cinematic
-design, PDF/PPT output, document number check, feedback. Coming: other report
-types).
+Version: 0.4.0 (proposals work end to end and use Growthvine fund data fully:
+fund pages, returns vs the market, growth charts, look-through, overlap,
+projections; interview, input check, cinematic PDF/PPT, number check, feedback.
+Coming: other report types).
 
 ## Install
 
@@ -52,12 +53,14 @@ suggest a change, say "feedback".
 | `scripts/reconcile.py` | Cross-checks advisor inputs |
 | `scripts/render.py` | Renders `scenes.json` to PDF or PPT (`render_pdf.py`, `render_pptx.py`) |
 | `scripts/verify.py` | Checks every figure in the finished document against the inputs |
+| `scripts/analyse.py` | Look-through, overlap, returns vs index, growth, projections from saved fund data |
 | `assets/` | Official logos and Poppins (SIL Open Font License) |
+| `docs/specs/` | Design spec |
+| `docs/dry-runs/` | What each real-data dry run found and fixed |
 
 Rendering needs `reportlab` (PDF), `python-pptx` (PPT) and `pymupdf` (previews).
 Not yet verified inside claude.ai's code environment; if one is missing there,
 install it with pip. Locally: `pip install reportlab python-pptx pymupdf`.
-| `docs/specs/` | Design spec |
 
 ## Tests
 

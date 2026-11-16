@@ -3,7 +3,7 @@
     "client": "Client A",
     "rm": "Advisor A",
     "date": "16 November 2026",
-    "footer": "Private and confidential · Prepared for discussion"
+    "footer": "Private and confidential, Prepared for discussion"
   },
   "palette": {"Core Growth": "indigo", "Stability": "mint", "Diversifier": "peach", "High Growth Alternatives": "mustard"},
   "scenes": [
@@ -40,10 +40,10 @@
                     {"label": "High Growth Alternatives", "values": [100, 100], "display": ["₹1.00 Cr", "₹1.00 Cr"]}]},
     {"type": "act", "number": "03", "title": "Why it holds up", "logline": "When you can reach your money, and what to expect."},
     {"type": "timeline", "kicker": "Why it holds up", "title": "₹1.20 Cr of it can be reached within a week",
-     "stops": [{"label": "Within 1 week", "text": "MF, SIF and equity PMS · ₹1.20 Cr"},
-               {"label": "1 week to 1 year", "text": "Debt PMS · ₹50 L"},
-               {"label": "3+ years", "text": "AIF · ₹1.00 Cr, tenure per PPM"},
-               {"label": "3.5 years", "text": "Structured product lock-in · ₹30 L"}]},
+     "stops": [{"label": "Within 1 week", "text": "MF, SIF and equity PMS, ₹1.20 Cr"},
+               {"label": "1 week to 1 year", "text": "Debt PMS, ₹50 L"},
+               {"label": "3+ years", "text": "AIF, ₹1.00 Cr, tenure per PPM"},
+               {"label": "3.5 years", "text": "Structured product lock-in, ₹30 L"}]},
     {"type": "stats", "kicker": "Why it holds up", "title": "What the advisor expects, before tax",
      "stats": [{"value": "13.5%", "label": "Expected blended return a year, Option 1"},
                {"value": "14.8%", "label": "Expected blended return a year, Option 2"}],

@@ -91,6 +91,21 @@ def to_number(cell):
         return None
 
 
+def col_widths(columns, rows, total):
+    """Column widths in proportion to their longest text, within limits, so a
+    'Why' column gets room and a numbers column stays narrow."""
+    n = len(columns)
+    weights = []
+    for j in range(n):
+        cells = [str(r[j]) for r in rows] + [str(columns[j])]
+        longest = max(len(c) for c in cells)
+        numeric = j > 0 and all(is_numeric(r[j]) for r in rows)
+        longest_word = max((len(w) for c in cells for w in c.split()), default=0)
+        weights.append(max(min(max(longest, 6), 14 if numeric else 48), longest_word + 3))
+    s = sum(weights)
+    return [total * w / s for w in weights]
+
+
 # ---------- validation ----------
 
 REQUIRED = {
@@ -105,17 +120,60 @@ REQUIRED = {
     "steps": ["title", "steps"],
     "text": ["title", "paragraphs"],
     "close": ["title", "contact", "disclaimer"],
+    "fund": ["title", "stats", "facts", "what"],
+    "line": ["title", "x", "series"],
+    "panels": ["title", "layout", "panels"],
 }
+LAYOUTS = {"2": 2, "3": 3, "2x2": 4, "1+2": 3, "2+1": 3}
+PANEL_REQUIRED = {"bars": ["series", "categories"], "donut": ["slices"], "table": ["columns", "rows"],
+                  "text": ["bullets"], "stack": ["segments"], "line": ["x", "series"], "stats": ["stats"]}
+GAP = 18
+
+
+def boxes(layout, top, bottom, left=M, right=W - M):
+    """Panel rectangles (x, y, w, h) for a layout, inside the content area."""
+    w, h = right - left, bottom - top
+    half_w, half_h = (w - GAP) / 2, (h - GAP) / 2
+    if layout == "2":
+        return [(left, top, half_w, h), (left + half_w + GAP, top, half_w, h)]
+    if layout == "3":
+        tw = (w - 2 * GAP) / 3
+        return [(left + i * (tw + GAP), top, tw, h) for i in range(3)]
+    if layout == "2x2":
+        return [(left + c * (half_w + GAP), top + r * (half_h + GAP), half_w, half_h) for r in (0, 1) for c in (0, 1)]
+    big = w * 0.56
+    small = w - big - GAP
+    if layout == "1+2":
+        return [(left, top, big, h), (left + big + GAP, top, small, half_h), (left + big + GAP, top + half_h + GAP, small, half_h)]
+    if layout == "2+1":
+        return [(left, top, small, half_h), (left, top + half_h + GAP, small, half_h), (left + small + GAP, top, big, h)]
+    raise ValueError(f"Unknown layout '{layout}'")
+
+
+def _strings(obj, path=""):
+    if isinstance(obj, str):
+        yield path, obj
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            yield from _strings(v, f"{path}.{k}" if path else k)
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from _strings(v, f"{path}[{i}]")
 COUNTS = {  # field: (min, max)
     "cover": {"facts": (1, 4)}, "stats": {"stats": (1, 4)}, "donut": {"slices": (2, 7)},
     "table": {"columns": (1, 8), "rows": (1, 11)}, "bars": {"series": (1, 3), "categories": (1, 8)},
     "timeline": {"stops": (2, 6)}, "steps": {"steps": (2, 5)},
+    "fund": {"stats": (1, 3), "facts": (1, 7)}, "line": {"series": (1, 5), "x": (2, 400)},
 }
-LENGTHS = {"title": 90, "text": 160, "disclaimer": 900}
+LENGTHS = {"title": 90, "text": 160, "disclaimer": 900, "what": 260, "watch": 220, "sources": 900}
 
 
 def validate(doc):
     errors = []
+    for where, scope in [("meta", doc.get("meta", {}))] + [(f"Scene {n}", s) for n, s in enumerate(doc.get("scenes", []), 1)]:
+        for path, text in _strings(scope):
+            if "·" in text:
+                errors.append(f"{where}: don't use '·' as a separator ({path}: '{text[:50]}'). Use a comma or a new line.")
     for n, s in enumerate(doc.get("scenes", []), 1):
         where, kind = f"Scene {n}", s.get("type")
         if kind not in REQUIRED:
@@ -141,6 +199,27 @@ def validate(doc):
             for r, row in enumerate(s["rows"] + ([s["total"]] if "total" in s else []), 1):
                 if len(row) != width:
                     errors.append(f"{where} (table): row {r} has {len(row)} cells but there are {width} columns.")
+        if kind == "panels":
+            need = LAYOUTS.get(s["layout"])
+            if need is None:
+                errors.append(f"{where} (panels): layout must be one of {', '.join(LAYOUTS)}.")
+            elif len(s["panels"]) != need:
+                errors.append(f"{where} (panels): layout {s['layout']} holds {need} panels, got {len(s['panels'])}.")
+            if len(s.get("strip", [])) > 6:
+                errors.append(f"{where} (panels): strip holds at most 6 numbers.")
+            for i, pn in enumerate(s["panels"], 1):
+                pk = pn.get("kind")
+                if pk not in PANEL_REQUIRED:
+                    errors.append(f"{where} panel {i}: unknown kind '{pk}'. Use one of: {', '.join(PANEL_REQUIRED)}.")
+                    continue
+                missing = [f for f in PANEL_REQUIRED[pk] if f not in pn]
+                if missing:
+                    errors.append(f"{where} panel {i} ({pk}): missing {', '.join(missing)}.")
+        if kind == "line":
+            for sr in s["series"]:
+                if len(sr.get("values", [])) != len(s["x"]):
+                    errors.append(f"{where} (line): '{sr.get('name')}' needs one value per x label "
+                                  f"({len(s['x'])}), has {len(sr.get('values', []))}.")
         if kind == "bars":
             for c in s["categories"]:
                 if not (len(c.get("values", [])) == len(c.get("display", [])) == len(s["series"])):
@@ -200,7 +279,14 @@ def main(argv):
         for e in errors:
             print(f"- {e}")
         return 1
-    render(doc, out)
+    try:
+        render(doc, out)
+    except ValueError as e:          # layout problems found while drawing
+        print(f"1 problem in {src.name}:")
+        print(f"- {e}")
+        if out.exists():
+            out.unlink()
+        return 1
     print(f"Rendered {len(doc['scenes'])} scenes to {out}")
     if len(argv) == 4:
         if out.suffix.lower() != ".pdf":

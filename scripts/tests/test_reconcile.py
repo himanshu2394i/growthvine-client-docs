@@ -151,6 +151,49 @@ class RealWorldFixture(unittest.TestCase):
         self.assertFalse([i for i in self.issues if i["kind"] in internal])
 
 
+class DryRunFindings(unittest.TestCase):
+    """Gaps found running the skill on real advisor files (Nov 2026)."""
+
+    def test_whole_number_percent_is_judged_at_its_own_precision(self):
+        data = small()
+        data["tables"][0]["row_percent"] = {"Growth": 60, "Stability": 40}
+        h = data["options"][0]["holdings"]
+        h[0]["amount"], h[1]["amount"] = 333333, 666667
+        h[0]["percent"], h[1]["percent"] = 33, 67
+        data["tables"] = [{
+            "name": "Buckets", "source": "plan.pdf", "option": "Option 1", "unit": "rupees",
+            "rows": {"field": "bucket"}, "cells": {"Growth": 333333, "Stability": 666667},
+            "row_percent": {"Growth": 33, "Stability": 67}}]
+        self.assertEqual(reconcile.check(data), [])
+
+    def test_whole_number_percent_still_catches_real_errors(self):
+        data = small()
+        data["options"][0]["holdings"][0]["percent"] = 59  # really 60%
+        self.assertIn("holding_percent", kinds(reconcile.check(data)))
+
+    def test_profile_text_differs_between_documents(self):
+        data = small()
+        data["profiles"] = [
+            {"source": "options.pdf", "fields": {"risk": "Moderate to High", "horizon": "Long-term"}},
+            {"source": "plan.pdf", "fields": {"risk": "Growth Oriented"}},
+        ]
+        issues = [i for i in reconcile.check(data) if i["kind"] == "profile_conflict"]
+        self.assertEqual(len(issues), 1)
+        self.assertIn("Moderate to High", issues[0]["message"])
+        self.assertIn("Growth Oriented", issues[0]["message"])
+
+    def test_table_rows_keyed_by_several_fields(self):
+        data = small()
+        data["tables"] = [{
+            "name": "Master allocation", "source": "plan.pdf", "option": "Option 1", "unit": "lakh",
+            "rows": {"field": ["bucket", "vehicle"]},
+            "cells": {"Growth | MF": 6, "Stability | SIF": 4}}]
+        kinds_found = kinds(reconcile.check(data))
+        self.assertIn("label_not_in_table", kinds_found)  # Fund B is Stability | PMS
+        data["tables"][0]["cells"] = {"Growth | MF": 6, "Stability | PMS": 4}
+        self.assertEqual(reconcile.check(data), [])
+
+
 class Formatting(unittest.TestCase):
     def test_lakh_and_crore(self):
         self.assertEqual(reconcile.fmt(5000000), "₹50.0 L")

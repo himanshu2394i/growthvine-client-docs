@@ -20,15 +20,16 @@ Default arc for a proposal (rename everything, freshly, every time):
 | Act | Purpose | Typical scenes |
 |---|---|---|
 | Cover | Who it's for, the plan in one line | Client name, logline, profile facts |
-| 1. Where you stand | What we understood | Profile, the starting point, what matters to them |
-| 2. The plan | Where the money goes and why | Buckets, the split, options compared, each bucket's job |
-| 3. Why it holds up | Evidence and honesty | Holdings, liquidity and lock-ins, what to expect, the catch |
-| 4. What happens next | From yes to invested, and living with it | Steps, check-ins, what to do in a bad market |
-| Close | Sources, disclaimer, contact | |
+| 1. Where you stand | What we understood, and where markets are | Profile, market snapshot (index returns), what matters to them |
+| 2. The plan | Where the money goes and why | Buckets, the split, options compared, each bucket's job, holdings with a "what it does" line each |
+| 3. Why it holds up | The evidence, from fund data | Returns vs the market, growth of ₹1 lakh chart, what you'll actually own (look-through), are these funds buying the same shares (overlap), liquidity and lock-ins, what to expect |
+| 4. The funds | One page per holding | Fund profile: recent returns, facts, what it does, worth knowing, its role |
+| 5. What happens next | From yes to invested, and living with it | Steps, check-ins, what to do in a bad market |
+| Close | Sources and dates, disclaimer, contact | |
 
-Scene jobs to choose from: set the scene · your profile · the plan · compare the
-options · each bucket / holding's role · getting your money out · what to expect
-(only advisor figures) · the evidence · what happens next · living with it ·
+Scene jobs to choose from: set the scene, your profile, the plan, compare the
+options, each bucket / holding's role, getting your money out, what to expect
+(only advisor figures), the evidence, what happens next, living with it,
 close. Practical explainers (what happens after you sign, what to do when markets
 fall, when you can take money out and what it costs) beat definitions; never
 write "what is a mutual fund" pages.
@@ -38,26 +39,56 @@ the data and the client (see pre-tick rules below). Let them tick, untick,
 rename, reorder. Then suggest 2-3 extra scenes they may not have thought of.
 Repeat until they say done.
 
-**Pre-tick rules:** "compare the options" only with 2+ options in one document ·
-"getting your money out" whenever there are lock-ins or illiquid products ·
-"what to expect" only if the advisor gave figures · practical explainers on for
-first-time investors · per-holding scenes only at fund level and only if asked.
+**Pre-tick rules.** The default is a rich document; the advisor trims.
 
-**Length:** short = 8-10 scenes · standard = 12-16 · detailed = 18-25 (act cards
-and cover count).
+- Fund level: **a fund profile scene for every holding** (from fund data, or from
+  the advisor's facts for PMS/AIF/MLD; skip only holdings with neither), and a
+  "what it does" column in every holdings table.
+- **Returns vs the market** and a **growth of ₹1 lakh chart**: on whenever at least
+  one holding has a 3-year track record.
+- **What you'll actually own** (look-through): on whenever at least one holding
+  publishes its portfolio.
+- **Overlap**: on with 2+ holdings that publish portfolios. Answer the question
+  in the headline ("No, they mostly hold different companies").
+- **Market snapshot**: on for proposals (index returns from the TRI series; flows
+  or commentary only if the advisor gives them).
+- **What to expect**: on if the advisor gave a rate (projection from that rate,
+  typical yearly swing and worst recent fall from fund data, not-a-guarantee note).
+- "Compare the options" with 2+ options in one document, "getting your money
+  out" whenever there are lock-ins or illiquid products, practical explainers
+  for first-time investors.
+- Philosophy pages ("what we avoid", how we pick funds): only with wording the
+  advisor or Growthvine provides. Never invent a firm's philosophy.
+
+**Length:** short = 10-14 scenes, standard = 18-24, detailed = 25-35 (act cards
+and cover count). Fund-level proposals default to standard or detailed.
 
 ## 2. Numbers only, or with comments?
 
 Ask for every document: **numbers only** (tables and charts, no commentary) or
 **with comments**. If comments, which kinds:
 
-sum it up · why this choice · how to read this · the catch · its role · the
-question to ask yourself · not a guarantee · (any kind they name)
+sum it up, what this tells us, how it compares, why this choice, how to read
+this, what to watch, its role, the question to ask yourself, not a guarantee,
+(any kind they name)
 
 Set once for the document; the advisor can override per scene. A comment becomes
 the scene's `note` (one short boxed line or two). Write the label and text
 freshly; don't reuse stock phrases. The "not a guarantee" note always stays next
 to any expected-return figure, even in numbers-only mode.
+
+**What a comment is for.** Comments interpret the data on the page, the way a
+CFA would in a written proposal: what the figure means for this client, how it
+compares (with the market, the category, the other holdings), what drives it,
+and what to watch. Example: "Invesco has returned 20.1% a year over three years
+against the market's 9.5%, with about 20% more swing; it earns its place as the
+growth engine, not the anchor."
+
+Never use a comment to talk about data that isn't there ("these funds don't
+publish...", "we haven't estimated...", "this covers only..."). What to do with
+missing data is the advisor's choice (provide it, show an empty "to be added"
+table, or leave it out), made in the question set. The document just shows the
+result of that choice.
 
 ## 3. How to show each scene
 
@@ -74,17 +105,48 @@ Propose a display per scene from this menu; the advisor confirms or swaps.
 | Liquidity, lock-ins, horizons | `timeline` | `table` |
 | Process from yes to invested | `steps` | `text` |
 | Explanation | `text` | `statement` |
+| One holding in depth | `fund` (return cards, facts, what it does, worth knowing; its role as the `note`) | `table` |
+| Growth over time vs the market | `line` (growth of ₹1 lakh; the index dashed) | `bars` of period returns |
+| Returns vs the market by period | `table` with the index as the last row | `bars` |
+| What you'll actually own | `table` of top companies (₹ and % of your money) + `bars` of sectors | `table` |
+| Overlap between funds | `table` with `heat: true` (fund x fund, %) | short `text` naming the highest pair |
+| Projection from the advisor's rate | `stats` (range, value after N years, typical swing) | `table` |
+| Several views of one subject (a fund, the plan, the market) | `panels` | separate scenes |
 
-Rules: one main visual per scene; every number visible on the page (no
+**Content-heavy by default.** Think of a CFA preparing the proposal. Most content
+scenes should be `panels` scenes: 2-4 panels on one page (a chart, a compact
+table, a stacked bar, two or three insight bullets) plus an optional strip of key
+numbers on top. Prefer a chart to a sentence and a sentence of insight to empty
+space. Only the cover, act cards, and at most one or two `statement` scenes are
+sparse, for the cinematic rhythm. A page with one line of big text and nothing
+else is a mistake unless it is one of those.
+
+Good panel pages:
+- **Fund page:** strip (3y return, fund size, charge, holdings), returns vs the
+  market (`bars`), company size or asset mix (`stack`), top holdings (`table`)
+  or sectors (`bars`), and "our view" bullets (`text`). Its role as the `note`.
+- **The plan:** bucket split (`donut`), bucket jobs (`table`), insight bullets.
+- **Market snapshot:** index returns by period (`bars`), growth of ₹1 lakh in the
+  index (`line`), what it means (`text`).
+- **What you'll actually own:** top companies (`table`), industries (`bars`),
+  company size across the plan (`stack`), what it tells us (`text`).
+- **Options compared:** each option's split (`bars`), each option's liquidity
+  (`stack`), the trade-off (`text`).
+
+When several options are compared in one document, show **every option's
+holdings**, not only Option 1's.
+
+Rules: one main idea per scene; every number visible on the page (no
 hover-only data); tables for anything the client may check line by line.
 Scene field formats and limits: `design/SCENES.md`.
 
 ## 4. Language
 
-Ask: tone (warm / formal) · simplicity (from the client's experience answer;
-confirm) · length (short / standard / detailed). English only for now.
+Ask: tone (warm / formal), simplicity (from the client's experience answer;
+confirm), length (short / standard / detailed). English only for now.
 
-Copy rules: plain words; explain any unavoidable term in the same sentence; no
+Copy rules: no `·` separators anywhere (use commas or new lines; the renderer
+rejects them); plain words; explain any unavoidable term in the same sentence; no
 em-dashes; no hype ("best", "guaranteed", "superb"); numbers exactly as the
 advisor wrote them; Growthvine guides, it doesn't instruct ("one thing worth
 watching is...", not "you must...").

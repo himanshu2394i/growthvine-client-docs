@@ -125,6 +125,192 @@ class Pdf(unittest.TestCase):
         self.assertTrue(all(p.exists() for p in paths))
 
 
+FUND = {"type": "fund", "kicker": "₹10 L, 3.3% of the plan", "title": "Invesco India Large & Mid Cap Fund",
+        "as_of": "Returns to 26 Oct 2026, Regular growth",
+        "stats": [{"value": "+10.5%", "label": "1 month"}, {"value": "+4.1%", "label": "3 months"},
+                  {"value": "+15.9%", "label": "6 months"}],
+        "facts": [{"label": "Run by", "value": "Aditya Khemani"}, {"label": "Fund size", "value": "₹12,439 Cr"},
+                  {"label": "Annual charge", "value": "1.47%"}, {"label": "Exit charge", "value": "1% within 365 days"}],
+        "what": "A concentrated book of 44 large and mid-sized companies, almost fully invested in shares.",
+        "watch": "Its worst fall in the last three years was 19.0%, deeper than the market's.",
+        "note": {"label": "Its role", "text": "The established-company anchor of Core Growth.", "tone": "info"}}
+LINE = {"type": "line", "title": "₹1 lakh in each, five years ago",
+        "x": ["Oct 2021", "Oct 2022", "Oct 2023", "Oct 2024", "Oct 2025", "Oct 2026"],
+        "series": [{"name": "Invesco India Large & Mid Cap", "values": [100000, 104000, 125000, 170000, 180000, 211000], "end": "₹2.11 L"},
+                   {"name": "Nifty 500 TRI", "values": [100000, 102000, 118000, 150000, 152000, 168000], "end": "₹1.68 L", "style": "index"}]}
+
+
+PANELS = {"type": "panels", "kicker": "The funds", "title": "Invesco India Large & Mid Cap Fund",
+          "as_of": "Returns to 30 Sep 2026, Regular growth",
+          "strip": [{"value": "+20.1%", "label": "3 years a year"}, {"value": "₹12,439 Cr", "label": "Fund size"},
+                    {"value": "1.47%", "label": "Annual charge"}, {"value": "44", "label": "Companies held"}],
+          "layout": "2x2",
+          "panels": [
+              {"kind": "bars", "title": "Returns vs the market", "series": ["Fund", "Nifty 500 TRI"],
+               "categories": [{"label": "1 year", "values": [6.4, -2.0], "display": ["+6.4%", "-2.0%"]},
+                              {"label": "3 years", "values": [20.1, 9.5], "display": ["+20.1%", "+9.5%"]}]},
+              {"kind": "stack", "title": "Company size", "segments": [
+                  {"label": "Large", "value": 40.6, "display": "41%"}, {"label": "Mid", "value": 33.6, "display": "34%"},
+                  {"label": "Small", "value": 25.8, "display": "26%"}]},
+              {"kind": "table", "title": "Top holdings", "columns": ["Company", "Weight"],
+               "rows": [["Eternal", "8.6%"], ["InterGlobe Aviation", "7.9%"], ["ICICI Bank", "7.4%"]]},
+              {"kind": "text", "title": "Our view", "bullets": [
+                  "Beat the market by over 10 points a year across three years.",
+                  "Concentrated: the top ten holdings are over half the fund."]}]}
+DONUT_PANELS = {"type": "panels", "title": "Where the money goes", "layout": "1+2", "panels": [
+    {"kind": "donut", "title": "By bucket", "slices": [{"label": "Core Growth", "value": 100, "display": "₹1.00 Cr"},
+                                                      {"label": "Stability", "value": 70, "display": "₹70 L"}], "center": "₹1.70 Cr"},
+    {"kind": "stats", "title": "At a glance", "stats": [{"value": "12", "label": "Holdings"}, {"value": "4", "label": "Buckets"}]},
+    {"kind": "line", "title": "Growth of ₹1 lakh", "x": ["2021", "2023", "2026"],
+     "series": [{"name": "Fund", "values": [100000, 150000, 200000], "end": "₹2.0 L"}]}]}
+
+
+class Panels(unittest.TestCase):
+    def doc(self, *scenes):
+        d = sample()
+        d["scenes"] = list(scenes)
+        return d
+
+    def test_valid(self):
+        self.assertEqual(render.validate(self.doc(PANELS, DONUT_PANELS)), [])
+
+    def test_panel_count_must_fit_layout(self):
+        bad = json.loads(json.dumps(PANELS))
+        bad["panels"] = bad["panels"][:3]
+        self.assertTrue(any("Scene 1" in e and "2x2" in e for e in render.validate(self.doc(bad))))
+
+    def test_unknown_panel_kind(self):
+        bad = json.loads(json.dumps(PANELS))
+        bad["panels"][0]["kind"] = "sparkle"
+        self.assertTrue(any("sparkle" in e for e in render.validate(self.doc(bad))))
+
+    def test_middle_dot_separators_are_rejected_anywhere(self):
+        bad = json.loads(json.dumps(PANELS))
+        bad["as_of"] = "Returns to 30 Sep 2026 · Regular growth"
+        self.assertTrue(any("·" in e for e in render.validate(self.doc(bad))))
+
+    def test_pdf_shows_every_panel(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "p.pdf"
+            render.render(self.doc(PANELS, DONUT_PANELS), out)
+            with fitz.open(out) as d:
+                pages = [" ".join(pg.get_text().replace(" ", " ").split()) for pg in d]
+        for s in ["+20.1%", "₹12,439 Cr", "Returns vs the market".upper(), "+9.5%", "41%", "Eternal", "8.6%",
+                  "Beat the market by over 10 points"]:
+            self.assertIn(s, pages[0])
+        for s in ["₹1.70 Cr", "Core Growth", "₹70 L", "Holdings", "₹2.0 L"]:
+            self.assertIn(s, pages[1])
+
+    def test_pptx_uses_native_charts_and_stays_on_slide(self):
+        from pptx import Presentation
+        from pptx.enum.chart import XL_CHART_TYPE
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "p.pptx"
+            render.render(self.doc(PANELS, DONUT_PANELS), out)
+            prs = Presentation(out)
+        types = [s.chart.chart_type for sl in prs.slides for s in sl.shapes if s.has_chart]
+        self.assertIn(XL_CHART_TYPE.BAR_CLUSTERED, types)
+        self.assertIn(XL_CHART_TYPE.DOUGHNUT, types)
+        self.assertIn(XL_CHART_TYPE.LINE, types)
+        W, H = prs.slide_width, prs.slide_height
+        for i, sl in enumerate(prs.slides, 1):
+            for sh in sl.shapes:
+                self.assertTrue(sh.left >= -1 and sh.top >= -1 and sh.left + sh.width <= W + 1
+                                and sh.top + sh.height <= H + 1, f"slide {i}: {sh.name} off the slide")
+
+
+class NewScenes(unittest.TestCase):
+    def doc(self, *scenes):
+        d = sample()
+        d["scenes"] = list(scenes) + [SAMPLE["scenes"][-1]]
+        return d
+
+    def test_new_types_validate(self):
+        self.assertEqual(render.validate(self.doc(FUND, LINE)), [])
+
+    def test_line_needs_one_value_per_x(self):
+        bad = json.loads(json.dumps(LINE))
+        bad["series"][0]["values"] = [1, 2]
+        self.assertTrue(any("Scene 1" in e for e in render.validate(self.doc(bad))))
+
+    def test_fund_and_line_in_pdf(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "n.pdf"
+            render.render(self.doc(FUND, LINE), out)
+            with fitz.open(out) as d:
+                fund, line = (" ".join(d[i].get_text().replace(" ", " ").split()) for i in (0, 1))
+        for s in ["Aditya Khemani", "₹12,439 Cr", "+15.9%", "almost fully invested", "deeper than the market", "Its role".upper()]:
+            self.assertIn(s, fund)
+        for s in ["₹2.11 L", "₹1.68 L", "Nifty 500 TRI", "Oct 2021", "Oct 2026"]:
+            self.assertIn(s, line)
+
+    def test_fund_and_line_in_pptx(self):
+        from pptx import Presentation
+        from pptx.enum.chart import XL_CHART_TYPE
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "n.pptx"
+            render.render(self.doc(FUND, LINE), out)
+            prs = Presentation(out)
+            fund_text = "\n".join(s.text_frame.text for s in prs.slides[0].shapes if s.has_text_frame)
+            fund_text += "\n".join(c.text for s in prs.slides[0].shapes if s.has_table for r in s.table.rows for c in r.cells)
+            charts = [s.chart.chart_type for s in prs.slides[1].shapes if s.has_chart]
+        self.assertIn("Aditya Khemani", fund_text)
+        self.assertIn("almost fully invested", fund_text)
+        self.assertIn(XL_CHART_TYPE.LINE, charts)
+
+    def test_close_can_list_sources(self):
+        import fitz
+        close = dict(SAMPLE["scenes"][-1], sources="Fund data: Growthvine, 15 Nov 2026. Index: Nifty 500 TRI to 26 Oct 2026.")
+        d = sample()
+        d["scenes"] = [close]
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "c.pdf"
+            render.render(d, out)
+            with fitz.open(out) as f:
+                self.assertIn("Nifty 500 TRI to 26 Oct 2026", f[0].get_text().replace("\n", " "))
+
+
+class LongTextTables(unittest.TestCase):
+    """Dry-run finding: long cells were silently cut to their first line."""
+
+    WHY = "Long-term compounding engine, diversified across market caps, asset classes and investment styles"
+
+    def scene_doc(self, rows):
+        d = sample()
+        d["scenes"] = [{"type": "table", "title": "What each bucket is for",
+                        "columns": ["Bucket", "Where", "Why", "Horizon"], "rows": rows}]
+        return d
+
+    def test_long_cells_wrap_instead_of_truncating(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "t.pdf"
+            render.render(self.scene_doc([["Core Growth", "MF, SIF, PMS", self.WHY, "5+ years, largely liquid"]]), out)
+            with fitz.open(out) as doc:
+                text = " ".join(doc[0].get_text().replace(" ", " ").split())
+        self.assertIn(self.WHY, text)
+
+    def test_text_that_cannot_fit_is_an_error_not_a_crop(self):
+        rows = [[f"Bucket {i}", "MF", self.WHY * 4, "5+ years"] for i in range(9)]
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(ValueError) as ctx:
+                render.render(self.scene_doc(rows), Path(tmp) / "t.pdf")
+        self.assertIn("Scene 1", str(ctx.exception))
+
+    def test_short_columns_keep_room_for_their_words(self):
+        widths = render.col_widths(["Bucket", "Job", "Horizon"],
+                                   [["Core Growth", self.WHY, "5+ years"]], 400)
+        self.assertGreaterEqual(widths[2], 55)   # "5+ years" fits on one line
+
+    def test_columns_sized_to_content(self):
+        widths = render.col_widths(["Bucket", "Where", "Why", "Horizon"],
+                                   [["Core Growth", "MF", self.WHY, "5+ years"]], 800)
+        self.assertAlmostEqual(sum(widths), 800)
+        self.assertEqual(max(widths), widths[2])
+
+
 class Pptx(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -195,6 +381,19 @@ class Cli(unittest.TestCase):
             self.assertEqual(r.returncode, 1)
             self.assertIn("hologram", r.stdout)
             self.assertFalse((Path(tmp) / "o.pdf").exists())
+
+    def test_layout_overflow_is_a_plain_message_not_a_traceback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = sample()
+            long = "Long-term compounding engine, diversified across market caps and styles " * 6
+            d["scenes"] = [{"type": "table", "title": "Too much", "columns": ["A", "B"],
+                            "rows": [[f"Row {i}", long] for i in range(9)]}]
+            src = Path(tmp) / "s.json"
+            src.write_text(json.dumps(d), encoding="utf-8")
+            r = self.run_cli(str(src), str(Path(tmp) / "o.pdf"))
+            self.assertEqual(r.returncode, 1)
+            self.assertIn("Scene 1", r.stdout)
+            self.assertNotIn("Traceback", r.stdout + r.stderr)
 
     def test_bad_extension(self):
         with tempfile.TemporaryDirectory() as tmp:

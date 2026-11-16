@@ -9,7 +9,10 @@ A figure is accepted if it matches (to the precision it is printed at):
   asset class, liquidity, ...), per option,
 - a summary-table cell or total in inputs.json,
 - one of those as a % of its option total or of the corpus,
-- a figure listed in "advisor_figures" (e.g. expected returns).
+- a figure listed in "advisor_figures" (e.g. expected returns), or in
+  "fund_data" (figures pulled from Growthvine fund data, with source and as-of):
+  [{"name": "...", "source": "Growthvine fund data", "as_of": "15 Nov 2026",
+    "figures": {"1 year": "12.74%", "3 years": "21.69%"}}]
 Plain decimals (table cells) may be in rupees, lakh, crore or %.
 Integers without ₹ or % (page numbers, dates, step numbers) are ignored.
 """
@@ -25,7 +28,8 @@ SKIP_FIELDS = {"name", "amount", "percent", "source"}
 TOKEN = re.compile(
     r"(?P<rupee>₹\s?(?P<rnum>\d[\d,]*(?:\.\d+)?)(?:\s?(?P<unit>Cr|crore|L|lakh)\b)?)"
     r"|(?P<pct>(?<![\d.])(?P<pnum>\d+(?:\.\d+)?)\s?%)"
-    r"|(?P<plain>(?<![\d.,₹])\d+\.\d+(?!\d)(?!\s*(?:years?|yrs?|months?|days?|weeks?)\b))"
+    r"|(?P<plain>(?<![\d.,₹])\d+\.\d+(?!\d)(?!\s*-?\s*(?:years?|yrs?|months?|days?|weeks?)\b))",
+    re.IGNORECASE,   # panel titles are set in capitals ("₹3 CRORE")
 )
 
 
@@ -91,7 +95,8 @@ def allowed(inputs):
             nums.append(t["grand_total"])
         rupees |= {n * mult for n in nums}
         percents |= set(t.get("row_percent", {}).values())
-    for fig in inputs.get("advisor_figures", []):
+    sourced = [str(v) for fd in inputs.get("fund_data", []) for v in fd.get("figures", {}).values()]
+    for fig in inputs.get("advisor_figures", []) + sourced:
         for tok in tokens(fig):
             (percents if tok.kind == "percent" else rupees).add(tok.value)
     return rupees, percents
@@ -152,6 +157,10 @@ def main(argv):
     if len(argv) != 2:
         print(__doc__)
         return 2
+    for f in argv:
+        if not Path(f).exists():
+            print(f"File not found: {f}")
+            return 2
     inputs = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
     issues = check(inputs, argv[1])
     if not issues:

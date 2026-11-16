@@ -34,6 +34,13 @@ class Tokens(unittest.TestCase):
     def test_ignores_counters_dates_and_durations(self):
         self.assertEqual(self.values("05 / 14 · 16 November 2026 · 3.5 years · 1 week · 3+ years"), [])
 
+    def test_units_in_capitals(self):
+        # Panel titles are drawn in capitals: "WHERE THE ₹3 CRORE GOES"
+        self.assertEqual(self.values("₹3 CRORE and ₹1 LAKH and ₹2.5 cr"), [("rupees", 3e7), ("rupees", 1e5), ("rupees", 2.5e7)])
+
+    def test_ignores_hyphenated_durations(self):
+        self.assertEqual(self.values("a 3.5-year lock-in and a 2.5 - year wait"), [])
+
     def test_precision_from_decimals(self):
         t = verify.tokens("₹1.20 Cr")[0]
         self.assertAlmostEqual(t.tolerance, 50000)
@@ -73,7 +80,7 @@ class EndToEnd(unittest.TestCase):
 
     def test_the_old_timeline_mistake_is_caught(self):
         bad = copy.deepcopy(SCENES)
-        bad["scenes"][8]["stops"][0]["text"] = "MF, SIF and PMS holdings · ₹1.70 Cr"
+        bad["scenes"][8]["stops"][0]["text"] = "MF, SIF and PMS holdings, ₹1.70 Cr"
         issues = verify.check(INPUTS, self.build(bad))
         self.assertTrue(any("₹1.70 Cr" in i for i in issues), issues)
 
@@ -82,6 +89,23 @@ class EndToEnd(unittest.TestCase):
         bad["scenes"][9]["stats"].append({"value": "18%", "label": "Best case"})
         issues = verify.check(INPUTS, self.build(bad))
         self.assertTrue(any("18%" in i for i in issues), issues)
+
+
+class FundData(unittest.TestCase):
+    """Dry-run finding: figures from Growthvine fund data (MCP) were flagged."""
+
+    def test_sourced_fund_figures_are_accepted(self):
+        inputs = copy.deepcopy(INPUTS)
+        inputs["fund_data"] = [{"name": "Invesco India Large & Mid Cap", "source": "Growthvine fund data",
+                                "as_of": "15 Nov 2026", "figures": {"1 year": "12.74%", "3 years": "21.69%"}}]
+        scenes = copy.deepcopy(SCENES)
+        scenes["scenes"][9]["stats"] = [{"value": "12.74%", "label": "1 year"}, {"value": "21.69%", "label": "3 years"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "d.pdf"
+            render.render(scenes, out)
+            self.assertEqual(verify.check(inputs, out), [])
+            del inputs["fund_data"]
+            self.assertEqual(len(verify.check(inputs, out)), 2)
 
 
 class Cli(unittest.TestCase):
