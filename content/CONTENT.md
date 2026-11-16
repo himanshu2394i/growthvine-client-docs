@@ -37,10 +37,12 @@ are actually cleared:
   5-year returns **plus** what has no comparable record.
 - Add the questions a client would ask next (what's inside each part, how bad a
   fall can get and what cushions it, which industries they'd own).
-- Every question scene ends with **Growthvine's voice**: one bold line with a
-  mint tick saying what we do and why ("Every rupee gets a job before it gets a
-  fund"; "We don't try to time the start"), plus one supporting line. The
-  reasons must come from the document and the data, never invented claims.
+- Every question scene ends with a **finding**: one bold line with a mint tick
+  stating what the data shows and why the plan is built that way, in an
+  analyst's words ("Each bucket has a defined role, time horizon and
+  liquidity"), never a slogan. Reasons come from the document and the data.
+- **Every word follows `content/WRITING.md`**: specific, measured, the right
+  terms, no AI tells. A client should believe a CFA wrote each line by hand.
 - Pace for reading: a dense scene needs 12 to 17 seconds.
 
 ## The advisor's menu (same approach as the reports)
@@ -67,9 +69,34 @@ the answer line on screen, the data and its source, and the timing. Render a
 still of each scene's final state at 1920x1080, look at every one (overlaps,
 long source lines hitting the logo), fix, then render the film.
 
-How it's made: `scripts/film.py` (Pillow draws each frame from the data,
-ffmpeg encodes one clip per scene in parallel, joins them and lays the
-ffmpeg-made score under it). No other installs needed.
+How it's made: HyperFrames scenes written with the Growthvine kit, rendered and
+scored by `film/director.py` (setup and commands: `film/README.md`).
+
+Motion rules (from HyperFrames' motion reference and motionmaxxing's measured
+films):
+- **No slide layouts:** no small label above a left headline on every scene, no
+  corner logo (the logo appears on the title and end card only), no page counters.
+- **Cut on motion:** a scene leaves accelerating along the film's direction (left
+  by default) and the next arrives already moving the same way. Use 3 to 5 kinds
+  of transition, each with a cause: a carried object (the ₹3 Cr number becomes
+  the bar the next scene splits), a push forward, an upward exit for the
+  conclusion. Never a fade through black between scenes.
+- **No still stretches over 3 seconds:** once a title lands it stays still, and
+  the motion moves on: a highlight walks through the rows the voice is
+  discussing, a line draws, a counter runs. Mark a deliberate hold (end card,
+  advisor's note) with `data-hold`.
+- **Ease by role:** arrivals land on a long tail (`softLand`, `snapSettle`),
+  exits accelerate and take 40-50% of the entry time (`crashOut`), camera moves
+  ease both ways. Vary text entrances (blur-in, grey-to-ink, settle from
+  oversize); never fade-and-slide-up for every line.
+- **Elements are hidden until they enter:** entrances apply their start state
+  at once (`GV.textIn`, `GV.enter`); later moves wait for their time.
+- **Readable:** text at least 28px; a line holds 0.5 s plus 0.3 s a word; the
+  first frame shows the title (it is the thumbnail).
+- **Sound:** the voice is the clock; the score is on a beat grid with scenes in
+  whole bars; effects peak one frame after their picture; the music drops out
+  in the bar before the payoff, then a riser and an impact; -14 LUFS, peaks
+  under -1 dB.
 
 Screen grammar used so far:
 - Private title card (letterboxed) → cold open with the main amount counting

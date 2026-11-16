@@ -1,0 +1,41 @@
+/* gv.css - Growthvine film look. A medium, not a palette:
+ *   ground: warm ink, lit from the upper left (a key light, never a flat void), 3% grain, 6% vignette
+ *   ink:    soft white for everything read; grey for quiet lines
+ *   data:   indigo leads, mint and peach answer, mustard only for one rare highlight
+ *   chapters: a mint flood, ink type
+ * Type: Poppins 600 for heroes (one or two lines, 4-9% of frame height), 400 for lines that are read.
+ * Text that must be read is at least 28px. Sources are the one small line allowed (20px, grey).      */
+@font-face { font-family: 'GV Poppins'; src: url('fonts/Poppins-Regular.ttf'); font-weight: 400; }
+@font-face { font-family: 'GV Poppins'; src: url('fonts/Poppins-SemiBold.ttf'); font-weight: 600; }
+
+:root {
+  --ink: #1D1D1B; --ground: #141413; --panel: #232321; --line: #3A3A37;
+  --white: #F4F4EF; --grey: #8C8C86; --dim: #4A4A46;
+  --mint: #B1F0DB; --indigo: #9B81F5; --peach: #FFBB90; --mustard: #F1F68E;
+  --font: 'GV Poppins', Poppins, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+.gv { position: absolute; inset: 0; font-family: var(--font); color: var(--white);
+      font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+/* the world: key light upper left, slight floor glow, so the ground has depth */
+.gv-world { position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 18% 8%, #2A2926 0%, #1A1A18 45%, #121211 100%); }
+.gv-mint { position: absolute; inset: 0; background: radial-gradient(120% 100% at 20% 10%, #C4F5E4 0%, #B1F0DB 55%, #9EE3CB 100%); }
+.gv-grain { position: absolute; inset: -20px; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url('grain.png'); background-size: 512px 512px; }
+.gv-vignette { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 62%, rgba(0,0,0,0.38) 100%); }
+
+/* type */
+.hero { font-weight: 600; font-size: 96px; line-height: 1.05; letter-spacing: -0.02em; }
+.big { font-weight: 600; font-size: 64px; line-height: 1.1; letter-spacing: -0.015em; }
+.q { font-weight: 400; font-size: 60px; line-height: 1.15; letter-spacing: -0.01em; }
+.line { font-weight: 400; font-size: 32px; line-height: 1.35; }
+.label { font-weight: 400; font-size: 28px; color: var(--grey); }
+.num { font-weight: 600; font-variant-numeric: tabular-nums; }
+.src { position: absolute; left: 96px; bottom: 44px; font-size: 24px; color: var(--grey); font-weight: 400; }
+.voice { font-weight: 600; font-size: 40px; }
+.voice-sub { font-weight: 400; font-size: 30px; color: var(--grey); }
+.w { display: inline-block; }   /* word spans from GV.words */
+.bar { position: absolute; border-radius: 6px; }

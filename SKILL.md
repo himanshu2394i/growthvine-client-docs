@@ -5,7 +5,7 @@ description: Use whenever someone at Growthvine wants a client document - an inv
 
 # Growthvine
 
-Version: 0.7.0
+Version: 0.8.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -63,8 +63,9 @@ the renderer: `design/SCENES.md`.
 
 After building: `check/CHECK.md`.
 
-Film versions of these documents are in design: if asked for a film or video,
-read `content/CONTENT.md` (storyboards only for now).
+Films: any of these documents can become an MP4 film (voice, score, effects).
+If asked for a film or video, read `content/CONTENT.md`, then `content/WRITING.md`
+(every word), then `film/README.md` (how to build and render).
 
 ## Feedback, any time
 
