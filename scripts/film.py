@@ -149,9 +149,11 @@ def voice(d, t, t0, s, y=930, size=36):
 
 
 def end_card(img, d, t, client, data_line):
+    """client=None for a general (brand) film."""
     lg = logo("logo-dark-tagline.png", 420)
     paste(img, lg, 960 - lg.width / 2, 300, a=p(t, 0.3, 1.2))
-    text(d, 960, 640, f"Private and confidential. Prepared only for {client}.", 24, GREY, anchor="ms", a=p(t, 1.6, 1))
+    line = f"Private and confidential. Prepared only for {client}." if client else "For information only. Talk to your Growthvine advisor about whether it fits your plan."
+    text(d, 960, 640, line, 24, GREY, anchor="ms", a=p(t, 1.6, 1))
     for i, ln in enumerate(["Growthvine Capital. AMFI-registered Mutual Fund Distributor, ARN-176753.",
                             "Investments in mutual funds, SIFs, PMS, AIFs and structured products are subject to market risks.",
                             "Past performance does not indicate future results. Expected figures are estimates, not guarantees. Not a recommendation.",

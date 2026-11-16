@@ -1,0 +1,39 @@
+# Fund film
+
+A briefing on one fund: can be general (brand version: "A Growthvine fund
+briefing", end card "For information only") or personal for one client. First
+test: Invesco India Large & Mid Cap (16 Nov 2026), 2:41, 13 scenes, MP4 with
+music, no costs.
+
+## Default question chain (offer it, the advisor edits)
+
+| # | Question | Answered with |
+|---|---|---|
+| 1 | Should this fund be in my portfolio? (cold open) | Its headline return counting up, and where it stands in its category |
+| 2 | First, what is this fund, in plain words? | Company-size split; size, number of holdings, top-ten share against the category median, % in shares; manager and benchmark |
+| 3 | Has it really done better than similar funds? | Return against the category average, 1 to 10 years; its rank on 3-year return; the gap in points |
+| 4 | Was that just one lucky stretch? | Calendar-year returns with its rank among peers each year; the 3-year return measured every quarter (low and high) |
+| 5 | How long should I plan to hold it? | Worst, average and best return for every 1, 3, 5, 10-year holding period: the range narrows |
+| 6 | What happens when markets fall? | Share of rises and falls captured against the category; worst falls with dates and recovery time |
+| 7 | Is the extra swing worth it? | Scatter of every peer (swing against return), this fund highlighted, any fund the text mentions named; Sharpe, Sortino, alpha, beta against the median |
+| 8 | What does it actually own? | Largest holdings and industries; overlap with the index |
+| 9 | Has the manager been changing things? | New holdings, biggest moves, full exits, industry shift |
+| 10 | Are the companies it owns expensive? | P/E and P/B against the category median, and the gap in % |
+| 11 | If it's the best performer, why is it ranked Nth? | Growthvine's score part by part; overall rank against return rank |
+
+Costs (charge, regular vs direct, the "Cost" part of the score) only if the
+advisor says yes.
+
+Go deeper (offer): head-to-head with named peers, growth of ₹1 lakh against
+the market, SIP returns, quartile consistency, its own benchmark.
+
+## Notes from the test
+
+- Words must match the data: check every "adding X, trimming Y" against the
+  actual weights (retail rose overall even though Trent was trimmed).
+- A number shown on a chart and in a sentence must be rounded the same way.
+- Chart labels near the right edge or beside a table: put them on the side
+  with room (scatter labels to the left near a table).
+- Bar heights: scale so the tallest bar and its label stay below the panel
+  heading.
+- Small negatives keep two decimals (-0.03%, not -0.0%).

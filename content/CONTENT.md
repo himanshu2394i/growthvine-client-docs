@@ -5,7 +5,7 @@ assessment, a fund, category or market report. **The deliverable is always an MP
 2 to 3 minutes, an original score (soft keys arpeggio over a warm pad, C, Am, F, G) with low hits on key numbers and
 whooshes on scene changes). A contact sheet of key frames is only the preview
 step before the full render, never the deliverable. Each document type has its own notes, added as we test
-them: `content/proposal.md`, `content/assess.md`.
+them: `content/proposal.md`, `content/assess.md`, `content/fund.md`.
 
 ## What these films are
 
@@ -54,6 +54,11 @@ Suggest more; the advisor picks. Offer:
    (one or two questions), or a still card (one number).
 3. The advisor's closing note, in their own words. Never write it for them;
    leave a marked placeholder.
+4. **Costs: always ask, every film.** "Should the film mention costs (fees,
+   expense ratio / annual charge, commission, regular vs direct)?" The default
+   is **no**: leave out every cost figure, cost scene, cost card and cost-based
+   score (e.g. a "Cost" part of a ranking), even if the document has them.
+   Include them only when the advisor says yes for this film.
 
 ## Storyboard
 

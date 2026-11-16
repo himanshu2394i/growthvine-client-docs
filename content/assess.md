@@ -14,12 +14,12 @@ hold. Private to that client. First test: a five-fund, ₹61.6 L portfolio
 | 4 | And when markets fall, what happens to it? | Worst fall in 3 years and yearly swing per fund; what the steadiest holding does for the whole portfolio |
 | 5 | What do I really own underneath? | Number of companies (look-through) and the money covered, the largest companies in rupees and %, the biggest industries, the large / mid / small split |
 | 6 | Are my funds all buying the same shares? | Overlap web: the highest pair and the average |
-| 7 | How much am I paying for all this? | Charge per fund, the blended charge, and the rupees a year at today's value |
-| 8 | So, is anything worth changing? | The review's discussion points as cards, each with its number (concentration, new funds, costs) |
+| 7 | How much am I paying for all this? (only if the advisor says to include costs) | Charge per fund, the blended charge, and the rupees a year at today's value |
+| 8 | So, is anything worth changing? | The review's discussion points as cards, each with its number (concentration, new funds; costs only if the advisor said yes) |
 | 9 | (no question) Note from the advisor | The advisor's own words: take-away and any recommendation |
 
 Go deeper (offer): progress against a goal amount or date (only if the advisor
-gave one), regular against direct cost in rupees, each fund against its own
+gave one), regular against direct cost in rupees (only if costs are in), each fund against its own
 category over time, tax on gains (only with the client's invested amounts).
 
 ## Notes from the test
