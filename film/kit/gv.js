@@ -145,6 +145,33 @@
     return end + 0.35;
   }
 
+  /* Spotlight what the voice is saying, at the moment it says it. groups[i] (a selector, element or list) lights at
+   * times[i] (voice cue times from T.cue); everything else in `all` dims. At `release` everything returns to full.
+   * Only spotlight what the voice names; never walk items on a timer the voice does not follow. */
+  function spotlight(tl, all, groups, times, o = {}) {
+    // Dim the items' contents, not the items: entrances animate the item itself, so a row that arrives after the
+    // spotlight starts still sits dim, and the two tweens never fight over one opacity.
+    const kids = el => (el.children && el.children.length ? Array.from(el.children) : [el]);
+    const flat = sel => [].concat(...$(sel).map(kids));
+    const dim = o.dim ?? 0.3, items = flat(all), G = groups.map(flat);
+    const others = items.filter(el => !G[0].includes(el));     // the first named item never dims
+    tl.fromTo(others, {opacity: 1}, {opacity: dim, duration: 0.25, ease: E('softInOut'), immediateRender: false}, times[0] - 0.12);
+    G.forEach((g, i) => {
+      if (i > 0) tl.fromTo(g, {opacity: dim}, {opacity: 1, duration: 0.2, ease: E('softInOut'), immediateRender: false}, times[i] - 0.1);
+      if (i < G.length - 1 && !o.keep) {
+        const next = G[i + 1], leaving = g.filter(el => !next.includes(el));
+        tl.fromTo(leaving, {opacity: 1}, {opacity: dim, duration: 0.25, ease: E('softInOut'), immediateRender: false}, times[i + 1] - 0.12);
+      }
+    });
+    if (o.release != null) {                                   // bring back only what is dim (the last lit group stays lit)
+      const lit = o.keep ? [].concat(...G) : G[G.length - 1];
+      tl.fromTo(items.filter(el => !lit.includes(el)), {opacity: dim}, {opacity: 1, duration: 0.35, ease: E('softInOut'), immediateRender: false}, o.release);
+    }
+  }
+
+  /* A voice cue time, with a fallback when the line has no such marker. */
+  const at = (T, name, fallback) => (T.cue && T.cue[name] != null ? T.cue[name] : fallback);
+
   /* Purposeful camera move between two framings of one wide stage (never a slow creep on a title). */
   function camera(tl, sel, t, to, o = {}) {
     tl.fromTo(sel, o.from || { x: 0, y: 0, scale: 1 }, Object.assign({ duration: o.dur || 1.2, ease: E(o.ease || 'softInOut'), immediateRender: false }, to), t);
@@ -167,7 +194,7 @@
   }
 
   /* Amounts the way the documents write them: ₹1.20 Cr, ₹70 L */
-  const amt = v => (v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : '₹' + Math.round(v / 1e5) + ' L');
+  const amt = v => (v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : v >= 1e6 ? '₹' + Math.round(v / 1e5) + ' L' : '₹' + (v / 1e5).toFixed(1) + ' L');
 
-  root.GV = { EASE, E, words, textIn, out, enter, count, grow, draw, walk, camera, grain, inr, amt };
+  root.GV = { EASE, E, words, textIn, out, enter, count, grow, draw, walk, spotlight, at, camera, grain, inr, amt };
 })(window);

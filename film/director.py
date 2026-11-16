@@ -75,7 +75,9 @@ def plan(film_dir, spec):
     for s in spec["scenes"]:
         if s["id"] in vo:
             s["vo_start"] = round(s["start"] + spec["beat"] * s.get("vo_beat", 1), 3)
-            s["vo_dur"] = vo[s["id"]]
+            s["vo_dur"] = vo[s["id"]]["dur"]
+            # cue times in scene seconds: when the voice reaches each {marker}
+            s["cues"] = {k: round(s["vo_start"] - s["start"] + t, 3) for k, t in vo[s["id"]]["cues"].items()}
             room = s["start"] + s["dur"] - 0.4 - s["vo_start"]
             if s["vo_dur"] > room:
                 need = s["vo_dur"] - room
@@ -96,8 +98,8 @@ def plan(film_dir, spec):
     (film_dir / "assets").mkdir(exist_ok=True)
     for logo in ("logo-dark-tagline.png", "logo-mono-white.png"):
         shutil.copy(HERE.parent / "assets" / "logos" / logo, film_dir / "assets" / logo)
-    timing = {s["id"]: {"start": s["start"], "dur": s["dur"], "vo": [s.get("vo_start", 0) - s["start"], s.get("vo_dur", 0)]}
-              for s in spec["scenes"]}
+    timing = {s["id"]: {"start": s["start"], "dur": s["dur"], "vo": [s.get("vo_start", 0) - s["start"], s.get("vo_dur", 0)],
+                        "cue": s.get("cues", {})} for s in spec["scenes"]}
     (film_dir / "timing.js").write_text("window.GV_T = " + json.dumps(timing) + ";\n", encoding="utf-8")
     hosts = "\n".join(
         f'      <div id="{s["id"]}" data-composition-id="{s["id"]}" data-composition-src="compositions/{s["id"]}.html" '
@@ -196,8 +198,8 @@ def audio(film_dir, spec):
     for s in plan_spec["scenes"]:
         if s.get("cut", "whoosh") != "none" and s["start"] > 0:
             cue(s.get("cut", "whoosh"), s["start"])
-        for h in s.get("hits", []):
-            cue(h["sfx"], s["start"] + h["t"])
+        for h in s.get("hits", []):                      # a hit lands at a fixed time or on a voice cue
+            cue(h["sfx"], s["start"] + (s.get("cues", {})[h["cue"]] if "cue" in h else h["t"]))
         if s.get("payoff"):
             r = KIT / "sfx" / SFX["riser"][0]
             rdur = float(run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(r)]).strip())

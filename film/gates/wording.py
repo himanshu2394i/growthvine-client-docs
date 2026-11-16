@@ -111,7 +111,7 @@ def collect(film_dir):
     spec = json.loads((d / "film.json").read_text(encoding="utf-8")) if (d / "film.json").exists() else {"scenes": []}
     for s in spec["scenes"]:
         if s.get("vo"):
-            items.append((f"voice {s['id']}", s["vo"], True))
+            items.append((f"voice {s['id']}", re.sub(r"{[a-z0-9_]+}", "", s["vo"]), True))
     for f in sorted((d / "compositions").glob("*.html")):
         for line in visible_text(f):
             items.append((f"screen {f.stem}", line, False))

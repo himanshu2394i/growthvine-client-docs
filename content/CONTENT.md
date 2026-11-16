@@ -2,7 +2,7 @@
 
 Turn any document this skill makes into a film: a proposal, a portfolio
 assessment, a fund, category or market report. **The deliverable is always an MP4 video with music** (16:9, 1920x1080, 30 fps,
-2 to 3 minutes, an original score (soft keys arpeggio over a warm pad, C, Am, F, G) with low hits on key numbers and
+length set by the content (often 2 to 4 minutes; longer when every scene earns its place), an original score (soft keys arpeggio over a warm pad, C, Am, F, G) with low hits on key numbers and
 whooshes on scene changes). A contact sheet of key frames is only the preview
 step before the full render, never the deliverable. Each document type has its own notes, added as we test
 them: `content/proposal.md`, `content/assess.md`, `content/fund.md`, `content/category.md`.
@@ -41,6 +41,10 @@ are actually cleared:
   stating what the data shows and why the plan is built that way, in an
   analyst's words ("Each bucket has a defined role, time horizon and
   liquidity"), never a slogan. Reasons come from the document and the data.
+- **Every answer uses the analyses in `content/ANALYSES.md`**: each important
+  percentage translated into rupees on the client's money, same data and period
+  for anything compared, unflattering findings shown, limits stated. When the
+  voice names an item, that item lights at that moment (voice cues).
 - **Every word follows `content/WRITING.md`**: specific, measured, the right
   terms, no AI tells. A client should believe a CFA wrote each line by hand.
 - Pace for reading: a dense scene needs 12 to 17 seconds.
@@ -52,7 +56,7 @@ Suggest more; the advisor picks. Offer:
    document's sections, natural reactions to each chart, and anything the
    advisor says this client actually asked. They tick, reorder, reword, and say
    where to go deeper (more follow-up questions).
-2. Length (about 2 to 4 minutes for a film) and format: 16:9 film, 9:16 short
+2. Length (set by the content: do not cut a useful scene or squeeze a line to hit a time) and format: 16:9 film, 9:16 short
    (one or two questions), or a still card (one number).
 3. The advisor's closing note, in their own words. Never write it for them;
    leave a marked placeholder.
