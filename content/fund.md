@@ -57,3 +57,21 @@ the score, what to weigh, end card.
 - A general briefing has no client amounts: show ₹1 lakh as the example.
 - Questions in the client's voice still pass the wording check: no "just",
   "really" or "actually".
+
+## Notes from test 3 (the full section menu, 17 Nov 2026)
+
+Built after the required steps: the advisor picked every section and
+subsection, story order, a head-to-head with the next three funds on 3-year
+return, and a closing one-page summary. 21 scenes, 6:51.
+
+- The one-page summary is a still scene (`data-hold`, no voice) with every key
+  number in eight cards; save its last frame as a PNG for the advisor to share.
+- Medians for peers (Sortino, alpha, beta, P/E, P/B, worst falls) come from one
+  `find_funds(ids=[...], include=["risk", "factsheet"], format="csv")` call.
+- Daily TRI over ten years is too long for one call; take yearly points by date
+  for growth charts, and month-end NAVs for SIP returns.
+- Write numbers on screen in full words, not "typ.": an abbreviation's full
+  stop splits the sentence for the wording check.
+- In scene markup written with Python f-strings, compute positions in Python
+  (`{484 * 35 / 50:.0f}`); a JavaScript `${...}` there turns into "$325px" and
+  the browser drops it.

@@ -26,6 +26,11 @@ class Wording(unittest.TestCase):
         self.assertEqual(rules("One AIF and one structured product hold ₹1.30 Cr, 43% of the total, with lock-ins."), set())
         self.assertEqual(rules("The Nifty 500 returned minus two percent over the past year."), set())
 
+    def test_short_full_sentences_are_not_fragments(self):
+        for line in ("The rules ask for at least 35%.", "Aditya Khemani manages the fund.", "SEBI requires at least 35%.",
+                     "It aims for long-term growth.", "It captures more of each rise."):
+            self.assertNotIn("fragment-drama", rules(line, voice=False), line)
+
     def test_client_questions_on_screen_are_fine(self):
         self.assertEqual(rules("How much of it is in equity?", voice=False), set())
 

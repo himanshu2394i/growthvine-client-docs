@@ -63,7 +63,7 @@ showed make makes made invest invested redeem redeemed explains explain answers 
 compounded locked lowers lower moves move expect expects account accounts overlap overlaps raise raises divided split propose buys buy
 pays pay mean means earn earns carry carries describe describes predict predicts look looks become becomes
 stay stays keep keeps cost costs run runs rank ranks lead leads trail trails differ differs suit suits need needs fit fits
-own owns trade trades""".split())
+own owns trade trades ask asks manage manages require requires aim aims capture captures match matches swing swings""".split())
 
 
 def visible_text(path):
