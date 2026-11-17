@@ -243,6 +243,12 @@ def audio(film_dir, spec):
 # ---------------------------------------------------------------- render
 def render(film_dir, spec, name):
     work = film_dir / "build"
+    # boxes: a padded card with a fixed height spills its text when a line wraps (gates/boxes.py)
+    sys.path.insert(0, str(HERE / "gates"))
+    import boxes
+    found = boxes.check(film_dir)
+    if found:
+        raise SystemExit("Box check: these cards would spill their text; give them min-height:\n- " + "\n- ".join(found))
     silent = work / "picture.mp4"
     run([HF, "render", str(film_dir), "-o", str(silent), "--crf", "21", "--quiet"], cwd=film_dir)
     out = film_dir / f"{name}.mp4"

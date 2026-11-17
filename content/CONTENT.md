@@ -125,6 +125,12 @@ films):
   other, sub-lines on one line where possible and clear of the source line,
   no word left alone on a second line. Shorten the words before shrinking the
   text.
+- **Text stays inside its box:** every card, tile or panel grows with its text
+  (`min-height`, never a fixed `height` on a padded box), and every line,
+  including small labels like a benchmark name, sits inside the box with its
+  padding to spare. `film/gates/boxes.py` fails the render on a fixed-height
+  card; still look at each card at full size, because a long word can also run
+  past the right edge.
 - **Readable:** text at least 28px; a line holds 0.5 s plus 0.3 s a word (a finding enters just after the voice's last cue and stays at least 6.6 s; mark it `data-hold`); the
   first frame shows the title (it is the thumbnail).
 - **Sound:** the voice is the clock; the score is on a beat grid with scenes in

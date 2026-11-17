@@ -52,6 +52,11 @@ rule to make a mismatch disappear.
    space. Fill each one (see "No page may be half empty" in
    `design/DESIGN.md`), render again, and verify again. Don't send a document
    that still has empty-space lines.
+7. **Text inside every box.** Look at each page at full size: no text runs
+   past the edge of its card, table cell, tile or chart panel (bottom or right),
+   small labels included (benchmark names, units, footnote marks). If one
+   does, let the box grow or shorten the words; never shrink text below the
+   design's minimum.
 
 ## C. Deliver
 
