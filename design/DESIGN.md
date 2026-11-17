@@ -183,6 +183,12 @@ holdings**, not only Option 1's.
   that and move the rest to another panel.
 - Keep reference figures (category, market) on the same as-of date as the
   figures they sit next to, or say both dates.
+- Even margins top and bottom: the gap above the headline and below the
+  footer (source line, page number) should look the same. Don't leave a wide
+  gap at the top while panels and footnotes crowd the bottom edge; move the
+  content up or shorten it.
+- Text stays inside its box: no line runs past the edge of a card, table cell
+  or panel (see `check/CHECK.md` B7).
 - No page may be half empty. Short panels (a 3-row table, two bullets, a
   two-bar chart) in a `2` or `3` layout leave the bottom of the page blank.
   When the renderer reports "N% of the page is empty", fill it with real data,

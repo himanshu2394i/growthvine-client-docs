@@ -125,6 +125,11 @@ films):
   other, sub-lines on one line where possible and clear of the source line,
   no word left alone on a second line. Shorten the words before shrinking the
   text.
+- **Even margins top and bottom:** the space above the question and below the
+  source line should look the same (the kit lifts question scenes 56px and
+  sets the source line 72px from the bottom). Never leave a wide gap at the top
+  while the finding, sub-line and source crowd the bottom edge; when a scene
+  runs out of room, shorten or move content up, do not push it down.
 - **Text stays inside its box:** every card, tile or panel grows with its text
   (`min-height`, never a fixed `height` on a padded box), and every line,
   including small labels like a benchmark name, sits inside the box with its

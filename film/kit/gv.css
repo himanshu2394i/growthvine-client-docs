@@ -34,7 +34,10 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .line { font-weight: 400; font-size: 32px; line-height: 1.35; }
 .label { font-weight: 400; font-size: 28px; color: var(--grey); }
 .num { font-weight: 600; font-variant-numeric: tabular-nums; }
-.src { position: absolute; left: 96px; bottom: 44px; font-size: 24px; color: var(--grey); font-weight: 400; }
+.src { position: absolute; left: 96px; bottom: 72px; font-size: 24px; color: var(--grey); font-weight: 400; }
+/* Balanced frame: scenes place their question at top 150 and their finding near the bottom; lifting the whole
+   scene 56px and the source line to 72px gives even margins above and below (about 94px top, 72px bottom). */
+.gv > [id$="-all"]:has(> .q) { position: absolute; left: 0; right: 0; top: -56px; height: 1080px; }
 .voice { font-weight: 600; font-size: 40px; }
 .voice-sub { font-weight: 400; font-size: 30px; color: var(--grey); }
 .w { display: inline-block; }   /* word spans from GV.words */
