@@ -37,6 +37,10 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 .src { position: absolute; left: 96px; bottom: 72px; font-size: 24px; color: var(--grey); font-weight: 400; }
 /* Balanced frame: scenes place their question at top 150 and their finding near the bottom; lifting the whole
    scene 56px and the source line to 72px gives even margins above and below (about 94px top, 72px bottom). */
+/* Camera window for GV.focus: zooms stay between the question and the finding. Put content inside
+   <div class="gv-view"><div id="x-cam" class="gv-cam"> ... </div></div>; children keep their frame coordinates. */
+.gv-view { position: absolute; left: 0; top: 230px; width: 1920px; height: 600px; overflow: hidden; }
+.gv-cam { position: absolute; left: 0; top: -230px; width: 1920px; height: 1080px; }
 .gv > [id$="-all"]:has(> .q) { position: absolute; left: 0; right: 0; top: -56px; height: 1080px; }
 .voice { font-weight: 600; font-size: 40px; }
 .voice-sub { font-weight: 400; font-size: 30px; color: var(--grey); }

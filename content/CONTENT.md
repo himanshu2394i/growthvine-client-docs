@@ -125,6 +125,23 @@ films):
   other, sub-lines on one line where possible and clear of the source line,
   no word left alone on a second line. Shorten the words before shrinking the
   text.
+- **One idea on screen at a time (keep the data, not the crowd):** a scene
+  shows one chart or one table or one set of cards, plus its finding. When a
+  question needs two views (the ₹1 lakh chart and the SIP table; calendar years
+  and quartiles; capture and worst falls), give the scene **two beats**: the
+  first view clears as the voice moves on and the second takes the whole
+  screen (`GV.swap`). Numbers that don't serve the scene's one point go to the
+  one-page summary at the end, not into a side panel.
+- **Move the camera, cinematically:** zoom onto what the voice names (a point
+  on a scatter, the low on a line, the card being discussed) and back out
+  before the finding (`GV.focus` inside a `gv-view` window, so the zoom never
+  covers the question or the finding). Zoom 1.15 to 1.35; a zoom that crops
+  the subject's labels is too far.
+- **Check crowding:** before rendering, `film/director.py` scores each scene's
+  last frame (`film/gates/density.py`). Over the limit, the render stops: split
+  the scene into two beats or move numbers to the summary. In the band just
+  below, it asks you to look again; decide by eye. A scene meant to be dense
+  (the one-page summary) sets `"dense": true` in `film.json`.
 - **Even margins top and bottom:** the space above the question and below the
   source line should look the same (the kit lifts question scenes 56px and
   sets the source line 72px from the bottom). Never leave a wide gap at the top

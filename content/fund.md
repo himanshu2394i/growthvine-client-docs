@@ -75,3 +75,7 @@ return, and a closing one-page summary. 21 scenes, 6:51.
 - In scene markup written with Python f-strings, compute positions in Python
   (`{484 * 35 / 50:.0f}`); a JavaScript `${...}` there turns into "$325px" and
   the browser drops it.
+- Crowding: the advisor liked the depth but found scenes crowded. Each dense
+  scene now has two beats (chart, then table; calendar years, then quartiles;
+  capture, then worst falls; returns, then risk) and the camera zooms onto the
+  point the voice names. Scores fell from 0.042-0.054 to 0.029-0.039.

@@ -180,6 +180,29 @@
     return t + (o.dur || 1.2);
   }
 
+  /* Zoom the camera onto what the voice names, then back out. `sel` is a full-frame wrapper (position:absolute;
+   * inset:0). shots: [{t, x, y, s}] where (x, y) is the point in the 1920x1080 frame to bring to the centre and s the
+   * zoom (1 = the whole frame). Each move starts from the previous framing, so seeking stays exact.
+   * Zoom only far enough to make the named part the clear subject (1.25-1.6); end the scene zoomed out. */
+  function focus(tl, sel, shots, o = {}) {
+    const frame = (x, y, s) => ({ x: s === 1 ? 0 : 960 - x * s, y: s === 1 ? 0 : 540 - y * s, scale: s });
+    let prev = frame(0, 0, 1);
+    $(sel).forEach(el => { el.style.transformOrigin = '0 0'; });
+    shots.forEach(sh => {
+      const next = frame(sh.x, sh.y, sh.s);
+      tl.fromTo(sel, prev, Object.assign({ duration: sh.dur || o.dur || 0.9, ease: E(o.ease || 'softInOut'), immediateRender: false }, next), sh.t);
+      prev = next;
+    });
+  }
+
+  /* Two beats in one scene: the first group clears upward and the second arrives in its place, so a dense scene
+   * shows one idea at a time. Returns the time the second group has landed. */
+  function swap(tl, outSel, inSel, t, o = {}) {
+    tl.fromTo(outSel, { y: 0, opacity: 1, filter: 'blur(0px)' }, { y: -60, opacity: 0, filter: 'blur(8px)', duration: 0.4, ease: E('crashOut'), immediateRender: false }, t);
+    tl.fromTo(inSel, { y: 70, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: E('softLand'), immediateRender: o.ir ?? true }, t + 0.25);
+    return t + 0.8;
+  }
+
   /* Film grain: a noise layer stepped every frame (deterministic). */
   function grain(tl, sel, dur, fps = 30) {
     const el = $(sel)[0]; if (!el) return;
@@ -198,5 +221,5 @@
   /* Amounts the way the documents write them: ₹1.20 Cr, ₹70 L */
   const amt = v => (v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' Cr' : v >= 1e6 ? '₹' + Math.round(v / 1e5) + ' L' : '₹' + (v / 1e5).toFixed(1) + ' L');
 
-  root.GV = { EASE, E, words, textIn, out, enter, count, grow, draw, walk, spotlight, at, camera, grain, inr, amt };
+  root.GV = { EASE, E, words, textIn, out, enter, count, grow, draw, walk, spotlight, at, camera, focus, swap, grain, inr, amt };
 })(window);

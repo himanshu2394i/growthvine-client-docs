@@ -183,6 +183,12 @@ holdings**, not only Option 1's.
   that and move the rest to another panel.
 - Keep reference figures (category, market) on the same as-of date as the
   figures they sit next to, or say both dates.
+- One idea per page, and room around it. Keep the data, lose the crowd: a page
+  makes one point with one main chart or table (two panels at most when they
+  answer the same question). When a page needs more, split it into two pages
+  rather than shrinking type or packing side panels; move secondary numbers to
+  a summary page. Clean beats complete on any single page; the document as a
+  whole stays complete.
 - Even margins top and bottom: the gap above the headline and below the
   footer (source line, page number) should look the same. Don't leave a wide
   gap at the top while panels and footnotes crowd the bottom edge; move the
@@ -192,8 +198,11 @@ holdings**, not only Option 1's.
 - No page may be half empty. Short panels (a 3-row table, two bullets, a
   two-bar chart) in a `2` or `3` layout leave the bottom of the page blank.
   When the renderer reports "N% of the page is empty", fill it with real data,
-  never by stretching:
-  - switch to `2x2` and add a panel that deepens the same point: a chart of the
+  never by stretching, and stay within one idea per page (above): first make
+  the main chart or table larger, then add at most one panel that deepens the
+  same point. Empty space is fixed by size and focus, not by packing:
+  - make the chart or table the page's full width and height first;
+  - or switch to `2x2` and add a panel that deepens the same point: a chart of the
     table's figures, the reference it lacks (category, market), the path behind
     it (a line), or a stats panel of the extremes (best, worst, how many);
   - add a `strip` of key numbers, or a `note`;

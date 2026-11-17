@@ -249,6 +249,18 @@ def render(film_dir, spec, name):
     found = boxes.check(film_dir)
     if found:
         raise SystemExit("Box check: these cards would spill their text; give them min-height:\n- " + "\n- ".join(found))
+    # density: one idea on screen at a time; each scene's last frame is scored (gates/density.py).
+    # A scene meant to be dense (a one-page summary) says "dense": true in film.json.
+    import density
+    ends = [round(s["start"] + s["dur"] - 0.7, 2) for s in spec["scenes"] if not s.get("dense")]
+    snap = work / "density"
+    shutil.rmtree(snap, ignore_errors=True)
+    run([HF, "snapshot", str(film_dir), "--at", ",".join(map(str, ends)), "-o", str(snap), "--no-end"], cwd=film_dir)
+    found = density.check(snap)
+    for line in density.review(snap):
+        print("Density, look again: " + line)
+    if found:
+        raise SystemExit("Density check: these scenes are crowded; give them two beats or move numbers to the summary:\n- " + "\n- ".join(found))
     silent = work / "picture.mp4"
     run([HF, "render", str(film_dir), "-o", str(silent), "--crf", "21", "--quiet"], cwd=film_dir)
     out = film_dir / f"{name}.mp4"
