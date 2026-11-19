@@ -1,11 +1,11 @@
 ---
 name: growthvine
-description: Use whenever someone at Growthvine wants a client document - an investment or allocation proposal, a portfolio assessment, or a fund, category or market report - as a PDF or PPT. Also use when they say "use Growthvine", share an advisor's allocation (Excel, PDF, screenshot, pasted table) and want it turned into something for a client, or want to give feedback on this skill. Leads a structured interview before building anything.
+description: Use whenever someone at Growthvine wants a client document - an investment or allocation proposal, a portfolio assessment, or a fund, category or market report - as a PDF or PPT, or any of these as an MP4 film with voice and music. Also use when they say "use Growthvine", share an advisor's allocation (Excel, PDF, screenshot, pasted table) and want it turned into something for a client, or want to give feedback on this skill. Leads a structured interview before building anything.
 ---
 
 # Growthvine
 
-Version: 0.10.0
+Version: 0.11.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -38,7 +38,7 @@ Each step ends with the advisor's answer. Do not start the next step until it
 comes.
 
 1. **The basics.** What we are making, PDF / PPT / film, who it is for, the
-   decision it helps with, costs yes or no (films), plus the required items of
+   decision it helps with, costs yes or no and which voice (films; voice setup and menu in `content/CONTENT.md`), plus the required items of
    the type's question set. Then at most three or four clarifying questions about
    gaps or conflicts. That limit is for clarifying questions only; it never
    shortens step 2.

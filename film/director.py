@@ -1,6 +1,8 @@
 """Growthvine film director: film.json + HyperFrames scenes -> finished MP4 with voice, score and effects.
 
-    python film/director.py <film_dir> [--stage all|plan|audio|render|gates]
+    python film/director.py <film_dir> [--stage all|voices|plan|audio|render|gates]
+
+  voices  (before the storyboard) one sample line in every menu voice, for the advisor to pick (VOICES)
 
 <film_dir> holds film.json and compositions/*.html (scenes written with film/kit). Steps:
   plan    voice lines -> Kokoro wavs; check each fits its scene; write index.html, timing.js, kit files
@@ -39,6 +41,38 @@ SFX = {"whoosh": ["kit-whoosh.ogg", "whoosh-fs-169867-swoosh.ogg", "whoosh-fs-68
        "pop": ["kit-pop.ogg", "pop-fs527522.ogg"], "tick": ["kit-tick.ogg", "tick-fs528561.ogg"],
        "riser": ["kit-riser.ogg"], "impact": ["kit-impact.ogg"]}
 SFX_GAIN = {"whoosh": 0.55, "pop": 0.6, "tick": 0.35, "riser": 0.5, "impact": 0.8}
+# The voices the advisor picks from (the clearest English voices in Kokoro). Play samples first: --stage voices.
+VOICES = {"af_heart": "woman, American accent (default; the voice of the fund and category test films)",
+          "af_bella": "woman, American accent",
+          "am_michael": "man, American accent",
+          "am_fenrir": "man, American accent",
+          "bf_emma": "woman, British accent",
+          "bm_george": "man, British accent"}
+SAMPLE = ("Over the three years to thirteen November, the fund returned {r}twenty-two percent a year, "
+          "the highest of twenty-six similar funds.")
+
+
+def check_voice(name):
+    """The film's voice must be one the advisor chose from the menu."""
+    if name not in VOICES:
+        raise SystemExit(f"Voice '{name}' is not on the menu. Choose one of: "
+                         + "; ".join(f"{k} ({v})" for k, v in VOICES.items()))
+    return name
+
+
+def voices(film_dir):
+    """Speak the same line in every menu voice, so the advisor can listen and pick: build/voices/<voice>.wav."""
+    if not VOICE_PY.exists():
+        raise SystemExit(f"Voice not installed at {VOICE_HOME}: run python film/setup_voice.py first.")
+    out = film_dir / "build" / "voices"
+    out.mkdir(parents=True, exist_ok=True)
+    lines = out / "sample.json"
+    lines.write_text(json.dumps({"sample": SAMPLE}), encoding="utf-8")
+    for v in VOICES:
+        run([str(VOICE_PY), str(HERE / "vo_tts.py"), str(lines), str(out / v), v, "0.95"])
+        shutil.move(str(out / v / "sample.wav"), str(out / f"{v}.wav"))
+        shutil.rmtree(out / v)
+    print("Voice samples:\n" + "\n".join(f"  {out / (k + '.wav')}  {d}" for k, d in VOICES.items()))
 
 
 def run(cmd, **kw):
@@ -66,8 +100,9 @@ def plan(film_dir, spec):
     lines = {s["id"]: s["vo"] for s in spec["scenes"] if s.get("vo")}
     vo = {}
     if lines:
+        check_voice(spec.get("voice", "af_heart"))
         if not VOICE_PY.exists():
-            raise SystemExit(f"Voice not installed at {VOICE_HOME} (see film/README.md).")
+            raise SystemExit(f"Voice not installed at {VOICE_HOME}: run python film/setup_voice.py first.")
         (work / "vo_lines.json").write_text(json.dumps(lines, ensure_ascii=False), encoding="utf-8")
         vo = json.loads(run([str(VOICE_PY), str(HERE / "vo_tts.py"), str(work / "vo_lines.json"), str(work / "vo"),
                              spec.get("voice", "af_heart"), str(spec.get("speed", 0.95))]).strip().splitlines()[-1])
@@ -300,10 +335,12 @@ def gates(film_dir, spec, name):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("film_dir")
-    ap.add_argument("--stage", default="all", choices=["all", "plan", "audio", "render", "gates"])
+    ap.add_argument("--stage", default="all", choices=["all", "voices", "plan", "audio", "render", "gates"])
     ap.add_argument("--name", default=None)
     a = ap.parse_args()
     d = Path(a.film_dir).absolute()
+    if a.stage == "voices":
+        return voices(d)
     spec = load(d)
     name = a.name or spec.get("name", d.name)
     if a.stage in ("all", "plan"):

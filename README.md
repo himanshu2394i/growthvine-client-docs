@@ -1,14 +1,18 @@
 # growthvine
 
 A Claude skill that helps Growthvine advisors turn their allocation views into
-client-ready proposals and reports (PDF or PPT). It leads a structured interview,
-checks the advisor's inputs against each other, and only builds once the advisor
-confirms the brief.
+client-ready proposals and reports (PDF or PPT) and content films (MP4 with
+voice and music). It leads a structured interview, shows every section to pick
+from, gets the brief or storyboard approved, and only then builds.
 
-Version: 0.4.0 (proposals work end to end and use Growthvine fund data fully:
-fund pages, returns vs the market, growth charts, look-through, overlap,
-projections; interview, input check, cinematic PDF/PPT, number check, feedback.
-Coming: other report types).
+Version: 0.11.0. Makes allocation proposals, portfolio assessments, and fund,
+category and market reports, as PDF, PPT or film. Every figure comes from the
+advisor's inputs or Growthvine fund data and is checked before delivery.
+
+**Films need a computer, not claude.ai:** they are built with Claude Code and
+local tools (HyperFrames, the Kokoro voice, ffmpeg, Node 22+, Chrome). Setup is
+in `film/README.md`. Point `GV_TOOLS` at the tools folder if it is not next to
+the skill folder. PDF and PPT work in both.
 
 ## Install
 

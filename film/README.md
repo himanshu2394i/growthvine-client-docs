@@ -12,7 +12,7 @@ repo is `D:\App\growthvine-client-docs`; override with `GV_TOOLS`):
 | Folder | What | Set up with |
 |---|---|---|
 | `tools/hyperframes` | HyperFrames renderer (npm) | `npm install hyperframes` there, with `cache=<tools>\npm-cache` in its `.npmrc` |
-| `tools/growthvine-voice` | Kokoro voice: `venv` + `kokoro-v1.0.onnx` + `voices-v1.0.bin` | `py -3.12 -m venv venv`, `venv\Scripts\python -m pip install kokoro-onnx soundfile` (set `TMP`/`TEMP` to `tools\tmp` first), model files from the kokoro-onnx `model-files-v1.0` release |
+| `tools/growthvine-voice` | Kokoro voice: `venv` + `kokoro-v1.0.onnx` + `voices-v1.0.bin` | `python film/setup_voice.py` (one step: makes the venv with Python 3.10 to 3.12, installs `kokoro-onnx` and `soundfile`, downloads the two model files from the kokoro-onnx `model-files-v1.0` release and checks their sizes, speaks a test line) |
 | `tools/hf-cache`, `npm-cache`, `pip-cache`, `tmp` | caches | created by the director |
 
 Also needed: Node 22+, ffmpeg, Chrome. HyperFrames telemetry is switched off on
@@ -32,6 +32,8 @@ Then:
 
 ```
 python film/director.py <film_dir>                  # plan, audio, render, gates
+python film/setup_voice.py                          # once: install the voice
+python film/director.py <film_dir> --stage voices   # samples of each voice for the advisor to pick
 python film/director.py <film_dir> --stage plan     # voice + wording check + timing only
 ```
 

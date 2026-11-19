@@ -57,9 +57,9 @@ from the start, following the **Required steps** in `SKILL.md`, in this order. *
 never skip one, and never build scenes before step 3 is answered.**
 
 1. **The basics** (the gate): which fund/client, who it is for, the decision,
-   costs yes/no, plus at most four clarifying questions about gaps or
-   conflicts. The "at most four" limit is for these clarifying questions only;
-   it never limits the menu in step 2.
+   costs yes/no, **which voice** (see "The voice" below), plus at most four
+   clarifying questions about gaps or conflicts. The "at most four" limit is
+   for these clarifying questions only; it never limits the menu in step 2.
 2. **Sections and subsections.** Show every section in `<type>/QUESTIONS.md`
    (Step 2 there) with its subsections, the rich default pre-ticked, your
    recommendation marked, and the "go deeper" extras offered. The advisor
@@ -69,6 +69,38 @@ never skip one, and never build scenes before step 3 is answered.**
    it shows, the finding), built only from the picked subsections. The advisor
    approves or edits it.
 4. Then fetch the data, write the voice and build.
+
+## The voice (set up once, chosen every film)
+
+Films are voiced offline with Kokoro, on the advisor's own computer (Claude
+Code, not claude.ai). Before the first film:
+
+1. **Check it is installed:** `<tools>/growthvine-voice/venv` and the two model
+   files exist (`<tools>` is `GV_TOOLS`, or the `tools` folder beside the skill
+   folder). If not, tell the advisor it is a one-time download of about 350 MB,
+   and with their yes run `python film/setup_voice.py`. It creates the voice's
+   own Python environment (needs Python 3.10 to 3.12; if missing, ask them to
+   install Python 3.12 from python.org), downloads the model, and speaks a test
+   line. The rest of the film tools (HyperFrames, ffmpeg, Node, Chrome) are in
+   `film/README.md`.
+2. **Let the advisor hear the voices:** `python film/director.py <film_dir>
+   --stage voices` writes the same line in each voice to
+   `<film_dir>/build/voices/`. Send them the samples (or name the files) and ask
+   which to use; they judge by ear. The menu:
+
+| Voice | Speaker |
+|---|---|
+| `af_heart` | woman, American accent (default; the voice of the fund and category test films) |
+| `af_bella` | woman, American accent |
+| `am_michael` | man, American accent |
+| `am_fenrir` | man, American accent |
+| `bf_emma` | woman, British accent |
+| `bm_george` | man, British accent |
+
+3. Put the choice in `film.json` (`"voice"`), and keep it for the advisor's
+   later films unless they ask to change it. The director stops on a voice that
+   is not on the menu. All voices read English; write numbers as words in the
+   voice lines ("twenty-two percent") so each voice says them the same way.
 
 ## The advisor's menu (same approach as the reports)
 
