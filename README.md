@@ -28,7 +28,7 @@ the skill folder. PDF and PPT work in both.
 **Claude Code** (PDF, PPT and films):
 
 ```bash
-git clone -b rewrite/growthvine-skill https://github.com/himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine
+git clone https://github.com/himanshu2394i/growthvine-client-docs ~/.claude/skills/growthvine
 ```
 
 (Windows PowerShell: use `"$env:USERPROFILE\.claude\skills\growthvine"` as the last part.
