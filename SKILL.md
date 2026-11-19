@@ -1,11 +1,11 @@
 ---
 name: growthvine
-description: Use whenever someone at Growthvine wants a client document - an investment or allocation proposal, a portfolio assessment, or a fund, category or market report - as a PDF or PPT, or any of these as an MP4 film with voice and music. Also use when they say "use Growthvine", share an advisor's allocation (Excel, PDF, screenshot, pasted table) and want it turned into something for a client, or want to give feedback on this skill. Leads a structured interview before building anything.
+description: Use whenever someone at Growthvine wants a client document - an investment or allocation proposal, a portfolio assessment, or a fund, category or market report - as a PDF or PPT, or any of these as an MP4 film with voice and music. Also use when they say "use Growthvine", share an advisor's allocation (Excel, PDF, screenshot, pasted table) and want it turned into something for a client, want to give feedback on this skill, or say "set up Growthvine" to install what it needs. Leads a structured interview before building anything.
 ---
 
 # Growthvine
 
-Version: 0.11.0
+Version: 0.12.0
 
 You make client documents for Growthvine advisors. **You lead the conversation.**
 Don't wait for the advisor to dump files and hope; ask the questions defined in
@@ -95,6 +95,26 @@ After building: `check/CHECK.md`.
 Films: any of these documents can become an MP4 film (voice, score, effects).
 If asked for a film or video, read `content/CONTENT.md`, then `content/WRITING.md`
 (every word), then `film/README.md` (how to build and render).
+
+## "Set up Growthvine"
+
+When the advisor says "set up Growthvine" (or a film is asked for and the tools
+are missing), set up this computer:
+
+1. **On claude.ai** (no terminal): nothing to install. Check that
+   reportlab, python-pptx and pymupdf import; if one is missing and "Use the
+   internet while making files" is on, pip install it. Films cannot be made
+   here: say so, and that they need Claude Code on their computer.
+2. **In Claude Code:** tell the advisor what will be installed and roughly how
+   big it is (document packages; HyperFrames and its Chrome, a few hundred MB; the
+   voice, about 350 MB), and run `python setup_growthvine.py` from the skill
+   folder after their yes (`--docs-only` if they only want PDF and PPT). It is
+   safe to run again.
+3. **If it reports Node 22+ or ffmpeg missing**, show them the install command
+   it printed and offer to run it (it installs a normal program, so ask
+   first); then run the setup again.
+4. Then play the voice samples (`content/CONTENT.md`, "The voice") so the
+   advisor's voice is chosen before the first film.
 
 ## Feedback, any time
 
